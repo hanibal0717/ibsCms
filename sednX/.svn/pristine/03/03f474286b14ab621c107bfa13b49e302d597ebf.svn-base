@@ -1,0 +1,1026 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="stylesheet" type="text/css"	href="${pageContext.request.contextPath}/ibsUserCss/sbs_comment.css">
+<link rel="stylesheet" type="text/css"	href="${pageContext.request.contextPath}/ibsUserCss/sbs_common.css">
+<link rel="stylesheet" type="text/css"	href="${pageContext.request.contextPath}/ibsUserCss/sbs_tvradio.css">
+ 
+
+<h4 class="hide">전체편성표</h4>
+<div class="stt_all_w">
+	<div class="stt_day_top">
+		<p class="stt_tday">
+			<span class="stt_todaynum_w"><strong class="stt_tnum">2018.03.09</strong>
+				<span class="stt_txt">(금)</span></span>
+			<button type="button" class="b_sttday_prev" 	onclick="location.href = ''" title="이전">
+				<em class="sbtn mdm_prevday"><i class="ir">이전날</i></em>
+			</button>
+			<button type="button" class="b_sttday_next" onclick="location.href = ''" title="다음">
+				<em class="sbtn mdm_nextday"><i class="ir">다음날</i></em>
+			</button>
+		</p>
+		<button type="button" onclick="location.href='#''" class="b_sttday_today" title="오늘">
+			<em class="sbtn sttd_today"><i class="ir">오늘</i></em>
+		</button>
+		<button type="button" id="btnCalendar" class="b_sttcal" title="달력보기">
+			<em class="sbtn sttd_cal"><i class="ir">달력보기</i></em>
+		</button>
+		<!-- 달력 -->
+		<div class="sbsmd_cal_w" id="schedule"></div>
+	</div>
+	<div class="stt_table_w">
+		<div class="stt_tquick">
+			<span class="sttq_tit">방송시간</span>
+			<div class="btn_stttime_w">
+				<button type="button" class="sbtn btn_stt_am" title="AM"
+					onclick="slideSheet(0)">
+					<i class="ir">AM</i>
+				</button>
+				<button type="button" class="sbtn btn_stt_pm" title="PM"
+					onclick="slideSheet(12)">
+					<i class="ir">PM</i>
+				</button>
+			</div>
+			<ul class="stt_tquick_channel">
+				<li><a>ch.1 그룹방송 CHB</a></li>
+				<li><a>ch2.청호교육 TV</a></li> 
+				<li><a>ch2.매장전시 방송</a></li>
+			</ul>
+		</div>
+		<h5 class="hide">SBS 전체 2018.03.09 편성표</h5>
+		<div class="stt_table_cont">
+			<table class="stt_table" style="left: 0px; overflow: hidden">
+				<!--3시간씩 움직일경우 -792px-->
+				<caption class="hide">SBS, SBS Plus, SBS Sports</caption>
+				<colgroup>
+							<col width="128px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+							<col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/><col width="22px"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="row">방송시간</th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">12:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">01:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">02:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">03:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">04:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">05:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">06:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">07:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">08:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">09:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">10:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">11:00</strong>am</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">12:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">01:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">02:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">03:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">04:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">05:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">06:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">07:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">08:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">09:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">10:00</strong>pm</div></th>
+								<th scope="col" colspan="12"><div class="stt_time_w"><strong class="stt_timenum">11:00</strong>pm</div></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">SBS</th>
+						<td colspan="6">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/culture/blackhouse"
+									class="stt_pro_link"> <span class="sttpl_time">23:50</span>
+									<strong	class="sttpl_pname">김어준의 블랙하우스 2부</strong> 
+									<span	class="stt_icn_hd">HD</span> 
+									<span class="stt_icn_t_txtair">자</span>
+									<span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="6">
+							<div class="stt_cont_w">
+								<a href="http://news.sbs.co.kr/news/programMain.do?prog_cd=R5"
+									class="stt_pro_link"> <span class="sttpl_time">00:30</span>
+									<strong class="sttpl_pname">나이트 라인</strong> 
+									<span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span>
+									<span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="48">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/munhwaga/" class="stt_pro_link">
+									<span class="sttpl_time">01:00</span>
+									<strong class="sttpl_pname">문화가중계 (~02:00)</strong>
+									<span class="stt_icn_hd">HD</span> <span class="stt_icn_rerun">RE-RUN</span>
+									<span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">05:00</span>
+									<strong class="sttpl_pname">네트워크 특선</strong> <span class="stt_icn_hd">HD</span> 
+									<span class="stt_icn_rerun">RE-RUN</span> 
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+						<td colspan="5">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/morningwide/" class="stt_pro_link">
+									<span class="sttpl_time">06:00</span>
+									<strong class="sttpl_pname">모닝와이드 (1부)</strong>
+									<span class="stt_icn_hd">HD</span> <span class="stt_icn_t_txtair">자</span>
+									<span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="13">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/morningwide/" class="stt_pro_link">
+									<span class="sttpl_time">06:25</span><strong class="sttpl_pname">모닝와이드(2부)</strong>
+									<span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/morningwide/" class="stt_pro_link">
+									<span class="sttpl_time">07:30</span>
+									<strong
+									class="sttpl_pname">모닝와이드(3부)</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/drama/happysisters" 	class="stt_pro_link"> <span class="sttpl_time">08:30</span>
+								<strong class="sttpl_pname">아침연속극 [해피시스터즈] (67회)</strong> 
+								<span	class="stt_icn_hd">HD</span> <span class="stt_icn_t_txtair">자</span>
+								<span class="stt_icbox">15</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/morning/" class="stt_pro_link">
+									<span class="sttpl_time">09:10</span><strong
+									class="sttpl_pname">좋은 아침</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">12</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="3">
+							<div class="stt_cont_w">
+								<a href="http://news.sbs.co.kr" class="stt_pro_link"> <span
+									class="sttpl_time">10:10</span><strong class="sttpl_pname">SBS
+										뉴스</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="7">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/lifeeconomy" class="stt_pro_link">
+									<span class="sttpl_time">10:25</span><strong
+									class="sttpl_pname">SBS 생활경제</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="6">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">11:00</span><strong class="sttpl_pname">에그구그
+										(첫회)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">7</span>
+								</span>
+							</div>
+						</td>
+						<td colspan="6">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/network" class="stt_pro_link">
+									<span class="sttpl_time">11:30</span><strong
+									class="sttpl_pname">고향이 보인다</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="10">
+							<div class="stt_cont_w">
+								<a href="http://w3.sbs.co.kr/news/newsMain.do"
+									class="stt_pro_link"> <span class="sttpl_time">12:00</span><strong
+									class="sttpl_pname">SBS 12뉴스</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="14">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/zoo" class="stt_pro_link"> <span
+									class="sttpl_time">12:50</span><strong class="sttpl_pname">TV
+										동물농장</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_explain">해</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="24">
+							<div class="stt_cont_w">
+								<a
+									href="http://news.sbs.co.kr/news/programMain.do?prog_cd=RN=SNB=SBSNEWS"
+									class="stt_pro_link"> <span class="sttpl_time">14:00</span><strong
+									class="sttpl_pname">뉴스브리핑</strong> <span class="stt_icn_uhd">U</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<a href="http://tv.sbs.co.kr/cube" class="stt_pro_link"> <span
+									class="sttpl_time">16:00</span><strong class="sttpl_pname">궁금한
+										이야기 Y</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<a
+									href="http://news.sbs.co.kr/news/programMain.do?prog_cd=RO=SNB=SBSNEWS"
+									class="stt_pro_link"> <span class="sttpl_time">17:00</span><strong
+									class="sttpl_pname">SBS 오뉴스</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/enter/street"
+									class="stt_pro_link"> <span class="sttpl_time">18:00</span><strong
+									class="sttpl_pname">백종원의 골목식당</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">12</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="11">
+							<div class="stt_cont_w">
+								<a href="http://news.sbs.co.kr/news/programMain.do?prog_cd=R1"
+									class="stt_pro_link"> <span class="sttpl_time">19:00</span><strong
+									class="sttpl_pname">SBS 8 뉴스</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="25">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/sports/2018paralympics"
+									class="stt_pro_link"> <span class="sttpl_time">19:55</span><strong
+									class="sttpl_pname">평창 2018 패럴림픽 개회식 (생중계)</strong> <span
+									class="stt_icn_hd">HD</span> <span class="stt_icn_t_txtair">자</span>
+									<span class="stt_icn_t_signair">수</span> <span
+									class="stt_icbox">전</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/enter/jungle"
+									class="stt_pro_link"> <span class="sttpl_time">22:00</span><strong
+									class="sttpl_pname">정글의 법칙 1부</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/enter/jungle"
+									class="stt_pro_link"> <span class="sttpl_time">22:40</span><strong
+									class="sttpl_pname">정글의 법칙 2부</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</a>
+							</div>
+						</td>
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<a href="http://programs.sbs.co.kr/enter/street"
+									class="stt_pro_link"> <span class="sttpl_time">23:20</span><strong
+									class="sttpl_pname">백종원의 골목식당 1부</strong> <span
+									class="stt_icn_hd">HD</span> <span class="stt_icn_t_txtair">자</span>
+									<span class="stt_icbox">12</span>
+								</a>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">Plus</th>
+						<td colspan="2" class="stt_ellipsis">
+							<div class="stt_cont_w" onmouseover="showDetailLayer('detail_0', this);" onfocusin="showDetailLayer('detail_0', this);">
+									<span href="#" class="stt_pro_link"> <span class="sttpl_time">23:30</span>
+									<strong class="sttpl_pname">키스 먼저 할까요? (자막)</strong>
+								</span>
+								<div id="detail_0" class="stt_pro_detail" style="display: none;" onmouseover="return false;" onmouseout="layerDisplayNone(this);">
+									<span href="#" class="stt_pro_link"> <span class="sttpl_time">23:30</span> <strong class="sttpl_pname">키스 먼저 할까요? (자막) </strong> <span class="stt_icn_hd">HD</span> 
+									<span	class="stt_icn_rerun">RE-RUN</span> <span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+									</span>
+									<button type="button" class="stt_pro_closed" onclick="closeLayer(this);" onfocusout="closeLayer(this);">
+									<span class="sbtn stt_closed"><i class="ir">닫기</i></span>
+									</button>
+								</div>
+								<i class="stt_page"></i>
+							</div>
+						</td>
+						
+						<td colspan="6">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">00:10</span><strong class="sttpl_pname">키스
+										먼저 할까요? (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">19</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="6">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> 
+								<span class="sttpl_time">00:40</span><strong class="sttpl_pname">키스 먼저 할까요? (자막)</strong> <span class="stt_icn_hd">HD</span> 
+								<span class="stt_icn_rerun">RE-RUN</span> 
+								<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">19</span>
+								</span>
+							</div>
+						</td>
+						
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">01:10</span><strong class="sttpl_pname">MUSTEAT 20 (자막해설수어)</strong> <span class="stt_icn_hd">HD</span> 
+								<span class="stt_icn_rerun">RE-RUN</span> 
+								<span class="stt_icn_t_txtair">자</span> 
+								<span class="stt_icn_t_explain">해</span> 
+								<span class="stt_icn_t_signair">수</span> 
+								<span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="10">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">02:10</span><strong class="sttpl_pname">MUST EAT 20 (자막해설수어)</strong> <span class="stt_icn_hd">HD</span> 
+								<span class="stt_icn_rerun">RE-RUN</span> 
+								<span class="stt_icn_t_txtair">자</span> <span class="stt_icn_t_explain">해</span> 
+								<span class="stt_icn_t_signair">수</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">03:00</span><strong class="sttpl_pname">MUST EAT 20 (자막해설수어)</strong> 
+								<span class="stt_icn_hd">HD</span> <span class="stt_icn_rerun">RE-RUN</span> 
+								<span class="stt_icn_t_txtair">자</span> <span class="stt_icn_t_explain">해</span> 
+								<span class="stt_icn_t_signair">수</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+						<td colspan="10">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">04:00</span><strong class="sttpl_pname">날씬한 도시락 2 (자막해설수어)</strong> 
+								<span class="stt_icn_hd">HD</span> 
+								<span class="stt_icn_rerun">RE-RUN</span> 
+								<span class="stt_icn_t_txtair">자</span> 
+								<span class="stt_icn_t_explain">해</span> 
+								<span class="stt_icn_t_signair">수</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+
+						<td colspan="4">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> 
+									<span class="sttpl_time">04:50</span>
+									<strong class="sttpl_pname">유부녀의 	탄생 (자막해설수어)</strong> 
+									<span class="stt_icn_hd">HD</span> 
+									<span class="stt_icn_rerun">RE-RUN</span> 
+									<span class="stt_icn_t_txtair">자</span> 
+									<span class="stt_icn_t_explain">해</span> 
+									<span	class="stt_icn_t_signair">수</span> 
+									<span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="2" class="stt_ellipsis">
+							<div class="stt_cont_w" onmouseover="showDetailLayer('detail_8', this);" onfocusin="showDetailLayer('detail_8', this);">
+								<span href="#" class="stt_pro_link"> 
+								<span class="sttpl_time">05:10</span>
+								<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어)</strong>
+								</span>
+
+								<div id="detail_8" class="stt_pro_detail" style="display: none;" onmouseover="return false;" onmouseout="layerDisplayNone(this);">
+									<span href="#" class="stt_pro_link"> <span class="sttpl_time">05:10</span> 
+									<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어) </strong> 
+									<span class="stt_icn_hd">HD</span> <span class="stt_icn_rerun">RE-RUN</span> 
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icn_t_explain">해</span> <span class="stt_icn_t_signair">수</span> <span class="stt_icbox">15</span>
+									</span>
+									<button type="button" class="stt_pro_closed" onclick="closeLayer(this);" onfocusout="closeLayer(this);">
+									<span class="sbtn stt_closed"><i class="ir">닫기</i></span>
+									</button>
+								</div>
+								<i class="stt_page"></i>
+							</div>
+						</td>
+
+
+						<td colspan="2" class="stt_ellipsis">
+							<div class="stt_cont_w" onmouseover="showDetailLayer('detail_9', this);" onfocusin="showDetailLayer('detail_9', this);">
+								<span href="#" class="stt_pro_link"> 
+								<span class="sttpl_time">05:20</span>
+								<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어)</strong>
+								</span>
+
+								<div id="detail_9" class="stt_pro_detail" style="display: none;" onmouseover="return false;" onmouseout="layerDisplayNone(this);">
+									<span href="#" class="stt_pro_link"> 
+										<span class="sttpl_time">05:20</span> 
+										<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어) </strong> <span class="stt_icn_hd">HD</span> 
+										<span class="stt_icn_rerun">RE-RUN</span> 
+										<span	class="stt_icn_t_txtair">자</span> 
+										<span	class="stt_icn_t_explain">해</span> 
+										<span class="stt_icn_t_signair">수</span> 
+										<span class="stt_icbox">15</span>
+									</span>
+									<button type="button" class="stt_pro_closed" onclick="closeLayer(this);" onfocusout="closeLayer(this);">
+										<span class="sbtn stt_closed"><i class="ir">닫기</i></span>
+									</button>
+								</div>
+								<i class="stt_page"></i>
+							</div>
+						</td>
+
+						<td colspan="2" class="stt_ellipsis">
+							<div class="stt_cont_w"	onmouseover="showDetailLayer('detail_10', this);" onfocusin="showDetailLayer('detail_10', this);">
+								<span href="#" class="stt_pro_link"> 
+									<span class="sttpl_time">05:30</span>
+									<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어)</strong>
+								</span>
+
+
+								<div id="detail_10" class="stt_pro_detail" style="display: none;" onmouseover="return false;" onmouseout="layerDisplayNone(this);">
+								 <span href="#" class="stt_pro_link"> 
+								 	<span class="sttpl_time">05:30</span> 
+								 		<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어) </strong>
+								 		<span class="stt_icn_hd">HD</span> 
+								 		<span class="stt_icn_rerun">RE-RUN</span> 
+								 		<span class="stt_icn_t_txtair">자</span> 
+								 		<span class="stt_icn_t_explain">해</span> 
+								 		<span class="stt_icn_t_signair">수</span> <span class="stt_icbox">15</span>
+									</span>
+									<button type="button" class="stt_pro_closed" onclick="closeLayer(this);" onfocusout="closeLayer(this);">
+										<span class="sbtn stt_closed"><i class="ir">닫기</i></span>
+									</button>
+								</div>
+								<i class="stt_page"></i>
+							</div>
+						</td>
+
+						<td colspan="2" class="stt_ellipsis">
+							<div class="stt_cont_w"	onmouseover="showDetailLayer('detail_11', this);" onfocusin="showDetailLayer('detail_11', this);">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">05:40</span>
+									<strong class="sttpl_pname">유부녀의 탄생 (자막해설수어)</strong>
+								</span>
+								<div id="detail_11" class="stt_pro_detail" style="display: none;" onmouseover="return false;" onmouseout="layerDisplayNone(this);">
+									<span href="#" class="stt_pro_link"> 
+										<span class="sttpl_time">05:40</span> 
+										<strong class="sttpl_pname">유부녀의	탄생 (자막해설수어) </strong> 
+										<span class="stt_icn_hd">HD</span> <span class="stt_icn_rerun">RE-RUN</span> 
+										<span class="stt_icn_t_txtair">자</span> 
+										<span class="stt_icn_t_explain">해</span>
+										<span class="stt_icn_t_signair">수</span> <span class="stt_icbox">15</span>
+									</span>
+									<button type="button" class="stt_pro_closed" onclick="closeLayer(this);" onfocusout="closeLayer(this);">
+										<span class="sbtn stt_closed"><i class="ir">닫기</i></span>
+									</button>
+								</div>
+								<i class="stt_page"></i>
+							</div>
+						</td>
+
+						<td colspan="14">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> 
+									<span class="sttpl_time">05:50</span><strong class="sttpl_pname">강호대결 중화대반점 (자막해설수어)</strong>
+									<span class="stt_icn_hd">HD</span> 
+									<span class="stt_icn_rerun">RE-RUN</span> 
+									<span class="stt_icn_t_txtair">자</span> 
+									<span class="stt_icn_t_explain">해</span> 
+									<span class="stt_icn_t_signair">수</span> 
+									<span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="10">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">07:00</span>
+									<strong class="sttpl_pname">해피 시스터즈 (일일) (자막)</strong> 
+									<span class="stt_icn_hd">HD</span> 
+									<span class="stt_icn_rerun">RE-RUN</span> 
+									<span class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span class="sttpl_time">07:50</span>
+									<strong class="sttpl_pname">해피 시스터즈 (일일) (자막)</strong>
+									<span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_t_txtair">자</span>
+									<span class="stt_icn_t_nowair">본</span>
+									<span class="stt_icbox">15</span>				
+								</span>
+							</div>
+						</td>
+
+						<td colspan="24">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">08:30</span><strong class="sttpl_pname">미운
+										우리 새끼 (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="20">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">10:30</span><strong class="sttpl_pname">동상이몽2
+										너는 내 운명 (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">12:10</span><strong class="sttpl_pname">리턴
+										(자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">12:50</span><strong class="sttpl_pname">리턴
+										(자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">13:30</span><strong class="sttpl_pname">리턴
+										(자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+						<td colspan="8">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">14:10</span><strong class="sttpl_pname">리턴
+										(자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="20">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">14:50</span><strong class="sttpl_pname">백종원의
+										골목식당 (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">12</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="18">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">16:30</span><strong class="sttpl_pname">집사부일체
+										(자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">12</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="18">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">18:00</span><strong class="sttpl_pname">동상이몽2
+										너는 내 운명 (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="24">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">19:30</span><strong class="sttpl_pname">미운
+										우리 새끼 (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="14">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">21:30</span><strong class="sttpl_pname">나만
+										빼고 연애중 </strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="18">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">22:40</span><strong class="sttpl_pname">동상이몽2
+										너는 내 운명 (자막)</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">15</span>
+								</span>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">ESPN</th>
+
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">00:00</span><strong class="sttpl_pname">2017
+										LG U+컵 3쿠션 마스터스 쿠드롱:이승진</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_explain">해</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="5">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">01:00</span><strong class="sttpl_pname">손흥민
+										골 경기 모음 </strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="19">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">01:25</span><strong class="sttpl_pname">2017
+										LG U+컵 3쿠션 마스터스 산체스:조재호</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_explain">해</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="19">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">03:00</span><strong class="sttpl_pname">2016
+										LG U+컵 3쿠션 마스터스 B조 1경기 산체스:김행직</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_explain">해</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="20">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">04:35</span><strong class="sttpl_pname">2017
+										LG U+컵 3쿠션 마스터스 8강 브롬달:이충복</strong> <span class="stt_icn_hd">HD</span>
+									<span class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_explain">해</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="9">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">06:15</span><strong class="sttpl_pname">손흥민
+										골 경기 모음 </strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="24">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">07:00</span><strong class="sttpl_pname">17-18
+										V리그 삼성화재:우리카드</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="19">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">09:00</span><strong class="sttpl_pname">2017
+										LG U+컵 3쿠션 마스터스 브롬달:이충복</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span
+									class="stt_icn_t_explain">해</span> <span
+									class="stt_icn_t_signair">수</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">10:35</span><strong class="sttpl_pname">리우
+										2016 메달리스트 여자 양궁 단체</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_51">5.1</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">11:35</span><strong class="sttpl_pname">리우
+										2016 메달리스트 여자 양궁 개인 장혜진</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_51">5.1</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="23">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">12:35</span><strong class="sttpl_pname">2017
+										월드 그랑프리 여자배구 대한민국:콜롬비아</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="13">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">14:30</span><strong class="sttpl_pname">손흥민
+										골 경기 모음 </strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="24">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">15:35</span><strong class="sttpl_pname">런던
+										올림픽 여자배구 8강 대한민국:이탈리아</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="15">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">17:35</span><strong class="sttpl_pname">세계
+										주니어 피겨선수권 여자 쇼트</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icn_live">LIVE</span>
+									<span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="26">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">18:50</span><strong class="sttpl_pname">17-18
+										V리그 한국전력:KB손해보험</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_t_txtair">자</span> <span class="stt_icn_live">LIVE</span>
+									<span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="24">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">21:00</span><strong class="sttpl_pname">세계
+										주니어 피겨선수권 여자 쇼트</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_t_nowair">본</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+
+						<td colspan="12">
+							<div class="stt_cont_w">
+								<span href="#" class="stt_pro_link"> <span
+									class="sttpl_time">23:00</span><strong class="sttpl_pname">EPL
+										29R 하이라이트 토트넘:허더즈필드</strong> <span class="stt_icn_hd">HD</span> <span
+									class="stt_icn_rerun">RE-RUN</span> <span class="stt_icbox">전</span>
+								</span>
+							</div>
+						</td>
+					</tr>
+				
+				</tbody>
+			</table>
+			<button type="button" class="btn_stt_tprev" title="이전시간" onclick="slideSheet1step('L')">
+				<span class="sbtn b_stt_tprev"><i class="ir">이전시간</i></span>
+			</button>
+			<button type="button" class="btn_stt_tnext" title="다음시간" onclick="slideSheet1step('R')">
+				<span class="sbtn b_stt_tnext"><i class="ir">다음시간</i></span>
+			</button>
+			<i class="stt_line"></i>
+		</div>
+	</div>
+</div>
+<div id="sbs_footer_w"></div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+	var ymd = "null";
+	$(function() {
+		calendar.makeCalendarHTML();
+		calendar.elementId = "schedule";
+		calendar.onClickButton("btnCalendar");
+		if (ymd.length >= 8) {
+			calendar.rYear = ymd.substring(0, 4);
+			calendar.rMonth = ymd.substring(4, 6);
+			calendar.rDay = ymd.substring(6, 8);
+		}
+		calendar.selCalendarDatePrev = function() {
+			var date = calendar.rYear
+					+ ""
+					+ (((calendar.rMonth + "").length < 2) ? "0"
+							+ calendar.rMonth : calendar.rMonth)
+					+ (((calendar.rDay + "").length < 2) ? "0" + calendar.rDay
+							: calendar.rDay);
+			location.href = "http://w3.sbs.co.kr/schedule/main.do?ymd=" + date;
+		};
+		var today = new Date();
+		var currHour = "08";
+		var idx = 0;
+		if (Number(today.getFullYear()) == Number(calendar.rYear)
+				&& (Number(today.getMonth()) + 1) == Number(calendar.rMonth)
+				&& Number(today.getDate()) == Number(calendar.rDay)) {
+			showBarThisTime(currHour);
+			if (Number(currHour) < 2)
+				idx = 0;
+			else if (Number(currHour) >= 2)
+				idx = Number(currHour) - 1;
+			else if (Number(currHour) > 21)
+				idx = 21;
+		}
+		slideSheet(idx);
+	});
+	function showBarThisTime(idx) {
+		var $timeList = $(".stt_table thead th[colspan=12]");
+		$timeList.eq(idx).addClass("stt_today").children(".stt_time_w").append(
+				"<span class=\"stt_nowtime\">방송시각</span>");
+	}
+	function showDetailLayer(elId, obj) {
+		$('td').each(function() {
+			$(this).removeAttr('style');
+		});
+		if (obj != undefined) {
+			$(obj).parent().attr('style', 'position:relative;z-index:10;');
+		}
+		var $detailList = $('.stt_pro_detail');
+		var $detailItem;
+		$detailList.each(function(idx) {
+			$detailItem = $detailList.get(idx);
+			if ($detailItem.id != elId)
+				$($detailItem).hide();
+		});
+		$(obj).children(".stt_pro_detail").css('display', 'block');
+	}
+	function layerDisplayNone(obj) {
+		if (obj != undefined) {
+			$(obj).css('display', 'none');
+			$(obj).parent().parent().removeAttr('style');
+		}
+	}
+	function closeLayer(obj) {
+		if (obj != undefined) {
+			$(obj).parent().css('display', 'none');
+			$(obj).parent().parent().parent().removeAttr('style');
+		}
+	}
+	var slidePositionIndex = 0;
+	var COL_WIDTH = 264;
+	function slideSheet1step(point) {
+		debugger;
+		if (point == 'R' && slidePositionIndex < 15){
+			slidePositionIndex = slidePositionIndex + 6;
+		}else if (point == 'L' && slidePositionIndex > 0){
+			slidePositionIndex = slidePositionIndex - 6;
+		}else{
+			slidePositionIndex = 0;
+		}
+		slideSheet(slidePositionIndex);
+	}
+	function slideSheet(index) {
+		debugger;
+		var slideWidth = 0;
+		if (index != null && index >= 0 && index <= 15){
+			slidePositionIndex = index;
+		}
+		slideWidth = -(slidePositionIndex * COL_WIDTH);
+		$(".stt_table").animate({
+			"left" : slideWidth + "px"
+		});
+		if (slidePositionIndex < 12) {
+			$(".btn_stt_pm").removeClass("current");
+			$(".btn_stt_am").addClass("current");
+		} else {
+			$(".btn_stt_am").removeClass("current");
+			$(".btn_stt_pm").addClass("current");
+		}
+	}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){layout.init('N','N','','');});var menu_exist=false;
+</script>

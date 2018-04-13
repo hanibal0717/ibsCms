@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ibsMybatis.ibsStbApiQuery">
+
+	<insert id="SednLogInsert" parameterType="java.util.Map">
+		insert into	tb_sedn_log(device,reg_dt,reg_id,reg_ip) values(#{device},now(),#{reg_id},#{reg_ip});
+	</insert>
+
+	<select id="layoutImage" resultType="java.util.Map">
+		SELECT IDX,IMG_NAME,IMG_URL
+		FROM tb_carousel_img WHERE DEL_FLAG='N' ORDER BY REG_DT DESC;
+	</select>
+
+
+	<select id="ShowViewMenuBar" resultType="java.util.Map">
+		SELECT IDX
+		, PID
+		, POSITION
+		, CATEGORY_NAME
+		FROM tb_board_category
+		WHERE 0=0
+		<if test="IDX != null"> 
+			AND PID = '${IDX}'
+		</if>
+		ORDER BY IDX ASC;
+		
+	</select>
+
+	<select id="LayoutMenuList" resultType="java.util.Map">
+		SELECT B.IDX , B.CATEGORY_NAME
+		FROM tb_main_contents A
+		INNER JOIN tb_board_category B
+		ON B.IDX = A.category_idx
+		ORDER BY A.REG_DT DESC ;
+	</select>
+
+	<select id="MenuChildTitle" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT  CONCAT(A.CATEGORY_NAME,' > ', B.CATEGORY_NAME) AS CATEGORY_NAME 
+        FROM tb_board_category A INNER JOIN tb_board_category B 
+        ON A.IDX = B.PID
+        AND A.IDX = '${vPID}'
+        AND B.PID = '${vPID}'
+        AND B.IDX = '${vIDX}';
+	</select>
+		
+	
+	<select id="MainLaoutVodList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT    C.KEY_IDX
+				, C.BOARD_TITLE
+				, C.BOARD_CONTENT
+				, C.IDX
+				, C.CATEGORY_NAME
+		        , C.VOD_REPO
+                , C.PHOTO_REPO
+                , C.FILE_REPO
+                , DATE_FORMAT(C.REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+                , DATE_FORMAT(F.EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+				, F.MAIN_THUMBNAIL 
+				, F.VOD_PATH
+				, F.VOD_PATH AS PATH
+				, F.VOD_TITLE
+				, F.VOD_CONTENT 
+				, F.VIEW_COUNT
+				, F.VOD_KEYWORD
+				, F.FAVORITE_COUNT
+		    FROM(
+			     SELECT   A.IDX AS KEY_IDX
+						 , A.BOARD_TITLE
+						 , A.BOARD_CONTENT
+						 , B.IDX,B.CATEGORY_NAME
+		                 , A.VOD_REPO
+                         , A.PHOTO_REPO
+                         , A.REG_DT
+                         , A.FILE_REPO
+                         , A.BOARD_KEYWORD
+		 		 FROM tb_board_repository A  
+			     INNER JOIN tb_board_category B
+				 ON B.IDX = A.category_idx
+				 AND A.DEL_FLAG ='N'  
+				) C
+		    INNER JOIN tb_main_contents D 
+		    INNER JOIN tb_vod_repository F
+		    ON C.IDX = D.category_idx
+		    WHERE 0=0
+		    AND C.VOD_REPO = F.IDX
+            ORDER BY  C.IDX DESC;
+    </select>
+
+
+	<select id="MainVodAllList" resultType="java.util.Map"	parameterType="java.util.Map">
+				SELECT    	  C.KEY_IDX
+					, C.BOARD_TITLE
+					, C.BOARD_CONTENT
+					, C.IDX
+					, C.CATEGORY_NAME
+			        , C.VOD_REPO
+	                , C.PHOTO_REPO
+	                , C.FILE_REPO
+	                , C.PID
+	                , C.BOARD_KEYWORD
+	                , DATE_FORMAT(C.REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+	                , DATE_FORMAT(F.EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+					, F.MAIN_THUMBNAIL 
+					, F.VOD_PATH
+					, F.VOD_PATH AS PATH
+					, F.VOD_TITLE
+					, F.VOD_CONTENT 
+					, F.VIEW_COUNT
+					, F.REG_ID
+	                , F.REG_IP
+	                , F.VOD_PLAY_TIME
+	                , E.TRANS_STATUS AS TRANS_STATUS
+					, E.TRANS_RATE  AS TRANS_RATE
+					, DATE_FORMAT(E.TRANS_START_DT,'%Y년 %m월 %d일 %h시 %s초') AS TRANS_START_DT
+					, DATE_FORMAT(E.TRANS_END_DT,'%Y년 %m월 %d일 %h시 %s초') AS TRANS_END_DT
+					, E.RESOLUTION AS RESOLUTION
+					, E.AUDIO_CODEC AS AUDIO_CODEC
+					, E.VIDEO_CODEC AS VIDEO_CODEC
+					, E.BITRATE AS BITRATE
+					, E.FILE_SIZE AS FILE_SIZE
+	                , F.VOD_KEYWORD AS VOD_KEYWORD
+	                , F.FAVORITE_COUNT
+	       FROM(
+				SELECT A.IDX AS KEY_IDX
+					, A.BOARD_TITLE
+					, A.BOARD_CONTENT
+					, B.IDX
+					, B.CATEGORY_NAME
+					, B.PID
+					, A.VOD_REPO
+					, A.PHOTO_REPO
+					, A.REG_DT
+					, A.FILE_REPO
+					, A.BOARD_KEYWORD
+				FROM tb_board_repository A
+				INNER JOIN tb_board_category B
+				ON B.IDX = A.category_idx 
+	            AND A.DEL_FLAG ='N'
+				) C
+			INNER JOIN tb_vod_repository F	ON C.VOD_REPO = F.IDX
+	        LEFT JOIN tb_vod_box E ON F.IDX=E.REPOIDX
+			WHERE 0=0
+			AND F.DEL_FLAG ='N'
+		<if test="FLUG.equals('SHOW_VIEW') or FLUG.equals('VIEW_CHANGE') or FLUG.equals('play')">
+				AND C.KEY_IDX = '${IDX}'
+		</if>
+		<if test="FLUG.equals('vodMenuChild') or FLUG.equals('vodFamily')">
+				AND C.IDX = '${IDX}'
+		</if>
+		<if test="FLUG.equals('vodMenuParents')">
+				AND C.PID = '${IDX}'
+		</if>
+		<if test="FLUG.equals('vodUserSearch')">
+				 AND (C.BOARD_KEYWORD LIKE '%${IDX}%'  or C.BOARD_CONTENT LIKE '%${IDX}%' or  C.BOARD_TITLE LIKE '%${IDX}%')
+		</if>
+	
+		<choose>
+		<when test="FLUG.equals('vodNext')">
+				ORDER BY VIEW_COUNT DESC
+		</when>
+		<when test="FLUG.equals('vodMenuChildFavorite')">
+				ORDER BY FAVORITE_COUNT DESC
+		</when>
+		<when test="FLUG.equals('vodMenuChildTitle')">
+				ORDER BY BOARD_TITLE DESC
+		</when>
+		<otherwise>
+			ORDER BY C.REG_DT DESC
+		</otherwise>
+		</choose>
+		
+		<if test="FLUG.equals('vodFamily') or FLUG.equals('vodNext')">
+			limit 12
+		</if>
+		;
+	</select>
+
+	<select id="ModelImageList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT IDX
+		, CATEGORY_IDX
+		, PHOTO_PATH
+		, PHOTO_TITLE
+		, PHOTO_CONTENT
+		, PHOTO_KEYWORD
+		, REG_DT
+		, REG_ID
+		, REG_IP
+		, DEL_FLAG
+		, EDIT_DT
+		, FAVORITE_COUNT
+		, VIEW_COUNT
+		, RESOLUTION
+		, FILE_SIZE
+		FROM tb_photo_repository A
+		WHERE IDX IN (${IDX})
+		AND DEL_FLAG = 'N';
+		</select>
+	
+		<select id="ModelFileViewList" resultType="java.util.Map"	parameterType="java.util.Map">
+			SELECT IDX
+				, CATEGORY_IDX
+				, FILE_PATH
+				, FILE_TITLE
+				, FILE_KEYWORD
+				, DATE_FORMAT(REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+				, REG_ID
+				, REG_IP
+				, DEL_FLAG
+				, DATE_FORMAT(EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+				, FAVORITE_COUNT
+				, VIEW_COUNT
+				, DOWN_COUNT
+				, RESOLUTION
+				, FILE_SIZE
+			FROM tb_file_repository WHERE IDX IN (${IDX});
+			</select>
+	
+		<update id="VodViewCountInsert" parameterType="java.util.Map">
+			UPDATE	tb_vod_repository SET VIEW_COUNT = VIEW_COUNT+1 WHERE IDX ='${IDX}';
+		</update>
+
+
+	<update id="VodFavoriteCount" parameterType="java.util.Map">
+		UPDATE tb_vod_repository SET FAVORITE_COUNT = FAVORITE_COUNT+1 WHERE IDX ='${IDX}';
+	</update>
+
+	<select id="MainVodKeyWord" resultType="java.util.Map" parameterType="java.util.Map">
+	  <![CDATA[
+ 				SELECT distinct split_str(t1.text, ',', t2.row_number) SPLIT_TEXT
+  				FROM (SELECT board_keyword text from tb_board_repository where ifnull(board_keyword,' ') <> ' '
+				AND (board_keyword LIKE '%${VOD_KEYWORD}%'  or board_content LIKE '%${VOD_KEYWORD}%' or  board_title LIKE '%${VOD_KEYWORD}%')) AS t1
+       			INNER JOIN (SELECT @row_num := @row_num + 1 row_number
+                FROM tb_board_repository a INNER JOIN (SELECT @row_num := 0) b
+                WHERE @row_num < 7) AS t2;
+       ]]>
+	</select>
+ 
+</mapper> 
+

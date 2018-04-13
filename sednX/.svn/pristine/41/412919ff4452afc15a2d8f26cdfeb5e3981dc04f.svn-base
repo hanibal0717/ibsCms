@@ -1,0 +1,248 @@
+/**
+ * 유틸리티
+ * @module utility
+ */
+var Util = function() {};
+
+Util.prototype = {
+	/**
+	 * 이벤트 핸들러
+	 * @param {String} event 이벤트
+	 */
+	eventHandler : function(event) {
+	    if (!event) {
+	        event = window.event;
+	    }
+	    var target = (event.target) ? event.target : event.srcElement;
+	    return target;
+	},
+	/**
+	 * style 추출(ie 하위버전 대응)
+	 * @param {String} oElm 대상 element
+	 * @param {String} strCssRule 원하는 style 속성
+	 */
+	getStyle : function(oElm, strCssRule) {
+		var strValue = "";
+		if (document.defaultView && document.defaultView.getComputedStyle) {
+			strValue = document.defaultView.getComputedStyle(oElm, "").getPropertyValue(strCssRule);
+		} else if (oElm.currentStyle) {
+			strCssRule = strCssRule.replace(/\-(\w)/g, function (strMatch, p1) { return p1.toUpperCase();});
+			strValue = oElm.currentStyle[strCssRule];
+		}
+		return strValue;
+	}
+};
+
+
+/**
+ * SBS Content Hub 공통 Function
+ * @module SbsContentHubPrototype
+ */
+var SchMethod = function() {
+    this.util = new Util();
+};
+
+SchMethod.prototype = {
+	/**
+	 * Init
+	 * @method SCH Initial
+	 */
+	init : function() {
+		this.skipNav();
+		// this.labelPlaceHolder();
+		this.buttonHover();
+	},
+	/**
+	 * Skip Navigation
+	 * @method 스킵네비게이션
+	 */
+    skipNav : function() {
+		var skipNav = document.getElementById("skip_nav");
+
+		if (skipNav!==null) {
+			var skipNavLink = skipNav.getElementsByTagName('a');
+
+			for (var i = 0, max = skipNavLink.length; i < max; i += 1) {
+				(function(ii) {
+					var item = skipNavLink[ii],
+						targetId = item.getAttribute("href").replace("#",""),
+						targetElement = document.getElementById(targetId);
+
+					item.onfocus = function() {
+						this.parentNode.parentNode.style.zIndex='9999';
+						this.style.top = '0';
+						this.style.left = '0';
+					};
+					item.onclick = function(event) {
+						var event = event || window.event;
+
+						targetElement.setAttribute("tabindex","0");
+						targetElement.focus();
+						targetElement.onblur = function() {
+							this.removeAttribute("tabindex");
+						};
+
+						event.preventDefault ? event.preventDefault() : event.returnValue = false;
+					};
+					item.onblur = function() {
+						this.parentNode.parentNode.style.zIndex='-1';
+						this.style.top = '-99999px';
+						this.style.left = '-99999px';
+					};
+				})(i);
+			}
+		};
+    },
+	/**
+	 * Label Place Holder
+	 *@method input 영역 placeholder label로 적용
+	 */
+    labelPlaceHolder : function() {
+		var labelElements = document.getElementsByTagName("label");
+
+		if (labelElements!==null) {
+			for (var i=0, lbleng=labelElements.length; lbleng > i; i+=1) {
+				(function(ii) {
+					var labelThis = labelElements[ii],
+						labelThisFor = labelThis.getAttribute("for"),
+						labelThisTop = labelThis.offsetTop,
+						labelThisLeft = labelThis.offsetLeft,
+						inputElement = document.getElementById(labelThisFor);
+
+					if (labelThisFor && labelThis.className!=='sbrdf_label' && labelThis.className!=='sbrdf_label compulsory' && labelThisFor.indexOf('livere') < 0 && labelThis.className!=='vbdw_write_lable' && labelThis.getAttribute('rel')!=='doNotLabel') {
+						if (inputElement.getAttribute("type")==="text" || inputElement.nodeName==="TEXTAREA") {
+							if (inputElement) {
+								inputElement.onfocus = function() {
+									labelThis.style.top = "-99999px";
+									labelThis.style.left = "-99999px";
+								};
+								inputElement.onblur = function() {
+									if (this.value==="") {
+										labelThis.style.top = labelThisTop+"px";
+										labelThis.style.left = labelThisLeft+"px";
+									};
+								};
+							}
+						}
+					}
+				})(i)
+			}
+		};
+    },
+	/**
+	 * Button Hover
+	 *@method button 에 rel="btnHover" 를 갖고 있으면 hover를 적용
+	 */
+    buttonHover : function() {
+    	var buttonElements = $('button');
+
+    	if (buttonElements.length!==0) {
+    		buttonElements.each(function() {
+    			if ($(this).attr('rel')==='btnHover') {
+	    			$(this).on({
+	    				'mouseenter' : function() {
+	    					$(this).addClass('hover');
+	    				}, 'mouseleave' : function() {
+							$(this).removeClass('hover');
+	    				}
+	    			})
+    			}
+    		});
+    	}
+    },
+	/**
+	 * Textarea Auto Height
+	 * @method textarea 자동 height
+	 * @param obj 적용할 textarea의 id 또는 class. id 입력시 "#id", class 입력시 ".class"
+	 */
+    textareaHeightGrow : function(obj) {
+		var objType = obj.charAt(0),
+			objSelector = obj.substr(1),
+			thisUtil = this.util;
+
+		var ahFunc = function(tg) {
+			var beforeHeight = parseInt(thisUtil.getStyle(tg,"height")),
+				hideTg = document.getElementById("agtTemp");
+			tg.style.resize="none";
+			tg.style.overflow="hidden";
+			if (!hideTg) {
+				var hideTg = document.createElement("textarea");
+				hideTg.setAttribute("id","agtTemp");
+			}
+			hideTg.setAttribute("style","z-index:-1; position:absolute; top:-9999px; left:-99999px; width:"+tg.offsetWidth+"px; height:0px; padding:"+thisUtil.getStyle(tg, "padding")+"; font-size:"+thisUtil.getStyle(tg, "font-size")+"; font-family:"+thisUtil.getStyle(tg, "font-family")+"; line-height:"+thisUtil.getStyle(tg, "line-height")+"; border:"+thisUtil.getStyle(tg, "border")+"; overflow:hidden;");
+			document.getElementsByTagName("body")[0].appendChild(hideTg);
+
+			var eventBind = function() {
+				hideTg.value = tg.value;
+				if (beforeHeight < hideTg.scrollHeight) {
+					tg.style.height = (hideTg.scrollHeight + (parseInt(thisUtil.getStyle(tg, "font-size"))))+"px";
+				} else {
+					tg.style.height = beforeHeight+"px";
+				};
+			};
+
+			tg.onkeydown = function() {
+				eventBind();
+			};
+			tg.onkeyup = function() {
+				eventBind();
+			};
+		};
+
+		if (objType==="#") {
+			var objElement = document.getElementById(objSelector);
+			ahFunc(objElement);
+		} else {
+			var objElement = document.getElementsByTagName("textarea");
+
+			for (var i=0, oeleng=objElement.length; oeleng > i; i+=1 ) {
+				(function(ii) {
+					var objThis = objElement[ii];
+					ahFunc(objThis);
+				})(i);
+			}
+		}
+    },
+    /**
+     * Checkbox & Radio Design UI
+     * @method type="checkbox" 및 type="radio" 디자인 적용
+     * @param
+    */
+    checkedUI : function(parent, classname) {
+    }
+};
+
+
+var SCH = new SchMethod();
+
+$(window).on('load', function() {
+	SCH.init();
+});
+
+// 로그인 아이디 클릭시 UI 동작
+function loginLayer(){
+	$('.sgnb_minfo_top').click(function() {
+		if( $(this).parent('.sbs_gnb_myinfo').hasClass('current') ){
+			$(this).parent('.sbs_gnb_myinfo').removeClass('current');
+		}else {
+			$(this).parent('.sbs_gnb_myinfo').addClass('current');
+		}
+	});
+}
+
+//검색 출연진 리스트 조작
+function searchPersonList (){
+	$('.pagesearch_box_person .psp_list').css('max-height','408px');
+	$('.pagesearch_box_person .psp_list_more').click(function(){
+		$(this).siblings('.psp_list').css('max-height','');
+		$(this).parent('.pagesearch_box_person').addClass('current');
+	});
+	$('.pagesearch_box_person .psp_list_closed').click(function(){
+		$(this).siblings('.psp_list').css('max-height','408px');
+		$(this).parent('.pagesearch_box_person').removeClass('current');
+	});
+}
+
+
+
+

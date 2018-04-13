@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ibsMybatis.ibsStbApiQuery">
+
+	<insert id="SednLogInsert" parameterType="java.util.Map">
+		insert into	tb_sedn_log(device,reg_dt,reg_id,reg_ip) values(#{device},now(),#{reg_id},#{reg_ip});
+	</insert> 
+
+	<select id="layoutImage" resultType="java.util.Map">
+		SELECT IDX,IMG_NAME,IMG_URL
+		FROM tb_carousel_img WHERE DEL_FLAG='N' ORDER BY REG_DT DESC;
+	</select>
+
+
+	<select id="ShowViewMenuBar" resultType="java.util.Map">
+		SELECT IDX
+		, PID
+		, POSITION
+		, CATEGORY_NAME
+		, B.CNT
+		FROM tb_board_category A, (SELECT COUNT(*) AS CNT FROM tb_board_category) B
+		WHERE 0=0
+		<if test="IDX != null"> 
+			AND PID = '${IDX}'
+		</if>
+		ORDER BY IDX ASC;
+		
+	</select>
+
+	<select id="LayoutMenuList" resultType="java.util.Map" parameterType="java.util.Map">
+	   <![CDATA[
+	SELECT A.IDX,A.CATEGORY_NAME,A.PID,A.ROWNUM,B.CNT
+	FROM(
+	SELECT  B.IDX 
+	      , B.CATEGORY_NAME 
+	      , B.PID 
+	      , @rownum:=@rownum+1 AS ROWNUM
+      FROM (select @rownum:=0) tmp, tb_main_contents A INNER JOIN tb_board_category B ON B.IDX = A.category_idx ORDER BY A.REG_DT DESC ) A,
+      (SELECT COUNT(*) AS CNT FROM tb_main_contents) B
+			WHERE (A.ROWNUM >= CAST(${ROWNUM} AS UNSIGNED)+1 AND A.ROWNUM <= CAST(${ROWNUM} AS UNSIGNED)+4) ; 
+	    ]]>
+	</select>
+
+	<select id="MenuChildTitle" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT  CONCAT(A.CATEGORY_NAME,' > ', B.CATEGORY_NAME) AS CATEGORY_NAME 
+        FROM tb_board_category A INNER JOIN tb_board_category B 
+        ON A.IDX = B.PID
+        AND A.IDX = '${vPID}'
+        AND B.PID = '${vPID}'
+        AND B.IDX = '${vIDX}';
+	</select>
+		
+	
+	<select id="MainLaoutVodList" resultType="java.util.Map" parameterType="java.util.Map">
+            
+      <![CDATA[
+                    SELECT   
+							 C.KEY_IDX
+							, C.BOARD_TITLE
+							, C.BOARD_CONTENT
+						 	, C.IDX
+							, C.CATEGORY_NAME
+							, C.VOD_REPO
+							, C.PHOTO_REPO
+							, C.FILE_REPO
+							, DATE_FORMAT(C.REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+							, DATE_FORMAT(F.EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+							, F.MAIN_THUMBNAIL 
+							, F.VOD_PATH
+							, F.VOD_PATH AS PATH
+							, F.VOD_TITLE
+							, F.VOD_CONTENT 
+							, F.VIEW_COUNT
+							, F.VOD_KEYWORD
+							, F.FAVORITE_COUNT
+						FROM (
+							 SELECT   A.IDX AS KEY_IDX
+									 , A.BOARD_TITLE
+									 , A.BOARD_CONTENT
+									 , B.IDX,B.CATEGORY_NAME
+									 , A.VOD_REPO
+									 , A.PHOTO_REPO
+									 , A.REG_DT
+									 , A.FILE_REPO
+									 , A.BOARD_KEYWORD
+							 FROM tb_board_repository A  
+							 INNER JOIN tb_board_category B
+							 ON B.IDX = A.category_idx
+							 AND A.DEL_FLAG ='N' 
+							) C 
+						INNER JOIN tb_main_contents D 
+						INNER JOIN tb_vod_repository F
+						ON C.IDX = D.category_idx
+						WHERE 0=0
+						AND C.VOD_REPO = F.IDX
+						AND C.IDX = ${IDX}
+						ORDER BY  C.IDX DESC, D.REG_DT DESC, C.REG_DT DESC ;
+        
+       ]]>
+            
+            	<!-- SELECT (CASE @VJOB WHEN Z.IDX THEN @ROWNUM:=@ROWNUM+1 ELSE @ROWNUM:=1 END) RNUM
+							, (@VJOB:= Z.IDX) AS VJOB , Z.* FROM (
+                    SELECT   
+							 C.KEY_IDX
+							, C.BOARD_TITLE
+							, C.BOARD_CONTENT
+						 	, C.IDX
+							, C.CATEGORY_NAME
+							, C.VOD_REPO
+							, C.PHOTO_REPO
+							, C.FILE_REPO
+							, DATE_FORMAT(C.REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+							, DATE_FORMAT(F.EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+							, F.MAIN_THUMBNAIL 
+							, F.VOD_PATH
+							, F.VOD_PATH AS PATH
+							, F.VOD_TITLE
+							, F.VOD_CONTENT 
+							, F.VIEW_COUNT
+							, F.VOD_KEYWORD
+							, F.FAVORITE_COUNT
+						FROM (
+							 SELECT   A.IDX AS KEY_IDX
+									 , A.BOARD_TITLE
+									 , A.BOARD_CONTENT
+									 , B.IDX,B.CATEGORY_NAME
+									 , A.VOD_REPO
+									 , A.PHOTO_REPO
+									 , A.REG_DT
+									 , A.FILE_REPO
+									 , A.BOARD_KEYWORD
+							 FROM tb_board_repository A  
+							 INNER JOIN tb_board_category B
+							 ON B.IDX = A.category_idx
+							 AND A.DEL_FLAG ='N'  
+							) C 
+						INNER JOIN tb_main_contents D 
+						INNER JOIN tb_vod_repository F
+						ON C.IDX = D.category_idx
+						WHERE 0=0
+						AND C.VOD_REPO = F.IDX
+						ORDER BY  C.IDX DESC, D.REG_DT DESC, C.REG_DT DESC) Z , (SELECT @VJOB:=0 , @ROWNUM:=0 FROM DUAL) X ; -->
+            
+            
+            
+    </select>
+
+
+	<select id="MainVodAllList" resultType="java.util.Map"	parameterType="java.util.Map">
+						SELECT    C.KEY_IDX
+										, C.BOARD_TITLE
+										, C.BOARD_CONTENT
+										, C.IDX
+										, C.CATEGORY_NAME
+										, C.VOD_REPO
+										, C.PHOTO_REPO
+										, C.FILE_REPO
+										, C.PID
+										, C.BOARD_KEYWORD
+										, DATE_FORMAT(C.REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+										, DATE_FORMAT(F.EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+										, F.MAIN_THUMBNAIL
+										, F.VOD_PATH
+										, F.VOD_PATH AS PATH
+										, F.VOD_TITLE
+										, F.VOD_CONTENT
+										, F.VIEW_COUNT
+										, F.REG_ID
+										, F.REG_IP
+										, F.VOD_PLAY_TIME
+										, E.TRANS_STATUS AS TRANS_STATUS
+										, E.TRANS_RATE AS TRANS_RATE
+										, DATE_FORMAT(E.TRANS_START_DT,'%Y년 %m월 %d일 %h시 %s초') AS TRANS_START_DT
+										, DATE_FORMAT(E.TRANS_END_DT,'%Y년 %m월 %d일 %h시 %s초') AS TRANS_END_DT
+										, E.RESOLUTION AS RESOLUTION
+										, E.AUDIO_CODEC AS AUDIO_CODEC
+										, E.VIDEO_CODEC AS VIDEO_CODEC
+										, E.BITRATE AS BITRATE
+										, E.FILE_SIZE AS FILE_SIZE
+										, F.VOD_KEYWORD AS VOD_KEYWORD
+										, F.FAVORITE_COUNT
+								FROM(
+										SELECT    A.IDX AS KEY_IDX
+												, A.BOARD_TITLE
+												, A.BOARD_CONTENT
+												, B.IDX
+												, B.CATEGORY_NAME
+												, B.PID
+												, A.VOD_REPO
+												, A.PHOTO_REPO
+												, A.REG_DT
+												, A.FILE_REPO
+												, A.BOARD_KEYWORD
+										FROM tb_board_repository A
+										INNER JOIN tb_board_category B
+										ON B.IDX = A.category_idx
+										AND A.DEL_FLAG ='N'
+					) C
+					INNER JOIN tb_vod_repository F ON C.VOD_REPO = F.IDX
+					LEFT JOIN tb_vod_box E ON F.IDX=E.REPOIDX
+					WHERE 0=0
+					AND F.DEL_FLAG ='N'
+		<if test="FLUG.equals('SHOW_VIEW') or FLUG.equals('VIEW_CHANGE') or FLUG.equals('play')">
+				AND C.KEY_IDX = '${IDX}'
+		</if>
+		<if test="FLUG.equals('vodMenuChild') or FLUG.equals('vodFamily') or FLUG.equals('vodMenuChildNew') or FLUG.equals('vodMenuChildFavorite') or FLUG.equals('vodMenuChildTitle')">
+				AND C.IDX = '${IDX}'
+		</if>
+		<if test="FLUG.equals('vodMenuParents')">
+				AND C.PID = '${IDX}'
+		</if>
+		<if test="FLUG.equals('vodUserSearch')">
+				 AND (C.BOARD_KEYWORD LIKE '%${IDX}%'  or C.BOARD_CONTENT LIKE '%${IDX}%' or  C.BOARD_TITLE LIKE '%${IDX}%')
+		</if>
+	
+		<choose>
+		<when test="FLUG.equals('vodNext')">
+				ORDER BY F.VIEW_COUNT DESC
+		</when>
+		<when test="FLUG.equals('vodMenuChildFavorite')">
+				ORDER BY F.FAVORITE_COUNT DESC
+		</when>
+		<when test="FLUG.equals('vodMenuChildTitle')">
+				ORDER BY C.BOARD_TITLE DESC
+		</when>
+		<otherwise>
+			ORDER BY C.IDX DESC, C.REG_DT DESC
+		</otherwise>
+		</choose>
+		
+		<if test="FLUG.equals('vodFamily') or FLUG.equals('vodNext')">
+			limit 12
+		</if>
+		;
+		 
+		 
+		 
+		<!--  SELECT (CASE @VJOB WHEN Z.IDX THEN @ROWNUM:=@ROWNUM+1 ELSE @ROWNUM:=1 END) RNUM
+						  , (@VJOB:= Z.IDX) AS VJOB , Z.* 
+					FROM (
+								SELECT    C.KEY_IDX
+										, C.BOARD_TITLE
+										, C.BOARD_CONTENT
+										, C.IDX
+										, C.CATEGORY_NAME
+										, C.VOD_REPO
+										, C.PHOTO_REPO
+										, C.FILE_REPO
+										, C.PID
+										, C.BOARD_KEYWORD
+										, DATE_FORMAT(C.REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+										, DATE_FORMAT(F.EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+										, F.MAIN_THUMBNAIL
+										, F.VOD_PATH
+										, F.VOD_PATH AS PATH
+										, F.VOD_TITLE
+										, F.VOD_CONTENT
+										, F.VIEW_COUNT
+										, F.REG_ID
+										, F.REG_IP
+										, F.VOD_PLAY_TIME
+										, E.TRANS_STATUS AS TRANS_STATUS
+										, E.TRANS_RATE AS TRANS_RATE
+										, DATE_FORMAT(E.TRANS_START_DT,'%Y년 %m월 %d일 %h시 %s초') AS TRANS_START_DT
+										, DATE_FORMAT(E.TRANS_END_DT,'%Y년 %m월 %d일 %h시 %s초') AS TRANS_END_DT
+										, E.RESOLUTION AS RESOLUTION
+										, E.AUDIO_CODEC AS AUDIO_CODEC
+										, E.VIDEO_CODEC AS VIDEO_CODEC
+										, E.BITRATE AS BITRATE
+										, E.FILE_SIZE AS FILE_SIZE
+										, F.VOD_KEYWORD AS VOD_KEYWORD
+										, F.FAVORITE_COUNT
+								FROM(
+										SELECT    A.IDX AS KEY_IDX
+												, A.BOARD_TITLE
+												, A.BOARD_CONTENT
+												, B.IDX
+												, B.CATEGORY_NAME
+												, B.PID
+												, A.VOD_REPO
+												, A.PHOTO_REPO
+												, A.REG_DT
+												, A.FILE_REPO
+												, A.BOARD_KEYWORD
+										FROM tb_board_repository A
+										INNER JOIN tb_board_category B
+										ON B.IDX = A.category_idx
+										AND A.DEL_FLAG ='N'
+					) C
+					INNER JOIN tb_vod_repository F ON C.VOD_REPO = F.IDX
+					LEFT JOIN tb_vod_box E ON F.IDX=E.REPOIDX
+					WHERE 0=0
+					AND F.DEL_FLAG ='N'
+					ORDER BY C.IDX DESC, C.REG_DT DESC ) Z , (SELECT @VJOB:=0 , @ROWNUM:=0 FROM	DUAL) X    ]]>
+					WHERE 0=0 -->
+	</select>
+
+	<select id="ModelImageList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT IDX
+		, CATEGORY_IDX
+		, PHOTO_PATH
+		, PHOTO_TITLE
+		, PHOTO_CONTENT
+		, PHOTO_KEYWORD
+		, REG_DT
+		, REG_ID
+		, REG_IP
+		, DEL_FLAG
+		, EDIT_DT
+		, FAVORITE_COUNT
+		, VIEW_COUNT
+		, RESOLUTION
+		, FILE_SIZE
+		FROM tb_photo_repository A
+		WHERE IDX IN (${IDX})
+		AND DEL_FLAG = 'N';
+		</select>
+	
+		<select id="ModelFileViewList" resultType="java.util.Map"	parameterType="java.util.Map">
+			SELECT IDX
+				, CATEGORY_IDX
+				, FILE_PATH
+				, FILE_TITLE
+				, FILE_KEYWORD
+				, DATE_FORMAT(REG_DT,'%Y년 %m월 %d일 %H시 %S초') AS REG_DT
+				, REG_ID
+				, REG_IP
+				, DEL_FLAG
+				, DATE_FORMAT(EDIT_DT,'%Y년 %m월 %d일 %H시 %S초') AS EDIT_DT
+				, FAVORITE_COUNT
+				, VIEW_COUNT
+				, DOWN_COUNT
+				, RESOLUTION
+				, FILE_SIZE
+			FROM tb_file_repository WHERE IDX IN (${IDX});
+			</select>
+	
+		<update id="VodViewCountInsert" parameterType="java.util.Map">
+			UPDATE	tb_vod_repository SET VIEW_COUNT = VIEW_COUNT+1 WHERE IDX ='${IDX}';
+		</update>
+
+
+	<update id="VodFavoriteCount" parameterType="java.util.Map">
+		UPDATE tb_vod_repository SET FAVORITE_COUNT = FAVORITE_COUNT+1 WHERE IDX ='${IDX}';
+	</update>
+
+	<select id="MainVodKeyWord" resultType="java.util.Map" parameterType="java.util.Map">
+	  <![CDATA[
+ 				SELECT distinct split_str(t1.text, ',', t2.row_number) SPLIT_TEXT
+  				FROM (SELECT board_keyword text from tb_board_repository where ifnull(board_keyword,' ') <> ' '
+				AND (board_keyword LIKE '%${VOD_KEYWORD}%'  or board_content LIKE '%${VOD_KEYWORD}%' or  board_title LIKE '%${VOD_KEYWORD}%')) AS t1
+       			INNER JOIN (SELECT @row_num := @row_num + 1 row_number
+                FROM tb_board_repository a INNER JOIN (SELECT @row_num := 0) b
+                WHERE @row_num < 7) AS t2;
+       ]]>
+	</select>
+
+
+	<select id="ChannelData" resultType="java.util.Map" parameterType="java.util.Map">
+					SELECT    IDX
+							, CATEGORY_IDX
+							, LIVE_PATH
+							, LIVE_TITLE
+							, REG_DT
+							, REG_ID
+							, REG_IP
+							, DEL_FLAG
+							, EDIT_DT
+							, FAVORITE_COUNT
+							, VIEW_COUNT
+        			FROM tb_live_repository
+        			WHERE  DEL_FLAG = 'N'
+        			ORDER BY IDX ASC ;
+	</select>
+	
+	<select id="CalendarDate" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT   concat(SUBSTR(DAY,1,4),'.',SUBSTR(DAY,6,2),'.',SUBSTR(DAY,9,2)) AS DATE,
+				 CASE WEEKDAY(DAY) 
+				    when '0' then '월요일'
+				    when '1' then '화요일'
+				    when '2' then '수요일'
+				    when '3' then '목요일'
+				    when '4' then '금요일'
+				    when '5' then '토요일'
+				    when '6' then '일요일'
+					end as WEEK
+				 , concat(SUBSTR(NEXT,1,4),SUBSTR(NEXT,6,2),SUBSTR(NEXT,9,2)) AS NEXT
+				 , concat(SUBSTR(PREV,1,4),SUBSTR(PREV,6,2),SUBSTR(PREV,9,2)) AS PREV
+				 , concat(SUBSTR(DAY,1,4),SUBSTR(DAY,6,2),SUBSTR(DAY,9,2)) AS TO_DAY
+		FROM(SELECT date_add(now(), interval ${DATE} day) AS DAY, date_add(now(), interval ${NEXT} day) AS NEXT , date_add(now(), interval ${PREV} day) AS PREV FROM DUAL) A;
+	
+  </select>
+	
+	<select id="Channel" resultType="java.util.Map" parameterType="java.util.Map">
+		   		 
+				SELECT A.IDX
+					, A.NAME
+					, date_format(A.START,'%H:%i') AS START_HI
+					, TIME_TO_SEC(date_format(A.START,'%H:%i')) AS START_SC
+					, date_format(A.END,'%H:%i') AS END_HI
+					, date_format(A.START,'%Y-%m-%d %H:%i') AS START
+					, date_format(A.END,'%Y-%m-%d %H:%i') AS END  
+					, A.LIVE_CH_IDX
+					, A.SOURCE_TYPE
+					, A.LIVE_STREAM_URL
+					, A.CAPTION
+					, B.LIVE_TITLE
+					, if(A.LIVE_CH_IDX,'',166) AS LIVE_CH_IDX
+					, round(CAST(TIMESTAMPDIFF(minute,A.START,A.END) as unsigned)/5) AS ROW
+				FROM tb_stb_schedule A INNER JOIN tb_live_repository B ON A.LIVE_CH_IDX = B.IDX 
+				WHERE 0=0
+	<if test="FLUG.equals('CHANNEL')">
+			    		AND A.IDX = ${DAY}
+	</if>
+	<if test="FLUG.equals('liveView')">
+			    		AND A.LIVE_CH_IDX = ${DAY}
+	</if>
+	
+	<if test="FLUG.equals('TITLE') or FLUG.equals('liveView') ">
+				 <![CDATA[
+						AND (str_to_date(date_format(A.START,'%Y-%m-%d %T'),'%Y-%m-%d %T') <= str_to_date(date_format(NOW(),'%Y-%m-%d %T'),'%Y-%m-%d %T') AND str_to_date(date_format(A.END,'%Y-%m-%d %T'),'%Y-%m-%d %T') >	str_to_date(date_format(NOW(),'%Y-%m-%d %T'),'%Y-%m-%d %T'))
+						ORDER BY A.LIVE_CH_IDX ASC
+				 ]]>
+	</if>
+
+	<if test="FLUG.equals('TODAY')">
+			AND LIVE_CH_IDX = ${DAY}
+	</if>
+	<if test="FLUG.equals('TODAY') or FLUG.equals('CLOCK')">
+				 <![CDATA[
+						AND (str_to_date(date_format(A.START,'%Y-%m-%d'),'%Y-%m-%d') = str_to_date(date_format(NOW(),'%Y-%m-%d'),'%Y-%m-%d') AND str_to_date(date_format(A.END,'%Y-%m-%d'),'%Y-%m-%d') = str_to_date(date_format( NOW(),'%Y-%m-%d'),'%Y-%m-%d'))
+						ORDER BY A.LIVE_CH_IDX ASC , A.START ASC
+				 ]]>
+	</if>
+		
+	<if test="FLUG.equals('NEXT') or FLUG.equals('PREV')">
+				 <![CDATA[
+						AND (str_to_date(date_format(A.START,'%Y-%m-%d'),'%Y-%m-%d') = str_to_date(date_format('${DAY}','%Y-%m-%d'),'%Y-%m-%d') AND str_to_date(date_format('${DAY}','%Y-%m-%d'),'%Y-%m-%d') =	str_to_date(date_format(A.END,'%Y-%m-%d'),'%Y-%m-%d'))
+						ORDER BY A.LIVE_CH_IDX ASC , A.START ASC
+				 ]]>
+	</if>
+	;
+	</select>
+	
+	
+	<select id="VodChannel" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT   A.PLAY_ORDER
+			   , A.VOD_ID
+		       , B.VOD_PLAY_TIME
+		       , B.VOD_PATH
+		       , B.MAIN_THUMBNAIL 
+		       , TIME_TO_SEC(B.VOD_PLAY_TIME) AS SECOND 
+			   , C.MAX
+               , C.SUM
+               , TIME_TO_SEC(now()) AS TODAY
+		FROM tb_stb_schedule_vod A INNER JOIN tb_vod_repository B ON  A.vod_id = B.IDX 
+		INNER JOIN ( SELECT MAX(PLAY_ORDER) AS MAX , SCHEDULE_ID , SUM(TIME_TO_SEC(B.VOD_PLAY_TIME)) AS SUM FROM tb_stb_schedule_vod A INNER JOIN tb_vod_repository B ON  A.vod_id = B.IDX  WHERE SCHEDULE_ID = ${IDX}) C ON C.SCHEDULE_ID = A.SCHEDULE_ID
+		WHERE A.SCHEDULE_ID = ${IDX} ORDER BY A.PLAY_ORDER ASC;
+		
+		
+	</select>
+
+	<select id="BroadcastingTime" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[
+		SELECT * FROM tb_stb_schedule 
+		WHERE IDX = ${IDX}
+		AND TIME_TO_SEC(date_format(START,'%Y-%m-%d %H:%i')) <= TIME_TO_SEC(date_format(NOW(),'%Y-%m-%d %H:%i')) AND TIME_TO_SEC(date_format(END,'%Y-%m-%d %H:%i')) >= TIME_TO_SEC(date_format(NOW(),'%Y-%m-%d %H:%i'));
+		 ]]>
+	</select> 
+	
+	
+	<select id="RePlayClok" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[
+		SELECT * FROM tb_stb_schedule 
+		WHERE 0=0
+	    AND LIVE_CH_IDX ='${CH}'
+		AND date_format(START,'%H:%i') = '${TIME}'
+    	AND TIME_TO_SEC(date_format(START,'%Y-%m-%d')) <= TIME_TO_SEC(date_format(NOW(),'%Y-%m-%d')) AND TIME_TO_SEC(date_format(END,'%Y-%m-%d')) >= TIME_TO_SEC(date_format(NOW(),'%Y-%m-%d'));
+		 ]]>
+	</select> 
+	
+	
+	
+	
+	
+ 
+</mapper> 
+

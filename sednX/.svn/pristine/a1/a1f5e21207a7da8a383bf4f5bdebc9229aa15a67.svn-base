@@ -1,0 +1,86 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="hn" uri="/WEB-INF/tlds/hanibalWebDev.tld"%>
+<script src="${pageContext.request.contextPath}/ibsCmsJs/functionInc.js"></script>
+<style>
+.table-bordered > tbody > tr > td, .table-bordered > thead > tr > th {border-bottom:1px solid #ddd;}
+</style>
+<table class="table table-bordered  borderB  table-hover" >
+ <thead>
+     <tr>
+        <th><input type="checkbox" id="allCheck"></th>
+        <th>그룹명</th>
+        <th>장비명</th>
+        <th>아이피주소</th>
+        <th>MAC</th>
+        <th>활동상태</th>
+        <th>장비제어</th>
+        <th>편집</th>
+     </tr>
+ </thead>
+ <tbody>
+  <c:choose>
+		<c:when test="${empty lists }">
+			<tr><td colspan="8">데이타가 없습니다.</td></tr>
+		</c:when>
+		<c:otherwise>
+		<c:forEach items="${lists}" var="list" varStatus="loop">
+	    <tr>
+	        <td><input type="checkbox" class="checkElem" id="${list.idx}" value="${list.idx}"></td>
+	        <td>${list.category_idx}</td>
+	        <td>${list.name}</td>
+	        <td>${list.ip_addr}</td>
+	        <td>${list.mac}</td>
+	        <td><span class="label label-success">${list.status}</span></td>
+	        <td>
+	        	<div class="btn-group" style="margin:0px;">
+	    			<button type="button" class="btn btn-sm btn-alt icon"><span>&#61725;</span> <span class="text">재부팅</span></button>
+	    			<button type="button" class="btn btn-sm btn-alt icon" ><span>&#61910;</span> <span class="text">펌웨어 업데이트</span></button>
+					<button type="button" class="btn btn-sm btn-alt icon" onClick="cmd.schedule_download(this);"><span>&#61751;</span> <span class="text">스케쥴 내려받기</span></button>
+	    			<button type="button" class="btn btn-sm btn-alt icon"><span>&#61931;</span> <span class="text">TV켜기</span></button>
+	    			<button type="button" class="btn btn-sm btn-alt icon"><span>&#61834;</span> <span class="text">TV끄기</span></button>
+				</div>
+	      </td>
+	      <td>
+	      	<div class="btn-group" style="margin:0px;">
+	         	<button type="button" class="btn btn-sm icon"><span>&#61952;</span> <span class="text">수정</span></button>
+	         	<button type="button" class="btn btn-sm icon"><span>&#61754;</span> <span class="text">삭제</span></button>
+	     	</div>
+	      </td>
+      </tr>
+    </c:forEach>
+	</c:otherwise>
+</c:choose>
+    </tbody>
+  </table>
+
+<div class="media p-5 text-center l-100">
+  ${pagingStr}
+</div>
+<script>
+var cmd=(function(){
+	var schedule_download=function(obj){
+		sednCmd("schedule_download",$(obj).parent().parent().prev().prev().text())
+	};
+	var sednCmd=function(command,stbList){
+		jQuery.ajaxSettings.traditional = true;
+		$.ajax({
+			url : '/api/web/sendCommandToSTB',
+			type : 'post',
+			data:{'command':command, "stbList":stbList},
+			success : function(result) {
+				$("#successText").text("셋탑박스에 명령을 보냈습니다.");
+				$("#sucessModal").modal();
+			},
+			error : exception.ajaxException
+		});
+	};
+	return{
+		schedule_download:schedule_download,
+		sednCmd:sednCmd
+	} 
+}());
+</script>

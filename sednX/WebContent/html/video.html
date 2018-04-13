@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="format-detection" content="telephone=no">
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="X-UA-Compatible" content="ie=10">
+	<title>SEDN</title>
+
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.bxslider.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
+
+	<script src="js/jquery-2.2.1.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/jquery.bxslider.min.js"></script>
+	<script src="js/common.js"></script>
+
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="http://malsup.github.com/jquery.cycle2.js"></script>
+</head>
+<script>
+	$(function(){
+	  $('.slider').bxSlider({
+	    mode: 'horizontal',
+	    slideWidth: 340,
+	    pager: false,
+	    captions: true,
+	    minSlides: 2,
+        maxSlides: 5,      // 최대 노출 개수
+        slideMargin: 15,
+        controls: false,
+        moveSlides: 5
+	  });
+	});
+</script>
+<body>
+	<div id="modalPage">
+		<div class="modal" id="modal_01">
+			<button class="modal_close"><img src="img/modal_prev.png" alt="닫기" /></button>
+
+			<div class="contents">
+				<div class="slider_container">
+					<div class="form_div">
+						<h2>이 영상 다음으로 많이 본 콘텐츠</h2>
+						<div class="slider">
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_04.png" alt="샘플 이미지1" title="울라프의 겨울왕국 어드벤처" />
+								<div class="player" id="player_01">
+									<button class="modalBtn" id="modalBtn_01"><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>울라프의 겨울왕국 어드벤처</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="player" id="player_02">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_06.png" alt="샘플 이미지3" title="커뮤터" />
+								<div class="player" id="player_03">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>커뮤터</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_07.png" alt="샘플 이미지4" title="메이즈 러너 : 데스 큐어" />
+								<div class="player" id="player_04">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>메이즈러너 : 데스 큐어</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form last">
+								<span class="triangle"></span>
+								<img src="img/img_sample_08.png" alt="샘플 이미지5" title="1987" />
+								<div class="player" id="player_05">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>1987</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form_div">
+						<h2>지금 본 영상과 유사한 콘텐츠</h2>
+						<div class="slider">
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_04.png" alt="샘플 이미지1" title="울라프의 겨울왕국 어드벤처" />
+								<div class="player" id="player_01">
+									<button class="modalBtn" id="modalBtn_01"><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>울라프의 겨울왕국 어드벤처</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="player" id="player_02">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_06.png" alt="샘플 이미지3" title="커뮤터" />
+								<div class="player" id="player_03">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>커뮤터</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form">
+								<span class="triangle"></span>
+								<img src="img/img_sample_07.png" alt="샘플 이미지4" title="메이즈 러너 : 데스 큐어" />
+								<div class="player" id="player_04">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>메이즈러너 : 데스 큐어</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+							<div class="slider_form last">
+								<span class="triangle"></span>
+								<img src="img/img_sample_08.png" alt="샘플 이미지5" title="1987" />
+								<div class="player" id="player_05">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>1987</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div><!-- //page -->
+</body>
+</html>

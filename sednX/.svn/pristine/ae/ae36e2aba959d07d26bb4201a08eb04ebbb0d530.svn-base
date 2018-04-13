@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="format-detection" content="telephone=no">
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="X-UA-Compatible" content="ie=10">
+	<title>SEDN</title>
+
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.bxslider.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
+
+	<script src="js/jquery-2.2.1.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/jquery.bxslider.min.js"></script>
+	<script src="js/common.js"></script>
+
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="http://malsup.github.com/jquery.cycle2.js"></script>
+</head>
+<script>
+	$(function(){
+	  // $('.slider').bxSlider({
+	  //   mode: 'horizontal',
+	  //   slideWidth: 340,
+	  //   pager: false,
+	  //   captions: true,
+	  //   minSlides: 5,
+   //      maxSlides: 5,      // 최대 노출 개수
+   //      slideMargin: 15,
+   //      controls: false
+	  // });
+	  	$("span.arr").click(function () {
+	  		$(".slider").removeClass("border");
+	  		$(this).parent().parent().parent("div").addClass("border");
+	  		$(".slider.border > div").removeClass("on");
+	  		$(this).parent().parent().find("img").parent("div").addClass("on");
+	  		$(".form_show").css("display","none");
+	  		$(".slider.border > div > span.triangle").css("display","none");
+	  		$(this).parent().parent().find("span.triangle").css('display','block');
+	  		var playerId = this.id;
+	          var show = playerId.replace("down_","");
+	          $("#show_"+show).css('display','block');
+	  	});
+	   $(window).on("load",function(){
+            $(".scrollbar").mCustomScrollbar({
+            	theme:"inset"
+            });
+        });
+	});
+</script>
+<style>
+	.slider.add .slider_form {width: 19%; display: inline-block; position: relative;}
+
+</style>
+<body>
+	<div id="page">
+
+
+		<div class="contents">
+			<div class="slider_container">
+				<div class="form_div">
+					<h2>신나는 용산 > 우리동네를 소개합니다</h2>
+					<div class="option_menu right">
+						<ul>
+							<li><a href="#">최신</a></li>
+							<li><a href="#">인기</a></li>
+							<li><a href="#">제목</a></li>
+						</ul>
+					</div>
+					<div class="search_page">
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_04.png" alt="샘플 이미지1" title="울라프의 겨울왕국 어드벤처" />
+								<div class="bx-caption"><span>울라프의 겨울왕국 어드벤처</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>울라프의 겨울왕국 어드벤처</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_01"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="bx-caption"><span>그것만이 내 세상</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_02"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="form_show" id="show_02">
+							<img class="play" src="img/btn_play.png" alt="재생" />
+							<div class="cycle-slideshow" data-cycle-prev=".prev" data-cycle-next=".next" data-cycle-speed="3000">
+								<div class="gra"></div>
+								<img src="img/img_sample_15.png" alt="샘플 이미지4" />
+								<img src="img/img_sample_16.jpg" alt="샘플 이미지5" />
+								<img src="img/img_sample_17.jpg" alt="샘플 이미지5" />
+							</div>
+							<div class="nav">
+								<button class="prev"><img src="img/prev.png" alt="이전" /></button>
+								<button class="next"><img src="img/next.png" alt="다음" /></button>
+							</div>
+							<div class="page">
+								<div class="round">
+									1/10
+								</div>
+							</div>
+
+							<div class="right tab">
+								<a class="on" href="#">콘텐츠 정보</a>
+								<a class="show_modal_open" href="#">상세 정보</a>
+							</div>
+							<div class="img-info">
+								<button class="close"><img src="img/close.png" alt="닫기" /></button>
+								<div class="scrollbar" id="style-1">
+									<div class="force-overflow"></div>
+									<h4>그것만이 내 세상</h4>
+									<div class="total">
+										<ul>
+											<li class="like"><span>♥</span> 1,234</li>
+											<li>조회수 1,234</li>
+											<li>2018-01-24</li>
+											<li>00:46</li>
+										</ul>
+									</div>
+									<p>
+										콘텐츠에 대한 상세 설명이 등록되어 있으면 해당 상세 설명을 출력. 높이 구성에 맞춰 관리자에서 등록한 상세 내용을 출력해주고 내용이 많고 길면 내부 스크롤로 내용 확인할 수 있게 구성. 콘텐츠에 대한 상세 
+										설명이 등록되어 있으면 해당 상세 설명을 출력. 높이 구성에 맞춰 관리자에서 등록한 상세 내용을  출력해주고 내용이 많고 길면 내부 스크롤로 내용 확인할 수 있게 구성. 콘텐츠에 대한 상 세 설명이 등록되어 있으면 해당 상세 설명을 출력. 높이 구성에 맞춰 관리자에서 등록한 상세 내용을 출력해주고 내용이 많고 길면 내부 스크롤로 내용 확인할 수 있게 구성. 콘텐츠에 대한 상세 설명이 등록되어 있으면 해당 상세 설명을 출력. 높이 구성에 맞춰 관리자에서 등록한 상세 내용을 출력해주고 내용이 많고 길면 내부 스크롤로 내용 확인할 수 있게 구성. 콘텐츠에 대한 상세 설명이 등록되어 있으면 해당 상세 설명을 출력 높이 구성에 맞춰 관리자에서 등록한 상세 내용을 출력해주고 내용이 많고 길면 내부 스크롤로 내용 확인할 수 있게 구성. 콘텐츠에 대한 상세 설명이 등록되어 있으면 해당 상세 설명을 출력.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_06.png" alt="샘플 이미지3" title="커뮤터" />
+								<div class="bx-caption"><span>커뮤터</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>커뮤터</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_03"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="bx-caption"><span>그것만이 내 세상</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_04"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="bx-caption"><span>그것만이 내 세상</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_05"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="bx-caption"><span>그것만이 내 세상</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_06"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="bx-caption"><span>그것만이 내 세상</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_07"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="img_layout">
+							<div class="hover">
+								<img src="img/img_sample_05.png" alt="샘플 이미지2" title="그것만이 내 세상" />
+								<div class="bx-caption"><span>그것만이 내 세상</span></div>
+								<div class="text_form">
+									<button><img src="img/btn_play.png" alt="재생" /></button>
+									<div class="text">
+										<h3>그것만이 내 세상</h3>
+										<p>2018-01-24   00:46</p>
+										<p>콘텐츠에 대한 간략 설명이 등록되어 있으면 해당 내 용을 출력. 높이 구성에 따라 두 줄 또는 세 줄 정도의 내용이 출력될 수 있게 구성.</p>
+									</div>
+									<span class="arr" id="down_08"><img src="img/arr_down.png" alt="down" /></span>
+								</div>
+							</div>
+						</div>
+					</div>				
+
+				</div><!-- //form_div -->
+			</div><!-- //slider_container -->
+		</div><!-- //contents -->
+	</div><!-- //page -->
+</body>
+</html>
