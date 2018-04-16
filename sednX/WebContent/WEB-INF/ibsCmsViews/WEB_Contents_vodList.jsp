@@ -133,6 +133,7 @@
 	</div>
 	<div class="superbox-float"></div>
 	<div class="col-md-12 text-center p-t-10">${pagingStr}</div>
+	<button id="test"></button>
 </div>
 <script>
 	$(function() {
@@ -240,7 +241,7 @@
 
 			this.on('playing', function() {
 			  isPlaying = true;
-			  //alert("계속진행");
+			 videojs.log(videojs($(this).attr("id")).currentTime());
 			});
 			this.on('ended', function() {
 				delete videojs.getPlayers()[$(this).attr("id")];

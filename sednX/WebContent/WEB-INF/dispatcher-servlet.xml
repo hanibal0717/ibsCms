@@ -68,6 +68,7 @@
 			<list>
 				<value>classpath:ibsMybatis/ibsWebApiQuery.xml</value>
 				<value>classpath:ibsMybatis/ibsStbApiQuery.xml</value>
+				<value>classpath:ibsMybatis/ibsAppQuery.xml</value><!-- [2018.03.29 KJS] -->
 				<value>classpath:ibsMybatis/ibsUserQuery.xml</value><!--[2018.02.12 KSA]  -->
 				<value>classpath:ibsMybatis/conferenceQuery.xml</value><!-- [2018.03.29 KJS] -->
 			</list>
@@ -137,10 +138,16 @@
 		<property name="download" value="${Path.Download}"></property>
 	</bean>
 	
-	<!-- conference DAO & CONTROLLER [2018.03.29 KJS]--> 
+	<!-- conference DAO & CONTROLLER [2018.03.29 KHS]--> 
 	<bean id="conferenceDAO" class="hanibal.ibs.dao.ConferenceDAO" p:sqlFactory-ref="sqlFactory" p:sqlTemplate-ref="sqlSessionTemplate"/>
 	<bean id="conferenceController" class="hanibal.ibs.controller.ConferenceController">
 		<property name="conferenceDAO" ref="conferenceDAO"></property> 
+	</bean>
+	
+	<!-- ibs App Mobile DAO & CONTROLLER [2018.4.16 HKS]--> 
+	<bean id="ibsAppDAO" class="hanibal.ibs.dao.IbsAppDAO" p:sqlFactory-ref="sqlFactory" p:sqlTemplate-ref="sqlSessionTemplate"/>
+	<bean id="ibsAppController" class="hanibal.ibs.controller.IbsAppController">
+		<property name="ibsAppDAO" ref="ibsAppDAO"></property> 
 	</bean>
 
 	
