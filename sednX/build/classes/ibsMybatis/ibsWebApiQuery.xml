@@ -417,7 +417,7 @@
 			select
 				(a.idx) as idx,
 			    (select category_name from tb_board_category where idx=a.category_idx) as category_idx,
-			    (a.vod_repo) as vod_repo,
+			    (select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as vod_repo,
 			    (a.photo_repo) as photo_repo,
 			    (a.file_repo) as file_repo,
 			    (a.live_repo) as live_repo,

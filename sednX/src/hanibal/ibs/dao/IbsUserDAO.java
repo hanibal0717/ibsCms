@@ -18,9 +18,6 @@ import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import com.ibatis.sqlmap.client.SqlMapClient;
-
-import hanibal.ibs.model.webapi.MainContents;
-
 public class IbsUserDAO {
 	Logger log = Logger.getLogger(this.getClass());
 	

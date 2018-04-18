@@ -320,18 +320,23 @@ public class IbsCmsController {
 			model.addAttribute("pagingStr", pagingStr);
 			viewPage="/ibsCmsViews/WEB_Contents_liveList.inc";
 		}else if(order.equals("board")) {
-			pageSize=10;
-			blockPage=10;
+			/*pageSize=10;
+			blockPage=10;*/
 			totalRecordCount = ibsCmsDao.getBoardTotalRecordCount(searchWord,childIdx);
-			totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
+			/*totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
 			start = (Integer.parseInt(nowPage)-1)*pageSize;
-			end = blockPage;
+			end = blockPage;*/
+			start=0;
+			end = totalRecordCount;
 			List<BoardDTO> lists=ibsCmsDao.boardList(searchWord,childIdx,start,end);
+			for(int i=0;i<lists.size();i++) {
+				lists.get(i).setVod_repo("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getVod_repo())+lists.get(i).getVod_repo());
+			}
 			model.addAttribute("lists", lists);
-			model.addAttribute("childIdx", childIdx);
-			model.addAttribute("totalPage", totalPage);
+			/*model.addAttribute("childIdx", childIdx);
+			model.addAttribute("totalPage", totalPage);*/
 			model.addAttribute("totalRecordCount", totalRecordCount);
-			model.addAttribute("pageSize", pageSize);
+			/*model.addAttribute("pageSize", pageSize);
 			model.addAttribute("searchWord",searchWord);
 			model.addAttribute("nowPage", nowPage);
 			String pagingStr = 
@@ -343,8 +348,8 @@ public class IbsCmsController {
 							blockPage, 
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/board?");
-			model.addAttribute("pagingStr", pagingStr);
-			viewPage="/ibsCmsViews/WEB_Communicate_List.inc";
+			model.addAttribute("pagingStr", pagingStr);*/
+			viewPage="/ibsCmsViews/WEB_Makepage_List.inc";
 		}else if(order.equals("stb-controle")) {
 			pageSize=10;
 			blockPage=10;
@@ -422,6 +427,11 @@ public class IbsCmsController {
 			viewPage="/ibsCmsViews/STB_Ui_List.inc";
 		}
 		return viewPage;
+	}
+	@RequestMapping("/cms/makepage/setting/{idx}")
+	public String makePageSetting(@PathVariable String idx) {
+		
+		return "/ibsCmsViews/WEB_MakePage_Setting.inc";
 	}
 	
 	/*UPDATE*/

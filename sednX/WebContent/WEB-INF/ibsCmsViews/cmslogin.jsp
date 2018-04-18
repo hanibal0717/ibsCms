@@ -25,7 +25,7 @@
         <link href="${pageContext.request.contextPath}/ibsCmsCss/icons.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/ibsCmsCss/generics.css" rel="stylesheet"> 
     </head>
-    <body id="skin-blur-violate">
+    <body id="skin-blur-ocean">
 	<section id="login">
             <header>
                 <h1>SEDN X ADMIN</h1>

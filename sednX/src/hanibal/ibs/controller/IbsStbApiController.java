@@ -2,13 +2,9 @@ package hanibal.ibs.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;

@@ -56,13 +56,18 @@ $(document).ready(function(){
     -----------------------------------------------------------*/
     (function(){
         /* Menu Toggle */
-        $('body').on('click touchstart', '#menu-toggle', function(e){
+        /*$('body').on('click touchstart', '#menu-toggle', function(e){
             e.preventDefault();
             $('html').toggleClass('menu-active');
             $('#sidebar').toggleClass('toggled');
             //$('#content').toggleClass('m-0');
-        });
-         
+        });*/
+    	 $('body').on('click touchstart', '#menu-toggle', function(e){
+             e.preventDefault();
+             $('html').toggleClass('menu-active');
+             $('.side-widgets').toggleClass('toggled'); /*20180409 議곗뿰二� �섏젙*/
+             //$('#content').toggleClass('m-0');
+         });
         /* Active Menu */
         $('#sidebar .menu-item').hover(function(){
             $(this).closest('.dropdown').addClass('hovered');

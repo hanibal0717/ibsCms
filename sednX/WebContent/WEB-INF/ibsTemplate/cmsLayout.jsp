@@ -36,6 +36,7 @@
 	<link href="${pageContext.request.contextPath}/ibsCmsCss/generics.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/ibsCmsCss/themes/default/style.css" rel="stylesheet">  
 	<link href="${pageContext.request.contextPath}/ibsCmsCss/video-js.css" rel="stylesheet">
+
 	
 	<!-- jQuery -->
     <script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.min.js"></script> <!-- jQuery Library -->
@@ -94,8 +95,10 @@
         <script src="${pageContext.request.contextPath}/ibsCmsJs/video.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-flash.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-contrib-hls.js"></script>
+		<!-- new user page -->
+		<script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.bxslider.min.js"></script>
 </head>
-<body id="skin-blur-night">
+<body id="skin-blur-ocean">
 		<!-- top start-->
       	<tiles:insertAttribute name="top"/>
         <!-- top end -->

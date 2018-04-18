@@ -7,11 +7,11 @@ pageEncoding="UTF-8"%>
 <!--[if IE 9 ]><html class="ie9"><![endif]-->
 <html>
     <head>
-    		<link href="${pageContext.request.contextPath}/ibsCmsCss/bootstrap.min.css" rel="stylesheet">
+    	<link href="${pageContext.request.contextPath}/ibsCmsCss/bootstrap.min.css" rel="stylesheet">
    		<link href="${pageContext.request.contextPath}/ibsCmsCss/style.css" rel="stylesheet">
-    		<link href="${pageContext.request.contextPath}/ibsCmsCss/generics.css" rel="stylesheet"> 
+    	<link href="${pageContext.request.contextPath}/ibsCmsCss/generics.css" rel="stylesheet"> 
     </head>
-    <body id="skin-blur-violate">
+    <body id="skin-blur-ocean">
         <section id="error-page" class="tile">
             <h1 class="m-b-10">${errorTitle}</h1>
             <p>${description }</p>

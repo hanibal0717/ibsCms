@@ -73,10 +73,15 @@ $(function(){
 			var splitVal=sliceVal.split('[');
 			all_parents[i]=splitVal[0];
 		}
-		naviString=all_parents.join(' / ');
+		if(all_parents.length>1){
+			all_parents.splice(0,1);
+		}
+		
+		naviString=all_parents.join('<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>');
 		arange.naviBar($('#sort').val(),$('#treeIdx').val(),naviString);
-		//arange.list($("#treeIdx").val());
 		$("#categoryIdx").val(sel.id);
+		arange.list(sel.id,sel.original.property);
+		
 	});
 	
 	$('#jstree').on("move_node.jstree", function (e, data) {
@@ -95,22 +100,42 @@ $(function(){
 	$('#jstree').on("rename_node.jstree", function (e, data) {
 		if(data.old != data.text || data.old == "새 그룹") {
 			$.ajax({
-           url:'/api/jstree/renameGroup',
-           type:'post',
-           data:{"idx": data.node.id, "name": data.text,"sort":"${sort}"},
-           async:false,
-           success:function(result){
+           		url:'/api/jstree/renameGroup',
+           		type:'post',
+           		data:{"idx": data.node.id, "name": data.text,"sort":"${sort}"},
+           		async:false,
+           		success:function(result){
    					data.node.original.name = data.text;
    					new_name = data.text;
-           },
-           error:function() {
-           	exception.renameException
-           }
+           		},
+           		error:function() {
+           			exception.renameException
+           		}
 			});
-			//console.log("redraw");
 			data.node.text = data.node.original.name + ' [' + data.node.original.num + ']';
 			//console.log(data.node);
 			$('#jstree').jstree(true).redraw(true);
+			var removeItem='#';
+			all_parents=data.node.parents;
+			all_parents=jQuery.grep(all_parents,function(value){return value!=removeItem}); 
+			//역순
+			all_parents=all_parents.reverse();
+			//추가
+			all_parents.push(data.node.id);
+			//중복제거
+			all_parents=all_parents.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+			//한글화 
+			for(var i=0;i<all_parents.length;i++){
+				var sliceVal=$('#'+all_parents[i]+"_anchor").text();
+				console.log(sliceVal);
+				var splitVal=sliceVal.split('[');
+				all_parents[i]=splitVal[0];
+			}
+			if(all_parents.length>1){
+				all_parents.splice(0,1);
+			}
+			naviString=all_parents.join('<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>');
+			arange.naviBar($('#sort').val(),$('#treeIdx').val(),naviString);
 		}
 	});
 	$('#createGroup').click(function(){
@@ -159,16 +184,16 @@ var menuTree=(function(){
 	
 	var renameGroup=function(){
   		var ref = $('#jstree').jstree(true);
-			sel = ref.get_selected('full');
-			if(!sel.length) { return false; }
-				sel = sel[0];
-				console.log(sel.original.name);
-			if(sel.id == '1') {
-				exception.rootException();
-			return false;
-	}
-	ref.edit(sel, sel.original.name);
- };
+		sel = ref.get_selected('full');
+		if(!sel.length) { return false; }
+			sel = sel[0];
+			console.log(sel.original.name);
+		if(sel.id == '1') {
+			exception.rootException();
+		return false;
+		}
+		ref.edit(sel, sel.original.name);
+	};
  
  var deleteGroup=function(){
 	 var ref = $('#jstree').jstree(true);
@@ -230,12 +255,9 @@ var menuTree=(function(){
 }());
 </script>
 <div id="jstree" ></div> 
- <div class="p-10 pull-right">
- <button class="btn btn-xs btn-alt" id="createMenu">메뉴 생성</button>
- <button class="btn btn-xs btn-alt" id="createBoard">게시판 생성</button>
-  <!--<button class="btn btn-xs btn-alt" id="createGroup">카테고리 생성</button>-->
-  <button class="btn btn-xs btn-alt" id="renameGroup">카테고리 변경</button>
-  <button class="btn btn-xs btn-alt" id="deleteGroup" >카테고리 삭제</button>
+  <div class="p-10 text-center">
+  <button class="btn btn-block btn-alt" id="renameGroup">이름변경</button>
+  <button class="btn btn-block btn-alt" id="deleteGroup" >카테고리 삭제</button>
  </div>
 <div class="clearfix"></div>
 
