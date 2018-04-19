@@ -96,7 +96,7 @@ select::-ms-expand {
 }
 
 /* Checkbox + Radio */
-/*input[type="checkbox"], input[type="radio"]{
+input[type="checkbox"], input[type="radio"]{
     opacity: 0;
 }
 
@@ -150,7 +150,7 @@ select::-ms-expand {
 .icheckbox_minimal.checked, .iradio_minimal.checked {
     background: rgba(255,255,255,0.6) !important;
 }
-*/
+
 /* --------------------------------------------------------
     Buttons
 -----------------------------------------------------------*/
@@ -198,13 +198,8 @@ select::-ms-expand {
    background: rgba(0, 0, 0, 0) !important;
    border: 1px solid rgba(255, 255, 255, 0.31) !important;
 }
-li.btn-alt {
-	padding: 3px 0;
-}
-li.btn-alt  a {
-	padding: 4px 10px 6px;
-}
-.btn-alt:hover, .btn-alt.active{
+
+.btn-alt:hover {
    background: rgba(255, 255, 255, 0.39) !important;
    color: #000;
 }
@@ -1212,8 +1207,8 @@ input.color-picker {
      display: inline-block;
      vertical-align: middle;
      text-align: center;
-     width: 100%;
-     height: auto;
+     width: 200px;
+     height: 150px;
      line-height: 137px;
      margin-bottom: 5px;
      background-color: rgba(0,0,0,0.3);
