@@ -1207,4 +1207,22 @@
 		<delete id="deleteScheduleVod" parameterType="int">
 			delete from tb_stb_schedule_vod where schedule_id=#{idx}
 		</delete>
+		
+		<select id="getLayoutList" parameterType="int" resultType="hanibal.ibs.model.webapi.LayoutDTO">
+			select               
+				wl_title,      
+				wl_link_type,  
+				wl_link_idx, 
+				wl_type,       
+				wl_height,     
+				wl_unit,       
+				wl_categorys,  
+				wl_attribute,  
+				wl_sort,       
+				reg_dt,       
+				edit_dt,       
+				reg_ip,       
+				del_flag
+			from tb_web_layout where idx=#{idx};
+		</select>
 </mapper>

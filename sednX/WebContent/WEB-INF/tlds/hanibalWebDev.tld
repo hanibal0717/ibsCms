@@ -74,4 +74,16 @@
 				java.lang.String getLiveSource()				
 			</function-signature>
 	  </function>
+	  
+	  <function>
+	  		<name>getBoardSelect</name>
+	  		<function-class>hanibal.ibs.library.HanibalWebDev</function-class>
+	  		<function-signature>
+	  			java.lang.String getBoardSelect()
+	  		</function-signature>
+	  </function>
 </taglib>
+
+
+
+

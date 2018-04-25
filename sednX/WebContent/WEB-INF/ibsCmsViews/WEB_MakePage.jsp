@@ -3,6 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="hn" uri="/WEB-INF/tlds/hanibalWebDev.tld"%>
 <style>
 	.text-center tr th, .text-center tr td, .text-center {text-align: center;}
 	.orange {background-color: #f0ad4e;}
@@ -53,21 +54,22 @@ pageEncoding="UTF-8"%>
 	                   		<a id="preview" style="display:none;cursor:pointer;"><span class="icon m-r-10">&#61723;</span>미리보기</a>
 	                   </div>	
 	                 </div>
-	                 <div id="pageView">
-						
-	                 </div>
+	                 <div id="pageView"></div>
                  </div>
 			<!--TITLE END-->
 			<!-- CONTENTS START -->
 			<input type="hidden" id="categoryIdx" value="1" />
 			<input id="sort" type="hidden">
 			<input id="treeIdx" type="hidden">
+			<input id="optionText" type="hidden" value="">
 			<!-- CONTENTS END -->	
 			</div>
 	    </div>
    	</div>
 </section>
 <script>
+var option='${hn:getBoardSelect()}';
+$('#optionText').val(option);
 var mkPage=(function(){
 	var makeTree =function(){
 		$.ajax({
@@ -136,14 +138,14 @@ var arange=(function(){
 		$("#pageView").empty();
 		$("#pageView").html("<h1> 미리보기 :"+idx+"</h1>");
 	};
-	var changeMode=function(){
+	var changeMode=function(idx){
 		$('.editBtns').css('display','block');
-		$('.defualtBtns').css('display','none');
+		$('.defaultBtns').css('display','none');
 		$('.checkMode').css('display','block');
 	};
 	var returnMode=function(){
 		$('.editBtns').css('display','none');
-		$('.defualtBtns').css('display','block');
+		$('.defaultBtns').css('display','block');
 		$('.checkMode').css('display','none');
 	};
 	return {
@@ -169,4 +171,5 @@ var arange=(function(){
 	$("#preview").click(function(){
 		arange.movePreview($('#categoryIdx').val());
 	});
+	
 </script>

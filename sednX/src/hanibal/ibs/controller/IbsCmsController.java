@@ -48,6 +48,7 @@ import hanibal.ibs.model.cms.PhotoDTO;
 import hanibal.ibs.model.cms.ScheduleDTO;
 import hanibal.ibs.model.cms.VodDTO;
 import hanibal.ibs.model.stb.StbDTO;
+import hanibal.ibs.model.webapi.LayoutDTO;
 import hanibal.ibs.model.webapi.TreeMenu;
 
 @Controller
@@ -349,7 +350,7 @@ public class IbsCmsController {
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/board?");
 			model.addAttribute("pagingStr", pagingStr);*/
-			viewPage="/ibsCmsViews/WEB_Makepage_List.inc";
+			viewPage="/ibsCmsViews/WEB_MakePage_List.inc";
 		}else if(order.equals("stb-controle")) {
 			pageSize=10;
 			blockPage=10;
@@ -429,9 +430,14 @@ public class IbsCmsController {
 		return viewPage;
 	}
 	@RequestMapping("/cms/makepage/setting/{idx}")
-	public String makePageSetting(@PathVariable String idx) {
-		
+	public String makePageSetting(@PathVariable String idx,Model model) {
+		List<LayoutDTO> lists=ibsCmsDao.getLayoutList(idx);
+		model.addAttribute("lists",lists);
 		return "/ibsCmsViews/WEB_MakePage_Setting.inc";
+	}
+	@RequestMapping("/cms/makepage/addForm")
+	public String addForm() {
+		return "/ibsInclude/insertSetting.inc";
 	}
 	
 	/*UPDATE*/

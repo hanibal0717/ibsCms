@@ -730,6 +730,48 @@ public class HanibalWebDev  extends MysqlConnect{
 		return topIdx;
 	}
 	
+	public static String getBoardSelect()  throws Exception{
+		String selectTag="";
+		int depthCount=-1;
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="SELECT t1.category_name AS lev1, t2.category_name as lev2, t3.category_name as lev3,t3.idx as idx,t3.pid as pid,t2.position as position,t3.position as subPosition\n" + 
+				"FROM tb_board_category AS t1\n" + 
+				"LEFT JOIN tb_board_category AS t2 ON t2.pid = t1.idx\n" + 
+				"LEFT JOIN tb_board_category AS t3 ON t3.pid = t2.idx\n" + 
+				"where t1.idx=1 order by position asc, subPosition asc;";
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				if(depthCount==-1) {
+					selectTag+=" <optgroup label=\""+rs.getString(2)+"\">";
+					selectTag+="<option>"+rs.getString(3)+"</option>";
+					depthCount=Integer.parseInt(rs.getString(6));
+				}else if(depthCount==Integer.parseInt(rs.getString(6))){
+					selectTag+="<option>"+rs.getString(3)+"</option>";
+				}else if(depthCount<Integer.parseInt(rs.getString(6))) {
+					selectTag+="</optgroup>";
+					selectTag+=" <optgroup label=\""+rs.getString(2)+"\">";
+					selectTag+="<option>"+rs.getString(3)+"</option>";
+					depthCount=Integer.parseInt(rs.getString(6));
+				}else if(rs.last()) {
+					selectTag+="</optgroup>";
+				}
+				
+			}
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return selectTag;
+	}
 	
 	/*****sung a*****/
 	public static String toString(String text) {

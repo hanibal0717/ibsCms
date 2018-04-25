@@ -28,6 +28,7 @@ import hanibal.ibs.model.cms.PhotoDTO;
 import hanibal.ibs.model.cms.ScheduleDTO;
 import hanibal.ibs.model.cms.VodDTO;
 import hanibal.ibs.model.stb.StbDTO;
+import hanibal.ibs.model.webapi.LayoutDTO;
 import hanibal.ibs.model.webapi.TreeMenu;
 
 
@@ -507,6 +508,10 @@ public class IbsCmsDAO {
 	}
 	public void deleteScheduleVod(int topIdx) {
 		sqlTemplate.delete("deleteScheduleVod",topIdx);
+	}
+	public List<LayoutDTO> getLayoutList(String idx) {
+		List<LayoutDTO> lists=sqlTemplate.selectList("getLayoutList",idx);
+		return lists;
 	}
 	
 	
