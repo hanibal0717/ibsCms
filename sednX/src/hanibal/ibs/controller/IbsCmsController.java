@@ -431,7 +431,7 @@ public class IbsCmsController {
 	}
 	@RequestMapping("/cms/makepage/setting/{idx}")
 	public String makePageSetting(@PathVariable String idx,Model model) {
-		List<LayoutDTO> lists=ibsCmsDao.getLayoutList(idx);
+		List<LayoutDTO> lists=ibsCmsDao.getLayoutList(Integer.parseInt(idx));
 		model.addAttribute("lists",lists);
 		return "/ibsCmsViews/WEB_MakePage_Setting.inc";
 	}
@@ -442,7 +442,6 @@ public class IbsCmsController {
 	
 	/*UPDATE*/
 	@RequestMapping("/cms/update/{order}")
-	@ResponseBody
 	public void updateData(
 			@PathVariable String order,
 			@RequestParam(required=false) String changeVal,
@@ -468,7 +467,6 @@ public class IbsCmsController {
 	}
 	/*DELETE*/
 	@RequestMapping("/cms/delete/{order}")
-	@ResponseBody
 	public void deleteData(
 			@PathVariable String order,
 			@RequestParam(required=false) String checkValArr,
@@ -584,7 +582,6 @@ public class IbsCmsController {
 	
 	
 	@RequestMapping("/cms/excute/{contents}/{order}")
-	@ResponseBody
 	public String excuteContents(@PathVariable String contents,@PathVariable String order,@RequestParam Map<String, Object> commandMap,Model model,HttpServletRequest req,HttpSession session) throws IOException {
 		int affectcount=0;
 		String msg="fail";
@@ -741,7 +738,6 @@ public class IbsCmsController {
 		return returnPage;
 	}
 	@RequestMapping("/cms/layout/{contents}/insert")
-	@ResponseBody
 	public void insertLayout(@PathVariable String contents,
 			@RequestParam Map<String, Object> commandMap,
 			HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
@@ -761,7 +757,6 @@ public class IbsCmsController {
 		res.getWriter().print(mapper.writeValueAsString(map));
 	}
 	@RequestMapping("/cms/layout/{contents}/delete")
-	@ResponseBody
 	public void deleteLayout(@PathVariable String contents,
 			@RequestParam Map<String, Object> commandMap,
 			HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
@@ -786,7 +781,6 @@ public class IbsCmsController {
 		return HanibalWebDev.getCategorySelect("tb_board_category",order);
 	}
 	@RequestMapping("/cms/system/current")
-	@ResponseBody
 	public void systemInfo(HttpServletResponse res) throws InstanceNotFoundException, AttributeNotFoundException, MalformedObjectNameException, ReflectionException, MBeanException, JsonGenerationException, JsonMappingException, IOException {
 		String totalDiskSpace=HanibalWebDev.getTotalDiskSpace();
 		String usedDiskSpace=HanibalWebDev.getUsedDiskSpace();
@@ -795,7 +789,7 @@ public class IbsCmsController {
 		String usedMemory=HanibalWebDev.getUsedMemory();
 		String memoryPercent=HanibalWebDev.getPercent(totalMemory,usedMemory);
 		HashMap<String,Object> resultMap=ibsCmsDao.getStbConnection();
-		String stbPercent=HanibalWebDev.getPercent(String.valueOf(resultMap.get("totalcount")),String.valueOf(resultMap.get("connected")));
+		String stbPercent=HanibalWebDev.getPercent(String.valueOf(resultMap.get("totalcount")),String.valueOf(resultMap.get("disconnected")));
 		res.setCharacterEncoding("utf8");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("diskPercent",diskPercent);

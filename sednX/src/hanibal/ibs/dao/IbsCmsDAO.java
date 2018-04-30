@@ -509,7 +509,7 @@ public class IbsCmsDAO {
 	public void deleteScheduleVod(int topIdx) {
 		sqlTemplate.delete("deleteScheduleVod",topIdx);
 	}
-	public List<LayoutDTO> getLayoutList(String idx) {
+	public List<LayoutDTO> getLayoutList(int idx) {
 		List<LayoutDTO> lists=sqlTemplate.selectList("getLayoutList",idx);
 		return lists;
 	}

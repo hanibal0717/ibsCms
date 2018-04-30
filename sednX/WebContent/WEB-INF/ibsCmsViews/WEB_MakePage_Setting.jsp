@@ -7,7 +7,7 @@ pageEncoding="UTF-8"%>
 <div class="form_div setUI" style="max-height: 820px; overflow-y: auto; width:100%;">
 
 </div>
-<c:set var="totalCount" value="${empty lists? 0 :lists.count}" /> 
+<c:set var="totalCount" value="${fn:length(lists)-1}" /> 
 <div class="tile col-md-12 p-5">
    <div class="col-md-6">
        <button class="btn btn-alt col-md-2 m-b-5" id="settingAdd">추가</button>
@@ -17,7 +17,7 @@ pageEncoding="UTF-8"%>
    </div>
 </div>
 <c:choose>
-	<c:when test="${not empty lists}">
+	<c:when test="${empty lists}">
 		<script>
 		$.ajax({
 			url : "${pageContext.request.contextPath}/cms/makepage/addForm",
@@ -29,7 +29,8 @@ pageEncoding="UTF-8"%>
 		</script>
 	</c:when>
 	<c:otherwise>
-		<c:forEach begin="0" end="10" varStatus="loop">
+	<c:set var="totalCount" value="${fn:length(lists)-1}" /> 
+		<c:forEach items="${lists}" var="list" varStatus="loop">
   				<script>
   				$.ajax({
   					url : "${pageContext.request.contextPath}/cms/makepage/addForm",

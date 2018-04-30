@@ -1,9 +1,11 @@
 package hanibal.ibs.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import hanibal.ibs.dao.IbsAppDAO;
 
+@Controller
 public class IbsAppController {
 	Logger log = Logger.getLogger(this.getClass());
 	IbsAppDAO ibsAppDAO;
@@ -26,6 +28,6 @@ public class IbsAppController {
 
 	@RequestMapping("/api/app")
 	public String appMain() {
-		return "/ibsAppViews/main.ibs";
+		return "/ibsAppViews/test.inc";
 	}
 }

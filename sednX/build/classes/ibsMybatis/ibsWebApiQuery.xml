@@ -1222,7 +1222,8 @@
 				reg_dt,       
 				edit_dt,       
 				reg_ip,       
-				del_flag
-			from tb_web_layout where idx=#{idx};
+				del_flag,
+				wl_category
+			from tb_web_layout where wl_category=#{idx};
 		</select>
 </mapper>

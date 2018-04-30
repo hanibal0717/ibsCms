@@ -15,6 +15,7 @@ public class LayoutDTO {
 	private String edit_dt;
 	private String reg_ip;
 	private String del_flag;
+	private int wl_cateogry;
 	public int getIdx() {
 		return idx;
 	}
@@ -98,6 +99,12 @@ public class LayoutDTO {
 	}
 	public void setDel_flag(String del_flag) {
 		this.del_flag = del_flag;
+	}
+	public int getWl_cateogry() {
+		return wl_cateogry;
+	}
+	public void setWl_cateogry(int wl_cateogry) {
+		this.wl_cateogry = wl_cateogry;
 	}
 	
 	
