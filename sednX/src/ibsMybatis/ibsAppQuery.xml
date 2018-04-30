@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="ibsMybatis.ibsAppQuery">
+	<select id="checkMemberInfo" parameterType="java.util.Map" resultType="int">
+		select count(member_id) 
+		from tb_account_member 
+		where member_id = #{account} and member_pass = #{password};
+	</select>
+	<select id="getMemberToken" parameterType="String" resultType="String">
+		select member_tempcode 
+		from tb_account_member 
+		where member_id = #{account};
+	</select>
 </mapper>
