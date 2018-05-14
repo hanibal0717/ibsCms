@@ -55,7 +55,9 @@ pageEncoding="UTF-8"%>
 	                   </div>	
 	                 </div>
 	                 <div id="pageView"></div>
+	                 
                  </div>
+                 
 			<!--TITLE END-->
 			<!-- CONTENTS START -->
 			<input type="hidden" id="categoryIdx" value="1" />

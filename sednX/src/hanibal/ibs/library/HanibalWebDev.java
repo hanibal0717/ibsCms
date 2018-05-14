@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.FileStore;
@@ -13,6 +14,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -276,7 +278,38 @@ public class HanibalWebDev  extends MysqlConnect{
 		}
 		return name;
 	}
+	public static String getCategoryNames(String sort,String idx) throws IOException {
+		String name="";
+	
+			URL url = new URL("http://localhost:8080/api/seqKeyList");
+			InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+			JSONObject object = (JSONObject)JSONValue.parse(isr);
+			String dbProps=String.valueOf(object.get("dbProperties"));
+			dbConnect(dbProps);
+			String table=targetTable(sort);
+			String sql="select idx,category_name from "+table+" where idx in("+idx+")";
+			log.info(sql);
+			try {
+				con.setAutoCommit(false);
+				psmt=con.prepareStatement(sql);
+				rs = psmt.executeQuery();
+				while(rs.next()){
+				name+="<div class=\"m-b-15 m-l-10\" style=\"float:left\">"	;
+				name+="<button class=\"btn btn-sm\">";
+				name+=rs.getString(2);
+				name+="<span class=\"del\"> ×</span>";
+				name+="</button>";
+				name+="</div>";
+				}
+				con.commit();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				dbClose();
+			}
 
+		return name;
+	}
 	public static String getCategorySelect(String table, String idx) throws IOException {
 		String returnHtml="";
 		URL url = new URL("http://localhost:8080/api/seqKeyList");
@@ -750,14 +783,14 @@ public class HanibalWebDev  extends MysqlConnect{
 			while(rs.next()) {
 				if(depthCount==-1) {
 					selectTag+=" <optgroup label=\""+rs.getString(2)+"\">";
-					selectTag+="<option>"+rs.getString(3)+"</option>";
+					selectTag+="<option value=\""+rs.getString(4)+"\">"+rs.getString(3)+"</option>";
 					depthCount=Integer.parseInt(rs.getString(6));
 				}else if(depthCount==Integer.parseInt(rs.getString(6))){
-					selectTag+="<option>"+rs.getString(3)+"</option>";
+					selectTag+="<option value=\""+rs.getString(4)+"\">"+rs.getString(3)+"</option>";
 				}else if(depthCount<Integer.parseInt(rs.getString(6))) {
 					selectTag+="</optgroup>";
 					selectTag+=" <optgroup label=\""+rs.getString(2)+"\">";
-					selectTag+="<option>"+rs.getString(3)+"</option>";
+					selectTag+="<option value=\""+rs.getString(4)+"\">"+rs.getString(3)+"</option>";
 					depthCount=Integer.parseInt(rs.getString(6));
 				}else if(rs.last()) {
 					selectTag+="</optgroup>";
@@ -772,7 +805,59 @@ public class HanibalWebDev  extends MysqlConnect{
 		}
 		return selectTag;
 	}
-	
+	public static String getChildIdx(int parent) throws Exception {
+		String childIdx="";
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="select idx from tb_board_category where pid="+parent+" order by position asc";
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+					childIdx+=rs.getString(1)+",";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return childIdx.substring(0,childIdx.length()-1);
+	}
+	public static String getFileVolume(long volume) {
+		String CalcuSize=null;
+		int i=0;
+		double calcu=(double) volume;
+		while(calcu>=1024&&i<5) {
+			calcu=calcu/1024;
+			i++;
+		}
+		DecimalFormat df = new DecimalFormat("##0.0");
+	    switch (i) {
+	        case 0:
+	            CalcuSize = df.format(calcu) + "Byte";
+	            break;
+	        case 1:
+	            CalcuSize = df.format(calcu) + "KB";
+	            break;
+	        case 2:
+	            CalcuSize = df.format(calcu) + "MB";
+	            break;
+	        case 3:
+	            CalcuSize = df.format(calcu) + "GB";
+	            break;
+	        case 4:
+	            CalcuSize = df.format(calcu) + "TB";
+	            break;
+	        default:
+	            CalcuSize="XX"; //용량표시 불가
+
+	    }
+	    return CalcuSize;
+	}
 	/*****sung a*****/
 	public static String toString(String text) {
 		if( text == null) {
@@ -780,6 +865,8 @@ public class HanibalWebDev  extends MysqlConnect{
 			}
 			return text;
 		}
+
+	
 
 	
 }

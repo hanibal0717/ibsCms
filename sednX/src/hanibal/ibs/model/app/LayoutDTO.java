@@ -1,7 +1,7 @@
-package hanibal.ibs.model.webapi;
+package hanibal.ibs.model.app;
 
 public class LayoutDTO {
-	private int idx; 
+	private String idx;
 	private String wl_title;
 	private String wl_link_type;
 	private String wl_link_idx;
@@ -15,11 +15,11 @@ public class LayoutDTO {
 	private String edit_dt;
 	private String reg_ip;
 	private String del_flag;
-	private int wl_category;
-	public int getIdx() {
+	private String wl_category;
+	public String getIdx() {
 		return idx;
 	}
-	public void setIdx(int idx) {
+	public void setIdx(String idx) {
 		this.idx = idx;
 	}
 	public String getWl_title() {
@@ -100,13 +100,11 @@ public class LayoutDTO {
 	public void setDel_flag(String del_flag) {
 		this.del_flag = del_flag;
 	}
-	public int getWl_category() {
+	public String getWl_category() {
 		return wl_category;
 	}
-	public void setWl_category(int wl_category) {
+	public void setWl_category(String wl_category) {
 		this.wl_category = wl_category;
 	}
-	
-	
 	
 }

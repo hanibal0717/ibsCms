@@ -2,14 +2,212 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ibsMybatis.ibsAppQuery">
-	<select id="checkMemberInfo" parameterType="java.util.Map" resultType="int">
-		select count(member_id) 
+	<select id="checkId" parameterType="String" resultType="int">
+		select count(member_email) 
 		from tb_account_member 
-		where member_id = #{account} and member_pass = #{password};
+		where member_code_yn='Y' and member_email = #{auth_id};
 	</select>
-	<select id="getMemberToken" parameterType="String" resultType="String">
+	<select id="auth_token" parameterType="java.util.Map" resultType="String">
 		select member_tempcode 
 		from tb_account_member 
-		where member_id = #{account};
+		where member_code_yn='Y' and member_email = #{auth_id} and member_pass=#{auth_pass};
 	</select>
+	<insert id="insertToken" parameterType="String">
+		insert into tb_member_token (token) values (#{jwtString});
+	</insert>
+	<select id="checkToken" resultType="int" parameterType="String">
+		select count(token) from tb_member_token where token=#{token}
+	</select>
+	
+	<select id="getLayOutCategorys" resultType="java.util.Map" parameterType="int">
+		select wl_categorys,wl_sort from tb_web_layout where del_flag='N' and wl_category=#{category} and wl_type='A';
+	</select>
+	
+	<select id="bannerlist" resultType="hanibal.ibs.model.app.VodListAppDTO" parameterType="java.util.Map">
+		select
+				(a.idx) as vod_idx,
+                (select vod_path from tb_vod_repository where idx=a.vod_repo) as vod_path,
+				(a.board_title) as vod_title,
+                (a.board_content) as vod_content,
+                ifnull(a.board_keyword,'') as vod_keyword,
+                (select vod_play_time from tb_vod_repository where idx=a.vod_repo) as vod_play_time,
+				(a.favorite_count) as favorite_count,
+				(a.view_count) as view_count,
+				(select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as main_thumbnail,
+				(a.category_idx) as board_cate_idx,
+                (select category_name from tb_board_category where idx=a.category_idx) as board_cate_name
+			from tb_board_repository a  where 1=1 and a.del_flag='N'
+            <if test='eachFlag!=""'>
+		  		and a.category_idx in
+	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+	  		</if>
+	  	
+	  	<if test='wl_sort=="R"'>
+	  		order by  a.reg_dt desc 
+	  	</if>
+	  	<if test='wl_sort=="F"'>
+	  		order by  a.view_count desc 
+	  	</if>
+	  		limit 0,5;
+	</select>
+	
+	<select id="layoutList" resultType="hanibal.ibs.model.app.LayoutDTO" parameterType="int">
+		select  idx,          
+ 				wl_title,     
+ 				wl_link_type, 
+ 				wl_link_idx,  
+ 				wl_type,  
+ 				wl_height,    
+ 				wl_unit,    
+ 				wl_categorys, 
+ 				wl_attribute, 
+ 				wl_sort,      
+ 				reg_dt,      
+ 				edit_dt,      
+ 				reg_ip,      
+ 				del_flag,     
+ 				wl_category   
+ 		from tb_web_layout 
+ 		where del_flag='N' and wl_category=#{category} and wl_type not in('A');
+	</select>
+	<select id="mainLayoutlist" resultType="hanibal.ibs.model.app.VodListAppDTO" parameterType="java.util.Map">
+		select
+				(a.idx) as vod_idx,
+                (select vod_path from tb_vod_repository where idx=a.vod_repo) as vod_path,
+				(a.board_title) as vod_title,
+                (a.board_content) as vod_content,
+                ifnull(a.board_keyword,'') as vod_keyword,
+                (select vod_play_time from tb_vod_repository where idx=a.vod_repo) as vod_play_time,
+				(a.favorite_count) as favorite_count,
+				(a.view_count) as view_count,
+				(select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as main_thumbnail,
+				(select pid from tb_board_category where idx=a.category_idx) as board_cate_idx,
+                (select category_name from tb_board_category where idx=board_cate_idx) as board_cate_name
+			from tb_board_repository a  where 1=1 and a.del_flag='N'
+            <if test='eachFlag!=""'>
+		  		and a.category_idx in
+	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+	  		</if>
+	  	
+	  	<if test='wl_sort=="R"'>
+	  		order by  a.reg_dt desc 
+	  	</if>
+	  	<if test='wl_sort=="F"'>
+	  		order by  a.view_count desc 
+	  	</if>
+	  		limit 0,10
+	</select>
+	
+	<select id="getChildIdx" resultType="int" parameterType="int">
+		select idx from tb_board_category where pid=#{category} order by position asc
+	</select>
+		
+	
+	<select id="subLayoutlist" resultType="hanibal.ibs.model.app.VodListAppDTO" parameterType="java.util.Map">
+		select
+				(a.idx) as vod_idx,
+                (select vod_path from tb_vod_repository where idx=a.vod_repo) as vod_path,
+				(a.board_title) as vod_title,
+                (a.board_content) as vod_content,
+                ifnull(a.board_keyword,'') as vod_keyword,
+                (select vod_play_time from tb_vod_repository where idx=a.vod_repo) as vod_play_time,
+				(a.favorite_count) as favorite_count,
+				(a.view_count) as view_count,
+				(select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as main_thumbnail,
+				(a.category_idx) as board_cate_idx,
+                (select category_name from tb_board_category where idx=a.category_idx) as board_cate_name,
+                date_format(reg_dt,'%Y.%m.%d') as vod_regdate
+			from tb_board_repository a  where 1=1 and a.del_flag='N'
+            <if test='eachFlag!=""'>
+		  		and a.category_idx in
+	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+	  		</if>
+	  	
+	  	<if test='wl_sort=="R"'>
+	  		order by  a.reg_dt desc 
+	  	</if>
+	  	<if test='wl_sort=="F"'>
+	  		order by  a.view_count desc 
+	  	</if>
+	  		limit #{start},#{end}
+	</select>
+	
+	<select id="getDetailView" resultType="java.util.Map" parameterType="java.util.Map">
+		select 
+			(a.idx) as vod_idx,           
+			(select vod_path from tb_vod_repository where idx=a.vod_repo) as vod_path,          
+			(a.board_title) as vod_title,         
+			(a.board_content) as vod_content,       
+			ifnull(a.board_keyword,'') as vod_keyword,       
+			(select vod_play_time from tb_vod_repository where idx=a.vod_repo) as vod_play_time,     
+			(a.favorite_count) as favorite_count,    
+			(a.view_count) as view_count,        
+			(select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as main_thumbnail,    
+			(a.category_idx) as board_cate_idx,   
+			(select category_name from tb_board_category where idx=a.category_idx) as board_cate_name,   
+			(select resolution from tb_vod_box where repoIdx=a.vod_repo) as vod_reoslution,
+    		date_format(reg_dt,'%Y.%m.%d') as vod_regdate,       
+			(select file_size from tb_vod_box where repoIdx=a.vod_repo) as vod_volume,
+    		(select count(idx) from tb_favorite_contents where member_account=#{member_id} and board_idx=#{vod_idx}) as favorite_yn
+		from 
+    		tb_board_repository a
+    	where idx= #{vod_idx}
+	</select>
+	
+	<resultMap id="menuResult" type="java.util.HashMap">
+		 <result javaType="java.lang.String" column="board_cate_idx" property="board_cate_idx"/>
+		 <result javaType="java.lang.String" column="board_cate_name" property="board_cate_name"/>
+	</resultMap>
+	<select id="getParentList" resultMap="menuResult" parameterType="int">
+		select (idx) as board_cate_idx,(category_name) as board_cate_name from tb_board_category where pid=#{category} order by position asc;
+	</select>
+	
+	<select id="favorite_count" resultType="int" parameterType="java.util.Map">
+		select count(idx) from tb_favorite_contents where member_account=#{member_id} and board_idx=#{vod_idx} and del_flag='N';
+	</select>
+	<insert id="insertFavorite">
+		insert into
+			tb_favorite_contents (member_account,board_idx,device)
+		values (#{member_id},#{vod_idx},#{device});
+	</insert>
+	<update id="deleteFavorite" parameterType="java.util.Map">
+		update 
+			tb_favorite_contents
+		set
+			del_flag='Y'
+		where member_account=#{member_id} and board_idx=#{vod_idx}
+	</update>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
