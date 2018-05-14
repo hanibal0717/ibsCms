@@ -147,7 +147,10 @@
 	<!-- ibs App Mobile DAO & CONTROLLER [2018.4.16 HKS]--> 
 	<bean id="ibsAppDAO" class="hanibal.ibs.dao.IbsAppDAO" p:sqlFactory-ref="sqlFactory" p:sqlTemplate-ref="sqlSessionTemplate"/>
 	<bean id="ibsAppController" class="hanibal.ibs.controller.IbsAppController">
-		<property name="ibsAppDAO" ref="ibsAppDAO"></property> 
+		<property name="ibsAppDAO" ref="ibsAppDAO"></property>
+		<property name="sednIp" value="${Server.SEDN}"></property>
+		<property name="mediaIp" value="${Server.MEDIA}"></property> 
+		<property name="repositoryPath" value="${Path.REPOSITORY}"></property>
 	</bean>
 
 	

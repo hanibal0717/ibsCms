@@ -57,7 +57,6 @@ public class IbsStbApiController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/api/stb/{order}")
-	@ResponseBody
 	public void apiStb(
 			@PathVariable String order,
 			ModelMap mav,

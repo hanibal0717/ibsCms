@@ -1184,11 +1184,11 @@
 		</delete>
 		
 		<select id="getStbConnection" resultType="java.util.Map">
-			select count(idx) as connected
-					,((select count(idx) from tb_stb where del_flag='N') - count(idx)) as disconnected
+			select (select count(idx) from tb_stb where del_flag='N' and  <![CDATA[timediff(now(), last_ping_time) <= '00:01:10']]>) as connected
+					,(count(idx) - (select count(idx) from tb_stb where del_flag='N' and  <![CDATA[timediff(now(), last_ping_time) <= '00:01:10']]>)) as disconnected
                     ,(select count(idx) from tb_stb where del_flag='N') as totalcount
 			from tb_stb
-			where del_flag='N' and status = 1 or <![CDATA[timediff(now(), last_ping_time) <= '00:01:10']]>;
+			where del_flag='N';
 		</select>
 		
 		<select id="getScheduleGroup" resultType="int" parameterType="int">
@@ -1209,7 +1209,8 @@
 		</delete>
 		
 		<select id="getLayoutList" parameterType="int" resultType="hanibal.ibs.model.webapi.LayoutDTO">
-			select               
+			select
+				idx,               
 				wl_title,      
 				wl_link_type,  
 				wl_link_idx, 
@@ -1224,6 +1225,36 @@
 				reg_ip,       
 				del_flag,
 				wl_category
-			from tb_web_layout where wl_category=#{idx};
+			from tb_web_layout where wl_category=#{idx} order by idx asc;
+		</select>
+		
+		<select id="getLayoutDetail" resultType="java.util.Map" parameterType="int">
+			select
+				idx,               
+				wl_title,      
+				wl_link_type,  
+				wl_link_idx, 
+				wl_type,       
+				wl_height,     
+				wl_unit,       
+				wl_categorys,  
+				wl_attribute,  
+				wl_sort,       
+				reg_dt,       
+				edit_dt,       
+				reg_ip,       
+				del_flag,
+				wl_category
+			from tb_web_layout where idx=#{idx};
 		</select>
 </mapper>
+
+
+
+
+
+
+
+
+
+

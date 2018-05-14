@@ -513,6 +513,10 @@ public class IbsCmsDAO {
 		List<LayoutDTO> lists=sqlTemplate.selectList("getLayoutList",idx);
 		return lists;
 	}
+	public Map<String, Object> getLayoutDetail(String idx) {
+		Map<String, Object> map=sqlTemplate.selectOne("getLayoutDetail",idx);
+		return map;
+	}
 	
 	
 	

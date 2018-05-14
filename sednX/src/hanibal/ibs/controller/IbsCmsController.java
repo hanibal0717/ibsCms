@@ -432,14 +432,26 @@ public class IbsCmsController {
 	@RequestMapping("/cms/makepage/setting/{idx}")
 	public String makePageSetting(@PathVariable String idx,Model model) {
 		List<LayoutDTO> lists=ibsCmsDao.getLayoutList(Integer.parseInt(idx));
+		model.addAttribute("category",idx);
 		model.addAttribute("lists",lists);
 		return "/ibsCmsViews/WEB_MakePage_Setting.inc";
 	}
-	@RequestMapping("/cms/makepage/addForm")
-	public String addForm() {
-		return "/ibsInclude/insertSetting.inc";
-	}
 	
+	@RequestMapping("/cms/makepage/editForm/{category}/{index}/{type}/{idx}")
+	public String editForm(@PathVariable String category,
+			@PathVariable String index,
+			@PathVariable String type,
+			@PathVariable String idx,
+			Model model) {
+		if(type.equals("E")) {
+			Map<String,Object> detailMap=ibsCmsDao.getLayoutDetail(idx);
+			model.addAttribute("resultMap",detailMap);
+		}
+		model.addAttribute("idx", idx);
+		model.addAttribute("type",type);
+		model.addAttribute("index",index);
+		return "/ibsInclude/editSetting.inc";
+	}
 	/*UPDATE*/
 	@RequestMapping("/cms/update/{order}")
 	public void updateData(
