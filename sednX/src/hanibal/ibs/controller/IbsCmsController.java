@@ -84,8 +84,6 @@ public class IbsCmsController {
 		this.mediaIp = mediaIp;
 	}
 	
-	
-
 	@RequestMapping("/cms/login")
 	public String login() {
 		return "/ibsCmsViews/cmslogin.inc";
