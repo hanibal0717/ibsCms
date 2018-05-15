@@ -33,10 +33,10 @@ public class IbsUserDAO {
 	}
 	SqlMapClientTemplate sqlMapTemplate;
 
-//	//LOGIN INSERT 
-//	public void SednLogInsert(Map<String, Object> param) {
-//		sqlTemplate.selectList("SednLogInsert",param);
-//	}
+	//LOGIN INSERT 
+	public void SednLogInsert(Map<String, Object> param) {
+		sqlTemplate.selectList("SednLogInsert",param);
+	}
 	
 	//LayoutImage가져오기	
 	public List<Map<String,Object>> layoutImage() {

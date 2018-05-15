@@ -81,7 +81,7 @@ public class IbsUserController {
 		param.put("reg_ip", vIp); 
 		param.put("reg_id", "foryousa@naver.com");
 		param.put("device", "WEB");
-//		ibsUserDAO.SednLogInsert(param);
+		ibsUserDAO.SednLogInsert(param);
 		return returnView;
 	}
 	
