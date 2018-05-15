@@ -84,12 +84,11 @@ public class IbsCmsController {
 		this.mediaIp = mediaIp;
 	}
 	
-	
-
 	@RequestMapping("/cms/login")
 	public String login() {
 		return "/ibsCmsViews/cmslogin.inc";
 	}
+	
 	@RequestMapping(value="/cms/loginProcess",method=RequestMethod.POST)
 	public String loginProcess(@ModelAttribute MemberAccountDTO dto,HttpSession session,HttpServletRequest req) throws IOException, JSONException {
 		String returnPage="";
