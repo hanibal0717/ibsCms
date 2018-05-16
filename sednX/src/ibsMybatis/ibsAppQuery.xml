@@ -7,14 +7,17 @@
 		from tb_account_member 
 		where member_code_yn='Y' and member_email = #{auth_id};
 	</select>
+	
 	<select id="auth_token" parameterType="java.util.Map" resultType="String">
 		select member_tempcode 
 		from tb_account_member 
 		where member_code_yn='Y' and member_email = #{auth_id} and member_pass=#{auth_pass};
 	</select>
+	
 	<insert id="insertToken" parameterType="String">
 		insert into tb_member_token (token) values (#{jwtString});
 	</insert>
+	
 	<select id="checkToken" resultType="int" parameterType="String">
 		select count(token) from tb_member_token where token=#{token}
 	</select>
@@ -37,13 +40,13 @@
 				(a.category_idx) as board_cate_idx,
                 (select category_name from tb_board_category where idx=a.category_idx) as board_cate_name
 			from tb_board_repository a  where 1=1 and a.del_flag='N'
-            <if test='eachFlag!=""'>
-		  		and a.category_idx in
-	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
-         			#{type}
-      			</foreach>
-	  		</if>
-	  	
+            
+        <if test='eachFlag!=""'>
+			and a.category_idx in
+	  		<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+        		#{type}
+      		</foreach>
+	  	</if>
 	  	<if test='wl_sort=="R"'>
 	  		order by  a.reg_dt desc 
 	  	</if>
@@ -72,6 +75,7 @@
  		from tb_web_layout 
  		where del_flag='N' and wl_category=#{category} and wl_type not in('A');
 	</select>
+	
 	<select id="mainLayoutlist" resultType="hanibal.ibs.model.app.VodListAppDTO" parameterType="java.util.Map">
 		select
 				(a.idx) as vod_idx,
@@ -86,13 +90,13 @@
 				(select pid from tb_board_category where idx=a.category_idx) as board_cate_idx,
                 (select category_name from tb_board_category where idx=board_cate_idx) as board_cate_name
 			from tb_board_repository a  where 1=1 and a.del_flag='N'
-            <if test='eachFlag!=""'>
-		  		and a.category_idx in
-	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
-         			#{type}
-      			</foreach>
-	  		</if>
-	  	
+			
+        <if test='eachFlag!=""'>
+			and a.category_idx in
+	  		<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+        		#{type}
+      		</foreach>
+	  	</if>
 	  	<if test='wl_sort=="R"'>
 	  		order by  a.reg_dt desc 
 	  	</if>
@@ -105,7 +109,6 @@
 	<select id="getChildIdx" resultType="int" parameterType="int">
 		select idx from tb_board_category where pid=#{category} order by position asc
 	</select>
-		
 	
 	<select id="subLayoutlist" resultType="hanibal.ibs.model.app.VodListAppDTO" parameterType="java.util.Map">
 		select
@@ -122,13 +125,13 @@
                 (select category_name from tb_board_category where idx=a.category_idx) as board_cate_name,
                 date_format(reg_dt,'%Y.%m.%d') as vod_regdate
 			from tb_board_repository a  where 1=1 and a.del_flag='N'
-            <if test='eachFlag!=""'>
-		  		and a.category_idx in
-	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
-         			#{type}
-      			</foreach>
-	  		</if>
-	  	
+        
+        <if test='eachFlag!=""'>
+			and a.category_idx in
+	  		<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+        		#{type}
+      		</foreach>
+	  	</if>
 	  	<if test='wl_sort=="R"'>
 	  		order by  a.reg_dt desc 
 	  	</if>
@@ -164,6 +167,7 @@
 		 <result javaType="java.lang.String" column="board_cate_idx" property="board_cate_idx"/>
 		 <result javaType="java.lang.String" column="board_cate_name" property="board_cate_name"/>
 	</resultMap>
+	
 	<select id="getParentList" resultMap="menuResult" parameterType="int">
 		select (idx) as board_cate_idx,(category_name) as board_cate_name from tb_board_category where pid=#{category} order by position asc;
 	</select>
@@ -171,11 +175,13 @@
 	<select id="favorite_count" resultType="int" parameterType="java.util.Map">
 		select count(idx) from tb_favorite_contents where member_account=#{member_id} and board_idx=#{vod_idx} and del_flag='N';
 	</select>
+	
 	<insert id="insertFavorite">
 		insert into
 			tb_favorite_contents (member_account,board_idx,device)
 		values (#{member_id},#{vod_idx},#{device});
 	</insert>
+	
 	<update id="deleteFavorite" parameterType="java.util.Map">
 		update 
 			tb_favorite_contents
@@ -183,31 +189,64 @@
 			del_flag='Y'
 		where member_account=#{member_id} and board_idx=#{vod_idx}
 	</update>
+	
+	<select id="getFileRepoIdx" resultType="String" parameterType="java.util.Map">
+		select
+			file_repo
+		from 
+			tb_board_repository
+		where 
+			idx = #{vod_idx}		
+	</select>
+	
+	<select id="getPhotoRepoIdx" resultType="String" parameterType="java.util.Map">
+		select
+			photo_repo
+		from
+			tb_board_repository
+		where
+			idx = #{vod_idx}		
+	</select>
+	
+	<resultMap id="fileResult" type="java.util.HashMap">
+		 <result javaType="java.lang.String" column="file_path" property="file_path"/>
+		 <result javaType="java.lang.String" column="file_name" property="file_name"/>
+		 <result javaType="java.lang.String" column="file_volume" property="file_volume"/>
+		 <result javaType="java.lang.String" column="file_sort" property="file_sort"/>
+	</resultMap>
+	<select id="getFileInfo" resultMap="fileResult" parameterType="java.util.Map">
+		select
+			file_path,
+			file_title as file_name,
+			file_size as file_volume,
+			resolution as file_sort
+		from 
+			tb_file_repository 
+		where 
+			idx in 
+			<foreach collection="file_idx" item="type" index="index"  open="(" close=")" separator=",">
+	       		#{type}
+	   		</foreach>
+	</select>
+	
+	<resultMap id="photoResult" type="java.util.HashMap">
+		 <result javaType="java.lang.String" column="file_path" property="file_path"/>
+		 <result javaType="java.lang.String" column="file_name" property="file_name"/>
+		 <result javaType="java.lang.String" column="file_volume" property="file_volume"/>
+		 <result javaType="java.lang.String" column="file_sort" property="file_sort"/>
+	</resultMap>
+	<select id="getPhotoInfo" resultMap="photoResult" parameterType="java.util.Map">
+		select
+			photo_path as file_path,
+			photo_title as file_name,
+			file_size as file_volume,
+			resolution as file_sort
+		from 
+			tb_photo_repository 
+		where 
+			idx in 
+			<foreach collection="photo_idx" item="type" index="index"  open="(" close=")" separator=",">
+	       		#{type}
+	   		</foreach>
+	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
