@@ -1,4 +1,5 @@
 package hanibal.ibs.dao;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,7 +9,6 @@ import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,6 +220,7 @@ public class IbsAppDAO {
 		}
 		return affectCount;
 	}
+	
 	public void deleteFavorite(Map<String, Object> commandMap) throws ParseException {
 		JWT signeJWTReturn = (SignedJWT)SignedJWT.parse((String) commandMap.get("token"));
 		commandMap.put("member_id",signeJWTReturn.getJWTClaimsSet().getClaim("member_id"));
@@ -237,11 +238,47 @@ public class IbsAppDAO {
 		BufferedOutputStream bos=new BufferedOutputStream(res.getOutputStream());
 		int data=0;
 		byte[] buffer=new byte[1024];
-		while((data=bis.read(buffer,0,1024))!=-1){
+		while((data=bis.read(buffer,0,1024))!=-1) {
 			bos.write(buffer,0,data);
 			bos.flush();
 		}
 		bos.close();
 		bis.close();
+	}
+	
+	public List<HashMap<String, Object>> getFileInfo(Map<String, Object> commandMap) {
+		// board repository에서 각각 file, photo repository의 idx 값을 가져와서
+		String fileList = sqlTemplate.selectOne("getFileRepoIdx", commandMap);
+		String photoList = sqlTemplate.selectOne("getPhotoRepoIdx", commandMap);
+		
+		// file, photo repository에서 해당 idx값으로 데이터 조회한 후, lists에 담아온다
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("file_idx", HanibalWebDev.StringToIntArray(fileList));
+		map.put("photo_idx", HanibalWebDev.StringToIntArray(photoList));
+		List<HashMap<String, Object>> fileLists = sqlTemplate.selectList("getFileInfo", map);
+		List<HashMap<String, Object>> photoLists = sqlTemplate.selectList("getPhotoInfo", map);
+		
+		for(int i=0;i<fileLists.size();i++) {
+			String ext = (String)fileLists.get(i).get("file_sort");
+			String filename = String.valueOf(fileLists.get(i).get("file_path")).replace("." + ext, "");
+			fileLists.get(i).put("file_path", "/api/app/download/file/" + ext + "/" + filename);
+			fileLists.get(i).put("file_sort", "file");
+		}
+		
+		for(int i=0;i<photoLists.size();i++) {
+			String name = (String)photoLists.get(i).get("file_path");
+			int index = name.indexOf(".");
+			String filename = name.substring(0, index);
+			String ext = name.substring(index + 1);
+			photoLists.get(i).put("file_path", "/api/app/download/photo/" + ext + "/" + filename);
+			photoLists.get(i).put("file_sort", "img");
+		}
+		
+		// 담아온 lists를 하나로 합쳐서 리턴
+		List<HashMap<String, Object>> lists = new ArrayList<HashMap<String, Object>>();
+		lists.addAll(fileLists);
+		lists.addAll(photoLists);
+		
+		return lists;
 	}
 }
