@@ -1,8 +1,8 @@
 package hanibal.ibs.controller;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,12 +77,14 @@ public class IbsAppController {
 				mainData.put("type","1");
 				mainData.put("msg", "입력하신 아이디가 존재하지 않습니다.");
 				mainData.put("ret",subData);
-			}else if(result.equals("missPass")) {
+			}
+			else if(result.equals("missPass")) {
 				mainData.put("code","400");
 				mainData.put("type","1");
 				mainData.put("msg", "비밀번호가 일치하지 않습니다.");
 				mainData.put("ret",subData);
-			}else {
+			}
+			else {
 				mainData.put("code","200");
 				mainData.put("type","0");
 				mainData.put("msg", "");
@@ -90,7 +92,8 @@ public class IbsAppController {
 				subData.put("auth_token",token);
 				mainData.put("ret",subData);
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			mainData.put("code","400");
 			mainData.put("type","1");
 			mainData.put("msg", "앱을 로딩하는데 오류가 있습니다.");
@@ -103,13 +106,7 @@ public class IbsAppController {
 	
 	//Vod API
 	@RequestMapping("/api/app/vod/{order}")
-	public void vodApi(
-			@PathVariable String order,
-			@RequestParam(required=false) Map<String, Object> commandMap,
-			ModelMap mav,
-			HttpServletResponse res,
-			HttpServletRequest req
-			) throws Exception {
+	public void vodApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws Exception {
 		subData.clear();
 		mainData.clear();
 		int tokenCount=ibsAppDAO.checkToken((String)commandMap.get("token"));
@@ -118,7 +115,8 @@ public class IbsAppController {
 			mainData.put("type","1");
 			mainData.put("msg", "로그인을 해주세요.");
 			mainData.put("ret", subData);
-		}else {
+		}
+		else {
 			// 메인 배너형 리스트 
 			if(order.equals("bannerlist")) {
 				try {
@@ -128,13 +126,15 @@ public class IbsAppController {
 					mainData.put("type","0");
 					mainData.put("msg","");
 					mainData.put("ret", subData);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					mainData.put("code","400");
 					mainData.put("type","1");
 					mainData.put("msg", "앱을 로딩하는데 오류가 있습니다.");
 					mainData.put("ret", subData);
 				}
-			}else if(order.equals("mainlist")) {
+			}
+			else if(order.equals("mainlist")) {
 				try {
 					List<VodListAppDTO> lists=ibsAppDAO.getMainList(mediaIp);
 					subData.put("vodList",lists);
@@ -142,13 +142,15 @@ public class IbsAppController {
 					mainData.put("type","0");
 					mainData.put("msg","");
 					mainData.put("ret", subData);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					mainData.put("code","400");
 					mainData.put("type","1");
 					mainData.put("msg", "앱을 로딩하는데 오류가 있습니다.");
 					mainData.put("ret", subData);
 				}
-			}else if(order.equals("sublist")) {
+			}
+			else if(order.equals("sublist")) {
 				try {
 					List<VodListAppDTO> lists=ibsAppDAO.getSubist(commandMap,mediaIp);
 					List<HashMap<String,Object>> vodCategory=ibsAppDAO.getSibling(Integer.parseInt((String) commandMap.get("board_cate_idx")));			
@@ -158,13 +160,15 @@ public class IbsAppController {
 					mainData.put("type","0");
 					mainData.put("msg","");
 					mainData.put("ret", subData);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					mainData.put("code","400");
 					mainData.put("type","1");
 					mainData.put("msg", "앱을 로딩하는데 오류가 있습니다.");
 					mainData.put("ret", subData);
 				}
-			}else if(order.equals("detailView")){
+			}
+			else if(order.equals("detailView")){
 				try {
 					commandMap.put("mediaIp",mediaIp);
 					Map<String,Object> detailMap=ibsAppDAO.getDetailView(commandMap);
@@ -173,13 +177,15 @@ public class IbsAppController {
 					mainData.put("type","0");
 					mainData.put("msg","");
 					mainData.put("ret", subData);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					mainData.put("code","400");
 					mainData.put("type","1");
 					mainData.put("msg", "상세 페이지에 오류가 있습니다.");
 					mainData.put("ret", subData);
 				}
-			}else if(order.equals("favoriteAdd")) {
+			}
+			else if(order.equals("favoriteAdd")) {
 				try {
 					int affectCount=ibsAppDAO.insertFavorite(commandMap);
 					if(affectCount>0) {
@@ -187,19 +193,22 @@ public class IbsAppController {
 						mainData.put("code","200");
 						mainData.put("type","0");
 						mainData.put("msg","");
-					}else {
+					}
+					else {
 						mainData.put("code","400");
 						mainData.put("type","1");
 						mainData.put("msg","이미 등록한 컨텐츠 입니다.");
 					}
 					mainData.put("ret", subData);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					mainData.put("code","400");
 					mainData.put("type","1");
 					mainData.put("msg", "즐겨찾기 추가에 오류가 있습니다.");
 					mainData.put("ret", subData);
 				}
-			}else if(order.equals("favoriteDel")) {
+			}
+			else if(order.equals("favoriteDel")) {
 				try {
 					ibsAppDAO.deleteFavorite(commandMap);
 					subData.put("favorite_yn","N");
@@ -207,10 +216,27 @@ public class IbsAppController {
 					mainData.put("type","0");
 					mainData.put("msg","");
 					mainData.put("ret", subData);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					mainData.put("code","400");
 					mainData.put("type","1");
 					mainData.put("msg", "즐겨찾기 삭제에 오류가 있습니다.");
+					mainData.put("ret", subData);
+				}
+			}
+			else if(order.equals("filesinfo")) {
+				try {
+					List<HashMap<String, Object>> filesInfoMap = ibsAppDAO.getFileInfo(commandMap);
+					subData.put("fileList", filesInfoMap);
+					mainData.put("code", "200");
+					mainData.put("type", "0");
+					mainData.put("msg", "");
+					mainData.put("ret", subData);
+				}
+				catch (Exception e) {
+					mainData.put("code", "400");
+					mainData.put("type", "0");
+					mainData.put("msg", "파일 정보를 불러올 수 없습니다.");
 					mainData.put("ret", subData);
 				}
 			}
@@ -220,10 +246,10 @@ public class IbsAppController {
 	}
 	
 	@SuppressWarnings("resource")
-	@RequestMapping("/api/app/download/{repo}/{ext}/{fileName}")
-	public void downLoad(@PathVariable String repo,@PathVariable String ext,@PathVariable String fileName,HttpServletResponse res,HttpServletRequest req) throws Exception{
-		fileName=fileName+"."+ext;
-		String path=repositoryPath+"/"+repo.toUpperCase()+HanibalWebDev.getDataPath(fileName)+fileName;
+	@RequestMapping("/api/app/download/{fileName}")
+	public void downLoad(@PathVariable String fileName, HttpServletResponse res, HttpServletRequest req) throws Exception{
+		fileName=fileName+".mp4";
+		String path=repositoryPath+"/VOD"+HanibalWebDev.getDataPath(fileName)+fileName;
 		//ibsAppDAO.vodFileDownLoad(path,res,req);
 		String range = req.getHeader("Range");
 		log.info("range : "+range);
@@ -236,10 +262,11 @@ public class IbsAppController {
 		  end = file.length()-1;
 		}
 		res.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); 
-		if (file.length() <= Integer.MAX_VALUE)
-		{
+		res.setContentType("video/mp4");
+		if (file.length() <= Integer.MAX_VALUE) {
 		  res.setContentLength((int)file.length());
-		}else{
+		}
+		else {
 		  res.addHeader("Content-Length", Long.toString(file.length()));
 		}
 		res.setHeader("Accept-Ranges", "bytes");
@@ -255,49 +282,51 @@ public class IbsAppController {
 		  start += 1024;
 		}
 	}
+	
 	//LIVE API
 	@RequestMapping("/api/app/live/{order}")
-	public void liveApi(
-			@PathVariable String order,
-			@RequestParam(required=false) Map<String, Object> commandMap,
-			ModelMap mav,
-			HttpServletResponse res,
-			HttpServletRequest req
-			) throws JsonGenerationException, JsonMappingException, IOException {
+	public void liveApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException {
 	}
+	
 	//UCC API
 	@RequestMapping("/api/app/ucc/{order}")
-	public void uccApi(
-			@PathVariable String order,
-			@RequestParam(required=false) Map<String, Object> commandMap,
-			ModelMap mav,
-			HttpServletResponse res,
-			HttpServletRequest req
-			) {
+	public void uccApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) {
 		
 	}
+	
 	//컨퍼런스 API
 	@RequestMapping("/api/app/conf/{order}")
-	public void confApi(
-			@PathVariable String order,
-			@RequestParam(required=false) Map<String, Object> commandMap,
-			ModelMap mav,
-			HttpServletResponse res,
-			HttpServletRequest req
-			) {		
+	public void confApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) {		
+	
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	//마이페이지 API
+	@RequestMapping("/api/app/my/{order}")
+	public void myApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws Exception, JsonMappingException, IOException {
+		subData.clear();
+		mainData.clear();
+		int tokenCount = ibsAppDAO.checkToken((String)commandMap.get("token"));
+		if(tokenCount == 0) {
+			mainData.put("code","000");
+			mainData.put("type","1");
+			mainData.put("msg", "로그인을 해주세요.");
+			mainData.put("ret", subData);
+		}
+		else {
+			if(order.equals("favoriteList")) {
+				try {
+					log.info("hi");
+				}
+				catch (Exception e) {
+					mainData.put("code", "400");
+					mainData.put("type", "0");
+					mainData.put("msg", "즐겨찾기 추가에 오류가 발생했습니다.");
+					mainData.put("ret", subData);					
+				}
+			}
+		}
+		
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
 }
