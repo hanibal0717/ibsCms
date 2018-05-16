@@ -198,7 +198,7 @@ public class IbsAppDAO {
 		commandMap.put("member_id",signeJWTReturn.getJWTClaimsSet().getClaim("member_id"));
 		Map<String, Object> map=sqlTemplate.selectOne("getDetailView",commandMap);
 		String fileName=(String)map.get("vod_path");
-		map.put("vod_down_path","/api/app/download/"+fileName.replace(".mp4",""));
+		map.put("vod_down_path","/api/app/download/vod/mp4/"+fileName.replace(".mp4",""));
 		map.put("main_thumbnail","/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath((String)map.get("main_thumbnail"))+(String)map.get("main_thumbnail"));
 		map.put("vod_path","http://"+commandMap.get("mediaIp")+"/VOD"+HanibalWebDev.getDataPath((String)map.get("vod_path"))+(String)map.get("vod_path")+"/index.m3u8");
 		if(Integer.parseInt(String.valueOf(map.get("favorite_yn")))==0) {

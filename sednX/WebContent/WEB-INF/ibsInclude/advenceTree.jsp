@@ -88,7 +88,7 @@ $(function(){
       	$.ajax({
             url:'/api/jstree/moveCategory',
             type:'post',
-            data:{"idx": data.node.id, "old_parent": data.old_parent, "old_position": data.old_position, "parent": data.parent, "position": data.position},
+            data:{"idx": data.node.id, "old_parent": data.old_parent, "old_position": data.old_position, "parent": data.parent, "position": data.position,"sort":"${sort}"},
             success:function(result){
             	console.log("move success");
             },
@@ -224,7 +224,6 @@ var menuTree=(function(){
 	            success:function(result){
 	            	console.log(result);
 	            	ref.delete_node(sel);
-	        			contents.arangePage('${sort}','1','${sort}');
 	            },
 	            error:exception.delGroupException
 				});

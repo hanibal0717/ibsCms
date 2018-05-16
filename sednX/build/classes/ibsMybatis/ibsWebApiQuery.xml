@@ -583,26 +583,26 @@
 		</select>
 		<insert id="insertMenuBoard" parameterType="java.util.Map">
 			insert 
-			into tb_board_category (pid, position, category_name,property)
+			into ${table} (pid, position, category_name,property)
 			select #{parent}, ifnull(max(position)+1, 0), #{name},#{property}
 			from ${table}
 			where pid = #{parent}
 		</insert>
 		<update id="moveCategory" parameterType="java.util.Map">
 			update 
-				tb_board_category 
+				${table}
 			set 
 				pid=#{parent},
 				position=#{position}
 			where idx=#{idx} 
 		</update>
 		<update id="newPositionUpdate" parameterType="java.util.Map">
-			update tb_board_category
+			update ${table}
 			set position = position +1
 			where pid = #{parent} and position >= #{position}
 		</update>
 		<update id="oldPositionUpdate" parameterType="java.util.Map">
-			update tb_board_category
+			update ${table}
 			set position = position -1
 			where pid = #{parent} and position >= #{position}
 		</update>

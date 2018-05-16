@@ -104,7 +104,7 @@ public class IbsWebApiDAO {
 	public String createGroup(Map<String, Object> commandMap) {
 		String newId="";
 		table=HanibalWebDev.targetTable(String.valueOf(commandMap.get("sort")));
-		commandMap.put("table", table);
+		commandMap.put("table",table);
 		sqlTemplate.insert("insertMenuBoard",commandMap);
 		newId=sqlTemplate.selectOne("topIdxVod",table);
 		return newId;
@@ -136,6 +136,8 @@ public class IbsWebApiDAO {
 	public int moveCategory(Map<String, Object> commandMap) {
 		int affectcount=0;
 		Map<String,Object> sqlMap=new HashMap<String,Object>();
+		String table=HanibalWebDev.targetTable(String.valueOf(commandMap.get("sort")));
+		sqlMap.put("table", table);
 		sqlMap.put("parent",commandMap.get("old_parent"));
 		sqlMap.put("position",commandMap.get("old_position"));
 		sqlTemplate.update("oldPositionUpdate",sqlMap);

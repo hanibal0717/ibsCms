@@ -130,6 +130,10 @@
 				class="icon">&#61770;</span> <span class="menu-item">WORK SPACE</span>
 		</a></li>
 		<li><a class="sa-side"
+			href="${pageContext.request.contextPath}/sedn/web/liveManages"> <span
+				class="icon">&#61824;</span> <span class="menu-item">LIVE</span>
+		</a></li>
+		<li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/layout"> <span
 				class="icon">&#61717;</span> <span class="menu-item">MAIN PAGE EDITOR</span>
 		</a></li>

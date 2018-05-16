@@ -421,6 +421,9 @@ public class IbsWebApiController {
 	}
 	@RequestMapping("/api/jstree/addGroup")
 	public void addGroup(@RequestParam Map<String, Object> commandMap, ModelMap mav,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		if(commandMap.get("property")==null) {
+			commandMap.put("property",0);
+		}
 		String newNodeId=webApiDao.createGroup(commandMap);
 		mav.put("newNodeId",newNodeId);
     	mav.put("msg", "success");

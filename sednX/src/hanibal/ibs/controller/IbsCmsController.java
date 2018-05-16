@@ -737,6 +737,7 @@ public class IbsCmsController {
 		if(section.equals("managerAccount")) returnPage="/ibsCmsViews/WEB_ManagerAccount.cms";
 		if(section.equals("statistics")) returnPage="/ibsCmsViews/WEB_Statistics.cms";
 		if(section.equals("makepage")) returnPage="/ibsCmsViews/WEB_MakePage.cms";
+		if(section.equals("liveManages")) returnPage="/ibsCmsViews/WEB_LiveManages.cms";
 		return returnPage;
 	}
 	@RequestMapping("/sedn/stb/{section}")
@@ -800,7 +801,7 @@ public class IbsCmsController {
 		String usedMemory=HanibalWebDev.getUsedMemory();
 		String memoryPercent=HanibalWebDev.getPercent(totalMemory,usedMemory);
 		HashMap<String,Object> resultMap=ibsCmsDao.getStbConnection();
-		String stbPercent=HanibalWebDev.getPercent(String.valueOf(resultMap.get("totalcount")),String.valueOf(resultMap.get("disconnected")));
+		String stbPercent=HanibalWebDev.getPercent(String.valueOf(resultMap.get("totalcount")),String.valueOf(resultMap.get("connected")));
 		res.setCharacterEncoding("utf8");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("diskPercent",diskPercent);

@@ -220,10 +220,10 @@ public class IbsAppController {
 	}
 	
 	@SuppressWarnings("resource")
-	@RequestMapping("/api/app/download/{fileName}")
-	public void downLoad(@PathVariable String fileName,HttpServletResponse res,HttpServletRequest req) throws Exception{
-		fileName=fileName+".mp4";
-		String path=repositoryPath+"/VOD"+HanibalWebDev.getDataPath(fileName)+fileName;
+	@RequestMapping("/api/app/download/{repo}/{ext}/{fileName}")
+	public void downLoad(@PathVariable String repo,@PathVariable String ext,@PathVariable String fileName,HttpServletResponse res,HttpServletRequest req) throws Exception{
+		fileName=fileName+"."+ext;
+		String path=repositoryPath+"/"+repo.toUpperCase()+HanibalWebDev.getDataPath(fileName)+fileName;
 		//ibsAppDAO.vodFileDownLoad(path,res,req);
 		String range = req.getHeader("Range");
 		log.info("range : "+range);
@@ -236,7 +236,6 @@ public class IbsAppController {
 		  end = file.length()-1;
 		}
 		res.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); 
-		res.setContentType("video/mp4");
 		if (file.length() <= Integer.MAX_VALUE)
 		{
 		  res.setContentLength((int)file.length());
