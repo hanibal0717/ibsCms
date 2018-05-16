@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import hanibal.ibs.dao.IbsAppDAO;
 import hanibal.ibs.library.HanibalWebDev;
+import hanibal.ibs.model.app.FavoriteListDTO;
 import hanibal.ibs.model.app.VodListAppDTO;
 
 @Controller
@@ -241,6 +242,7 @@ public class IbsAppController {
 				}
 			}
 		}
+		
 		res.setCharacterEncoding("utf8");
 		res.getWriter().print(mapper.writeValueAsString(mainData));
 	}
@@ -315,7 +317,13 @@ public class IbsAppController {
 		else {
 			if(order.equals("favoriteList")) {
 				try {
-					log.info("hi");
+					commandMap.put("mediaIp", mediaIp);
+					List<FavoriteListDTO> getFavoriteListMap = ibsAppDAO.getFavoriteList(commandMap);
+					subData.put("vodFavoriteList", getFavoriteListMap);
+					mainData.put("code", "200");
+					mainData.put("type", "0");
+					mainData.put("msg", "");
+					mainData.put("ret", subData);
 				}
 				catch (Exception e) {
 					mainData.put("code", "400");

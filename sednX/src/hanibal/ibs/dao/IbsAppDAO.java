@@ -32,6 +32,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
 import hanibal.ibs.library.HanibalWebDev;
+import hanibal.ibs.model.app.FavoriteListDTO;
 import hanibal.ibs.model.app.VodListAppDTO;
 
 public class IbsAppDAO {
@@ -280,5 +281,20 @@ public class IbsAppDAO {
 		lists.addAll(photoLists);
 		
 		return lists;
+	}
+
+	public List<FavoriteListDTO> getFavoriteList(Map<String, Object> commandMap) throws ParseException {
+		// token에 담긴 member_id를 풀어내어 해당 정보를 조회한다
+		JWT signeJWTReturn = (SignedJWT)SignedJWT.parse((String) commandMap.get("token"));
+		commandMap.put("member_id",signeJWTReturn.getJWTClaimsSet().getClaim("member_id"));
+		List<FavoriteListDTO> favoriteList = sqlTemplate.selectList("getFavoriteIdx", commandMap);
+
+		for(int i=0;i<favoriteList.size();i++) {
+			String vodName = (String)favoriteList.get(i).getVod_path();
+			String thumbName = (String)favoriteList.get(i).getMain_thumbnail();
+			favoriteList.get(i).setVod_path("http://" + commandMap.get("mediaIp") + "/VOD" + HanibalWebDev.getDataPath((String)favoriteList.get(i).getVod_path()) + vodName + "/index.m3u8");
+			favoriteList.get(i).setMain_thumbnail("/REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath((String)favoriteList.get(i).getMain_thumbnail()) + thumbName);		
+		}
+		return favoriteList;
 	}
 }
