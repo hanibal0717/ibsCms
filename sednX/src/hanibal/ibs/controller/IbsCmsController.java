@@ -293,7 +293,7 @@ public class IbsCmsController {
 							req.getContextPath()+"/cms/list/file?");
 			model.addAttribute("pagingStr", pagingStr);
 			viewPage="/ibsCmsViews/WEB_Contents_fileList.inc";
-		}else if(order.equals("live")) {
+		}else if(order.equals("stb-schedule")) {
 			pageSize=15;
 			blockPage=15;
 			totalRecordCount = ibsCmsDao.getLiveTotalRecordCount(searchWord,childIdx);
@@ -376,7 +376,7 @@ public class IbsCmsController {
 							req.getContextPath()+"/cms/list/stb-controle?");
 			model.addAttribute("pagingStr", pagingStr);
 			viewPage="/ibsCmsViews/STB_Controle_List.inc";
-		}else if(order.equals("stb-schedule")) {
+		}else if(order.equals("live")) {
 			String events="";
 			String comma=",";
 			pageSize=10;

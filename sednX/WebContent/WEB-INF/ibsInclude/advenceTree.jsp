@@ -28,6 +28,8 @@
 <script src="${pageContext.request.contextPath}/ibsCmsJs/jstree.js"></script>
 <script>
 $(function(){
+	$("#categoryName").val('${defaultMenuName}');
+	$("#categoryIdx").val('${defaultMenuIdx}');
 	var data=eval('[${treeMenu}]');
 	$('#jstree').jstree({
 		"core" : {
@@ -78,10 +80,14 @@ $(function(){
 		}
 		
 		naviString=all_parents.join('<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>');
-		arange.naviBar($('#sort').val(),$('#treeIdx').val(),naviString);
-		$("#categoryIdx").val(sel.id);
-		arange.list(sel.id,sel.original.property);
 		
+		$("#categoryIdx").val(sel.id);
+		console.log($('#sort').val()+"/"+sel.id);
+		if($('#sort').val()!="live"||sel.id!='1'){
+			
+			arange.list(sel.id,sel.original.property);
+			arange.naviBar($('#sort').val(),$('#treeIdx').val(),naviString);
+		}
 	});
 	
 	$('#jstree').on("move_node.jstree", function (e, data) {
@@ -259,5 +265,11 @@ var menuTree=(function(){
   <button class="btn btn-block btn-alt" id="deleteGroup" >카테고리 삭제</button>
  </div>
 <div class="clearfix"></div>
+
+<input type="hidden" id="categoryIdx" value="" />
+<input type="hidden" id="categoryName" value="" />
+<input id="sort" type="hidden" value="live">
+<input id="treeIdx" type="hidden">
+<input id="optionText" type="hidden" value="">
 
  

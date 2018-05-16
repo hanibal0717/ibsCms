@@ -252,7 +252,10 @@ public class IbsWebApiController {
 		List<TreeMenu> lists=null;
 		lists=webApiDao.getMenuTree(order);
 		Cookie[] cookies = req.getCookies();
+		
 		String selected_node_id = "1";
+		
+		
 		if(cookies!=null){
 			for(int i=0; i<cookies.length; i++){
 				if(cookies[i].getName().equals("selected_node")){
@@ -277,8 +280,13 @@ public class IbsWebApiController {
 	@RequestMapping("/api/advenceTree/{order}")
 	public String advenceTree(@PathVariable String order,Model model,HttpServletRequest req) {
 		String selected_node_id = "1";
+		
 		String treeMenu="";
 		List<AdvenceTree> lists=webApiDao.getAdvenceTree(order);
+		if(order.equals("live")) {
+			selected_node_id=lists.get(1).getId();
+		}
+		log.info("-------"+order+"--------->"+selected_node_id);
 		lists.get(0).setParent("#");
 		for(int i=0;i<lists.size();i++) {
 			treeMenu+="{\"id\":\""+lists.get(i).getId()+"\",\"parent\":\""+lists.get(i).getParent()+"\",\"text\":\""+lists.get(i).getText();
@@ -298,8 +306,23 @@ public class IbsWebApiController {
 			if(lists.get(i).getId().equals(selected_node_id)) {
 					treeMenu+=",\"selected\":true";	
 			}
+			/*if(order.equals("live")&&i==0) {
+				treeMenu+=",\"disabled\":true";
+				//treeMenu+=",\"hidden\":true";	
+			}*/
 			treeMenu+="}},";
 		}
+		String defaultMenuName="";
+		String defaultMenuIdx="";
+		if(order.equals("live")) {
+			defaultMenuName=lists.get(1).getName();
+			defaultMenuIdx=lists.get(1).getId();
+		}else {
+			defaultMenuName=lists.get(0).getName();
+			defaultMenuIdx=lists.get(0).getId();
+		}
+		model.addAttribute("defaultMenuName",defaultMenuName);
+		model.addAttribute("defaultMenuIdx",defaultMenuIdx);
 		model.addAttribute("treeMenu", treeMenu);
 		model.addAttribute("sort", order);
 		return "/ibsInclude/advenceTree.inc";
