@@ -402,8 +402,10 @@ public class IbsCmsController {
 						+ "allDay:false,"
 						+ "idx :'"+eventLists.get(i).getIdx()+"' }"+comma+"";
 			}
+			List<HashMap<String,Object>> targetList=ibsCmsDao.getTargetList(childIdx);
 			model.addAttribute("events", events);
 			model.addAttribute("lists", lists);
+			model.addAttribute("targetLists",targetList);
 			model.addAttribute("childIdx", childIdx);
 			model.addAttribute("totalPage", totalPage);
 			model.addAttribute("totalRecordCount", totalRecordCount);

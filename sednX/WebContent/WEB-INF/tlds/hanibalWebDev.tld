@@ -90,6 +90,22 @@
 	  			java.lang.String getBoardSelect()
 	  		</function-signature>
 	  </function>
+	  
+	   <function>
+	  		<name>getDefaultLiveIdx</name>
+	  		<function-class>hanibal.ibs.library.HanibalWebDev</function-class>
+	  		<function-signature>
+	  			java.lang.String getDefaultLiveIdx()
+	  		</function-signature>
+	  </function>
+	  
+	   <function>
+	  		<name>getDefaultLiveName</name>
+	  		<function-class>hanibal.ibs.library.HanibalWebDev</function-class>
+	  		<function-signature>
+	  			java.lang.String getDefaultLiveName()
+	  		</function-signature>
+	  </function>
 </taglib>
 
 

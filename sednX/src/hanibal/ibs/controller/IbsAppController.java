@@ -248,11 +248,10 @@ public class IbsAppController {
 	}
 	
 	@SuppressWarnings("resource")
-	@RequestMapping("/api/app/download/{fileName}")
-	public void downLoad(@PathVariable String fileName, HttpServletResponse res, HttpServletRequest req) throws Exception{
-		fileName=fileName+".mp4";
-		String path=repositoryPath+"/VOD"+HanibalWebDev.getDataPath(fileName)+fileName;
-		//ibsAppDAO.vodFileDownLoad(path,res,req);
+	@RequestMapping("/api/app/download/{type}/{ext}/{fileName}")
+	public void downLoad(@PathVariable String type,@PathVariable String ext,@PathVariable String fileName, HttpServletResponse res, HttpServletRequest req) throws Exception{
+		fileName=fileName+"."+ext;
+		String path=repositoryPath+"/"+type.toUpperCase()+HanibalWebDev.getDataPath(fileName)+fileName;
 		String range = req.getHeader("Range");
 		log.info("range : "+range);
 		int i = range.indexOf("=");
@@ -264,7 +263,7 @@ public class IbsAppController {
 		  end = file.length()-1;
 		}
 		res.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); 
-		res.setContentType("video/mp4");
+		//res.setContentType("video/mp4");
 		if (file.length() <= Integer.MAX_VALUE) {
 		  res.setContentLength((int)file.length());
 		}
@@ -284,7 +283,12 @@ public class IbsAppController {
 		  start += 1024;
 		}
 	}
-	
+	@RequestMapping("/api/app/filedown/{type}/{ext}/{fileName}")
+	public void fileDownLoad(@PathVariable String type,@PathVariable String ext,@PathVariable String fileName, HttpServletResponse res, HttpServletRequest req) throws Exception {
+		fileName=fileName+"."+ext;
+		String path=repositoryPath+"/"+type.toUpperCase()+HanibalWebDev.getDataPath(fileName)+fileName;
+		ibsAppDAO.fileDownLoad(path,res,req);
+	}
 	//LIVE API
 	@RequestMapping("/api/app/live/{order}")
 	public void liveApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException {

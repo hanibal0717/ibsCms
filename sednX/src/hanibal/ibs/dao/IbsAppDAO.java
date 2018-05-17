@@ -262,7 +262,7 @@ public class IbsAppDAO {
 		for(int i=0;i<fileLists.size();i++) {
 			String ext = (String)fileLists.get(i).get("file_sort");
 			String filename = String.valueOf(fileLists.get(i).get("file_path")).replace("." + ext, "");
-			fileLists.get(i).put("file_path", "/api/app/download/file/" + ext + "/" + filename);
+			fileLists.get(i).put("file_path", "/api/app/filedown/file/" + ext + "/" + filename);
 			fileLists.get(i).put("file_sort", "file");
 		}
 		

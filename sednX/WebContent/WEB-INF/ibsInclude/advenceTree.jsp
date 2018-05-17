@@ -28,8 +28,6 @@
 <script src="${pageContext.request.contextPath}/ibsCmsJs/jstree.js"></script>
 <script>
 $(function(){
-	$("#categoryName").val('${defaultMenuName}');
-	$("#categoryIdx").val('${defaultMenuIdx}');
 	var data=eval('[${treeMenu}]');
 	$('#jstree').jstree({
 		"core" : {
@@ -266,10 +264,6 @@ var menuTree=(function(){
  </div>
 <div class="clearfix"></div>
 
-<input type="hidden" id="categoryIdx" value="" />
-<input type="hidden" id="categoryName" value="" />
-<input id="sort" type="hidden" value="live">
-<input id="treeIdx" type="hidden">
-<input id="optionText" type="hidden" value="">
+
 
  

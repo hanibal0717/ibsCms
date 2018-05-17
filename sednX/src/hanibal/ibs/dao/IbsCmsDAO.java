@@ -332,6 +332,18 @@ public class IbsCmsDAO {
 		List<ScheduleDTO> lists=sqlTemplate.selectList("EventList",map);
 		return lists;
 	}
+	public List<HashMap<String, Object>> getTargetList(String childIdx) {
+		Map<String,Object> map= new HashMap<String,Object>();
+		String eachFlag="N";
+		if(childIdx.length()!=0) {
+			int childIdxArr[]=HanibalWebDev.StringToIntArray(childIdx);
+			eachFlag="Y";
+			map.put("childIdxArr", childIdxArr);
+		}
+		map.put("eachFlag",eachFlag);
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getTagetList",map);
+		return lists;
+	}
 	
 	public int updateElemCategory(Map<String, Object> commandMap) {
 		String repoTable=HanibalWebDev.targetRepoTable(String.valueOf(commandMap.get("sort")));
@@ -517,6 +529,7 @@ public class IbsCmsDAO {
 		Map<String, Object> map=sqlTemplate.selectOne("getLayoutDetail",idx);
 		return map;
 	}
+	
 	
 	
 	

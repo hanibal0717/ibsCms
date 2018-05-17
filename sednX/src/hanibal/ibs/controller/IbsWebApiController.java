@@ -314,15 +314,6 @@ public class IbsWebApiController {
 		}
 		String defaultMenuName="";
 		String defaultMenuIdx="";
-		if(order.equals("live")) {
-			defaultMenuName=lists.get(1).getName();
-			defaultMenuIdx=lists.get(1).getId();
-		}else {
-			defaultMenuName=lists.get(0).getName();
-			defaultMenuIdx=lists.get(0).getId();
-		}
-		model.addAttribute("defaultMenuName",defaultMenuName);
-		model.addAttribute("defaultMenuIdx",defaultMenuIdx);
 		model.addAttribute("treeMenu", treeMenu);
 		model.addAttribute("sort", order);
 		return "/ibsInclude/advenceTree.inc";

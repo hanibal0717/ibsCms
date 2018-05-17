@@ -48,7 +48,7 @@ pageEncoding="UTF-8"%>
 	                       <i class="fa fa-bars m-r-10"></i><span id="navibar">메인 페이지</span>
 	                   </h5>
 	                   <div class="pull-right">
-	                   		<a id="setting" style="cursor:pointer;"><span class="icon" >&#61886;</span> 설정</a>
+	                   		<a id="addLiveTarget" style="cursor:pointer;"><span class="icon" >&#61886;</span> 설정</a>
 	                   </div>	
 	                 </div>
 	                 <div id="pageView"></div>
@@ -56,13 +56,19 @@ pageEncoding="UTF-8"%>
                  </div>
                  
 			<!--TITLE END-->
-			
+			<input type="hidden" id="categoryIdx" value="" />
+			<input type="hidden" id="categoryName" value="" />
+			<input id="sort" type="hidden" value="live">
+			<input id="treeIdx" type="hidden">
+			<input id="optionText" type="hidden" value="">
 			<!-- CONTENTS END -->	
 			</div>
 	    </div>
    	</div>
 </section>
 <script>
+$('#categoryIdx').val('${hn:getDefaultLiveIdx()}');
+$('#categoryName').val('${hn:getDefaultLiveName()}');
 var option='${hn:getBoardSelect()}';
 $('#optionText').val(option);
 var menuJs = (function() {
@@ -150,8 +156,11 @@ var arange=(function(){
 <script>
 	//loaded reset
 	menuJs.makeJsTree();
-	console.log($("#categoryIdx").val()+"/"+$("#categoryName").val());
 	$('#cmsPageTitle').html('라이브 관리');
 	arange.list($("#categoryIdx").val());
 	arange.naviBar('live', $("#categoryIdx").val(), $("#categoryName").val());
+	$('#addLiveTarget').click(function(){
+		console.log($('#treeIdx').val());
+		$('#liveTargetAdd').modal();
+	});
 </script>

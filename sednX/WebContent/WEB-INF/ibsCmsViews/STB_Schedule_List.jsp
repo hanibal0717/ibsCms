@@ -13,9 +13,27 @@
     .label-brown {background-color: #4a1824;}
     .label-green {background-color: #217724;padding:2px;}
     .label-new {background-color: #dc0000;}
+     li.round {border-radius: 17px !important; background: rgba(0, 112, 255, 0.13); border: 1px solid rgba(0, 0, 0, 0.31); color: #fff; list-style: none; display: inline-block; padding: 6px 12px; font-size: 14px; line-height: 1.42857143;}
 </style>
 <!-- carleder start -->
 <div class="col-md-12 clearfix">
+	<div class="text-center m-t-10 m-b-10">
+		<ul>
+	    <c:choose>
+	    	<c:when test="${empty targetLists}">
+	    		<ul>
+	    			<li class="round m-r-5">방송 그룹이 없습니다.</li>
+	    		</ul>
+	    	</c:when>
+	    	<c:otherwise>
+	    	<c:forEach items="${targetLists}" var="targetList" varStatus="loop">
+	    		<li class="round m-r-5">${targetList.target_name }</li>
+		    </c:forEach>
+		   </c:otherwise>
+		 </c:choose>
+		 </ul>
+	</div>
+
 	<div id="calendar" class="p-relative p-5 m-b-10">
         <!-- Calendar Views -->
         <ul class="calendar-actions list-inline clearfix">

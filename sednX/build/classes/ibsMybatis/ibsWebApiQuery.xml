@@ -542,13 +542,26 @@
 			where 1=1 
 			and del_flag='N'
 		  		<if test='eachFlag!=""'>
-	  				and group_id in
+	  				and category_idx in
 	  				<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
          				#{type}
       				</foreach>
       			</if>
       			group by a.idx
       			order by a.start desc;
+		</select>
+		<select id="getTagetList" parameterType="java.util.Map" resultType="java.util.Map">
+			select a.idx,a.channel_idx,a.group_idx,b.category_name,ifnull(c.category_name,'인터넷 방송') as target_name from tb_live_channel_target a
+					left join tb_live_category b on a.channel_idx=b.idx
+    				left join tb_stb_category c on a.group_idx=c.idx
+ 			where 1=1
+				<if test='eachFlag!=""'>
+  					and a.channel_idx in
+  					<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
+        				#{type}
+     				</foreach>
+     			</if>
+     			order by a.idx asc;
 		</select>
 		<!-- MENU TREE -->
 		<select id="getMenuTree" parameterType="java.util.Map" resultType="hanibal.ibs.model.webapi.TreeMenu">

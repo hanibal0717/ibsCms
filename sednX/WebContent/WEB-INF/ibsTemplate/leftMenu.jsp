@@ -477,7 +477,65 @@
            </div>
       </div>
  </div>
- <!-- ##########ALL MODAL END SCHEDULE##################### -->                               
+ <!-- ##########ALL MODAL END SCHEDULE##################### -->   
+ <!-- ################# ADD LIVE TARGET MODAL START################### -->
+<div class="modal fade in" id="liveTargetAdd" tabindex="-1" role="dialog" aria-hidden="false">
+    <div class="modal-dialog" style="top: 30%;">
+        <div class="modal-content">
+            <div class="modal-body" style="padding: 30px; overflow: hidden;">
+                <div class="col-md-12">
+                    <div class="m-b-15 col-md-2" style="top: 5px;">
+                        <label class="checkbox-inline">
+                            채널이름 :
+                        </label>
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control input-sm" value="공용채널 #1" />
+                    </div>
+                </div>
+
+                <div class="col-md-12 m-t-20 m-b-15 p-20" style="border: 1px solid rgba(255, 255, 255, 0.5); width: calc(100% - 29px); left: 15px;">
+                    <p style="position: absolute; top: -11px; background: #2c3a45; padding: 0 10px;">방송 대상 선택</p>                            
+                    <div class="col-md-4 m-b-15">
+                        <div class="btn-group bootstrap-select select">
+                            <button type="button" class="btn btn-sm form-control dropdown-toggle" data-toggle="dropdown">
+                                <div class="pull-left"><i class="fa fa-desktop m-r-10"></i>인터넷 방송</div>
+                            </button>
+                            <div class="dropdown-menu open" style="max-height: 654px; overflow: hidden; min-height: 83px; padding: 0;">
+                                <ul class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: 83px;">
+                                    <li><a href="#"><i class="fa fa-desktop m-r-10"></i><span class="text">인터넷 방송</span></a></li>
+                                    <li><a href="#"><i class="fa fa-desktop m-r-10"></i>전체 셋탑박스</a></li>
+                                    <li class="p-l-10"><a href="#"><i class="fa fa-desktop m-r-10"></i>플래너 본부</a></li>
+                                    <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>1본부</a></li>
+                                    <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>2본부</a></li>
+                                    <li  class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>3본부</a></li>
+                                    <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>4본부</a></li>
+                                    <li class="p-l-10"><a href="#"><i class="fa fa-desktop m-r-10"></i>PCC 지사</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 m-b-15">
+                        <button class="btn btn-sm">방송타겟추가 </button>
+                    </div>
+                	<div class="col-md-12">
+                    	<!-- 20180419 메뉴삭제 -->
+                    	<div class="col-md-3 m-b-15">
+                        	<button class="btn btn-sm">인터넷 방송 <span class="del" style="margin-left: 5px; font-size: 18px;line-height: 0;top: 4px;position: relative;font-weight: 500;">×</span></button>
+                    	</div><!-- //20180419 메뉴삭제 -->
+                    	
+                    </div>
+                </div>
+            </div>
+               
+            <div class="modal-footer">
+                <button class="btn btn-sm cancel">취소</button>
+                <button class="btn btn-sm pull-right" data-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- ################# ADD LIVE TARGET MODAL START################### -->                          
 <script>
 $(function(){
 	system.nowInfo();

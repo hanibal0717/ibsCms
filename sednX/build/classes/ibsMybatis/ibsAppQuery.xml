@@ -249,4 +249,28 @@
 	       		#{type}
 	   		</foreach>
 	</select>
+	
+	<select id="getFavoriteIdx" resultType="hanibal.ibs.model.app.FavoriteListDTO" parameterType="java.util.Map">
+		select 
+			c.idx as vod_idx, 
+			c.vod_path, 
+			c.vod_title, 
+			c.vod_content, 
+			c.vod_keyword, 
+			c.vod_play_time, 
+			c.favorite_count, 
+			c.view_count, 
+			c.main_thumbnail, 
+			b.category_idx as board_cate_idx, 
+			b.board_title as board_cate_name, 
+			b.reg_dt as vod_regdate 
+		from 
+			tb_favorite_contents a 
+		left join 
+			tb_board_repository b on a.board_idx = b.idx 
+		left join 
+			tb_vod_repository c on b.vod_repo = c.idx 
+		where 
+			a.member_account = #{member_id};
+	</select>
 </mapper>
