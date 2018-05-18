@@ -146,10 +146,20 @@ var arange=(function(){
 			error : exception.ajaxException
 		});
 	};
+	var targetView=function(idx){
+		$.ajax({
+			url : "${pageContext.request.contextPath}/cms/target/"+idx,
+			success : function(data){
+				$('#pageView').html(data);
+			},
+			error : exception.ajaxException
+		});
+	};
 	return {
 		naviBar : naviBar,
 		list : list,
-		contentsView : contentsView
+		contentsView : contentsView,
+		targetView : targetView
 	}
 }());
 </script>
@@ -160,7 +170,7 @@ var arange=(function(){
 	arange.list($("#categoryIdx").val());
 	arange.naviBar('live', $("#categoryIdx").val(), $("#categoryName").val());
 	$('#addLiveTarget').click(function(){
-		console.log($('#treeIdx').val());
+		arange.targetView($('#treeIdx').val());
 		$('#liveTargetAdd').modal();
 	});
 </script>

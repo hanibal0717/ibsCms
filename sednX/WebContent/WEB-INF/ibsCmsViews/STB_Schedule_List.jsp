@@ -21,9 +21,7 @@
 		<ul>
 	    <c:choose>
 	    	<c:when test="${empty targetLists}">
-	    		<ul>
 	    			<li class="round m-r-5">방송 그룹이 없습니다.</li>
-	    		</ul>
 	    	</c:when>
 	    	<c:otherwise>
 	    	<c:forEach items="${targetLists}" var="targetList" varStatus="loop">

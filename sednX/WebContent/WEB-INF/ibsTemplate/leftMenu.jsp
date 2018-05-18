@@ -502,7 +502,8 @@
                                 <div class="pull-left"><i class="fa fa-desktop m-r-10"></i>인터넷 방송</div>
                             </button>
                             <div class="dropdown-menu open" style="max-height: 654px; overflow: hidden; min-height: 83px; padding: 0;">
-                                <ul class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: 83px;">
+                                <div class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: 83px;">
+                                    <ul>
                                     <li><a href="#"><i class="fa fa-desktop m-r-10"></i><span class="text">인터넷 방송</span></a></li>
                                     <li><a href="#"><i class="fa fa-desktop m-r-10"></i>전체 셋탑박스</a></li>
                                     <li class="p-l-10"><a href="#"><i class="fa fa-desktop m-r-10"></i>플래너 본부</a></li>
@@ -511,18 +512,30 @@
                                     <li  class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>3본부</a></li>
                                     <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>4본부</a></li>
                                     <li class="p-l-10"><a href="#"><i class="fa fa-desktop m-r-10"></i>PCC 지사</a></li>
-                                </ul>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 m-b-15">
                         <button class="btn btn-sm">방송타겟추가 </button>
                     </div>
-                	<div class="col-md-12">
+                	<div class="col-md-12" id="modelTargetList">
                     	<!-- 20180419 메뉴삭제 -->
-                    	<div class="col-md-3 m-b-15">
-                        	<button class="btn btn-sm">인터넷 방송 <span class="del" style="margin-left: 5px; font-size: 18px;line-height: 0;top: 4px;position: relative;font-weight: 500;">×</span></button>
-                    	</div><!-- //20180419 메뉴삭제 -->
+                    	
+	                    	 <c:choose>
+						    	<c:when test="${empty targetLists}">
+						    		<div>방송 그룹이 없습니다.</div>
+						    	</c:when>
+						    	<c:otherwise>
+						    	<c:forEach items="${targetLists}" var="targetList" varStatus="loop">
+						    		<div class="col-md-3 m-b-15">
+						    		<button class="btn btn-sm">${targetList.target_name }<span class="del" style="margin-left: 5px; font-size: 18px;line-height: 0;top: 4px;position: relative;font-weight: 500;">×</span></button>
+							    	</div>
+							    </c:forEach>
+							   </c:otherwise>
+							 </c:choose>
+                    	
                     	
                     </div>
                 </div>

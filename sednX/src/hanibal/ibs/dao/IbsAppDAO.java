@@ -271,7 +271,7 @@ public class IbsAppDAO {
 			int index = name.indexOf(".");
 			String filename = name.substring(0, index);
 			String ext = name.substring(index + 1);
-			photoLists.get(i).put("file_path", "/api/app/download/photo/" + ext + "/" + filename);
+			photoLists.get(i).put("file_path", "/api/app/filedown/photo/" + ext + "/" + filename);
 			photoLists.get(i).put("file_sort", "img");
 		}
 		

@@ -811,4 +811,6 @@ public class IbsCmsController {
 		map.put("stbPercent", stbPercent);
 		res.getWriter().print(mapper.writeValueAsString(map));
 	}
+	//@RequestMapping("/cms/target/{idx}")
+	//public String targetList
 }
