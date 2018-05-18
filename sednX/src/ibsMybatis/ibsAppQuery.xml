@@ -252,7 +252,7 @@
 	
 	<select id="getFavoriteIdx" resultType="hanibal.ibs.model.app.FavoriteListDTO" parameterType="java.util.Map">
 		select 
-			c.idx as vod_idx, 
+			b.idx as vod_idx, 
 			c.vod_path, 
 			c.vod_title, 
 			c.vod_content, 
