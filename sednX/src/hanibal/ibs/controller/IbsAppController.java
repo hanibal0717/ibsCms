@@ -292,6 +292,38 @@ public class IbsAppController {
 	//LIVE API
 	@RequestMapping("/api/app/live/{order}")
 	public void liveApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException {
+		subData.clear();
+		mainData.clear();
+		int tokenCount = ibsAppDAO.checkToken((String)commandMap.get("token"));
+		if(tokenCount == 0) {
+			mainData.put("code","000");
+			mainData.put("type","1");
+			mainData.put("msg", "로그인을 해주세요.");
+			mainData.put("ret", subData);
+		}
+		else {
+			if(order.equals("pairing")) {
+				try {
+					commandMap.put("mediaIp", mediaIp);
+					List<HashMap<String, Object>> getLivePairingList = ibsAppDAO.getLivePairing(commandMap);
+					subData.put("chList", getLivePairingList);
+					subData.put("currentTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+					mainData.put("code", "200");
+					mainData.put("type", "0");
+					mainData.put("msg", "");
+					mainData.put("ret", subData);
+				}
+				catch (Exception e) {
+					mainData.put("code", "400");
+					mainData.put("type", "0");
+					mainData.put("msg", "라이브 편성표를 불러올 수 없습니다.");
+					mainData.put("ret", subData);			
+				}
+			}
+		}
+		
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
 	}
 	
 	//UCC API
