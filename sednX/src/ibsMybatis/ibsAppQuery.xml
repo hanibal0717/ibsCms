@@ -157,7 +157,7 @@
 			(select resolution from tb_vod_box where repoIdx=a.vod_repo) as vod_reoslution,
     		date_format(reg_dt,'%Y.%m.%d') as vod_regdate,       
 			(select file_size from tb_vod_box where repoIdx=a.vod_repo) as vod_volume,
-    		(select count(idx) from tb_favorite_contents where member_account=#{member_id} and board_idx=#{vod_idx}) as favorite_yn
+    		(select count(idx) from tb_favorite_contents where member_account=#{member_id} and board_idx=#{vod_idx} and del_flag = "N") as favorite_yn
 		from 
     		tb_board_repository a
     	where idx= #{vod_idx}
@@ -281,7 +281,7 @@
 		where 
 			a.member_account = #{member_id}
 		and 
-			c.del_flag = "N"
+			a.del_flag = "N"
 	</select>
 	
 	<select id="getLiveChannelTarget" resultType="String">
