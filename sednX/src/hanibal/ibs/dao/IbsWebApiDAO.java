@@ -250,6 +250,23 @@ public class IbsWebApiDAO {
 		List<ScheduleDTO> lists=sqlTemplate.selectList("EventList",map);
 		return lists;
 	}
+	public List<HashMap<String, Object>> getCategoryNames(Map<String, Object> commandMap) {
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getCategoryNames",commandMap);
+		Map<String,Object> addData =new HashMap<String,Object>();
+		boolean flag=false;
+		int [] idxlist=(int[]) commandMap.get("idxArr");
+		for(int i=0;i<idxlist.length;i++) {
+			if(idxlist[i]==0) {
+				flag=true;
+			}
+		}
+		if(flag) {
+			addData.put("category_name","인터넷 방송");
+			addData.put("idx","0");
+			lists.add((HashMap<String, Object>) addData);
+		}
+		return lists;
+	}
 	
 	
 	

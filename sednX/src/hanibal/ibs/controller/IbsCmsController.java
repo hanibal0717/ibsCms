@@ -403,9 +403,27 @@ public class IbsCmsController {
 						+ "idx :'"+eventLists.get(i).getIdx()+"' }"+comma+"";
 			}
 			List<HashMap<String,Object>> targetList=ibsCmsDao.getTargetList(childIdx);
+			boolean stbAll=false;
+			boolean internet=false;
+			for(int i=0;i<targetList.size();i++) {
+				if(targetList.get(i).get("group_idx").equals(0)) {
+					internet=true;
+				}
+			}
+			int targetCount=targetList.size();
+			if(internet) {
+				targetCount=targetCount-1;
+			}
+			int totalTargetCount=ibsCmsDao.getTotalTargetCount()-1;
+			if(totalTargetCount==targetCount) {
+				stbAll=true;
+			}
+			log.info(totalTargetCount+"---------------"+targetCount);
 			model.addAttribute("events", events);
 			model.addAttribute("lists", lists);
 			model.addAttribute("targetLists",targetList);
+			model.addAttribute("internet",internet);
+			model.addAttribute("stbAll",stbAll);
 			model.addAttribute("childIdx", childIdx);
 			model.addAttribute("totalPage", totalPage);
 			model.addAttribute("totalRecordCount", totalRecordCount);
@@ -811,6 +829,28 @@ public class IbsCmsController {
 		map.put("stbPercent", stbPercent);
 		res.getWriter().print(mapper.writeValueAsString(map));
 	}
-	//@RequestMapping("/cms/target/{idx}")
-	//public String targetList
+	@RequestMapping("/cms/liveTarget/{idx}")
+	public void targetList(@PathVariable String idx,HttpServletResponse res) throws IOException {
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		Map<String,Object> subData =new HashMap<String,Object>();
+		String channelName=HanibalWebDev.getCategoryName("live", idx);
+		List<HashMap<String,Object>> targetList=ibsCmsDao.getTargetList(idx);
+		subData.put("targetList", targetList);
+		mainData.put("categoryName", channelName);
+		mainData.put("ret",subData);
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	@RequestMapping("/cms/target/insert")
+	public void targetInsert(@RequestParam Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		ibsCmsDao.deleteTarget(Integer.parseInt(String.valueOf(commandMap.get("categoryIdx")))); 
+		if(String.valueOf(commandMap.get("groupArr")).length()!=0) {
+			commandMap.put("groupArr",HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("groupArr"))));
+			ibsCmsDao.insertTarget(commandMap);
+		}
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		mainData.put("msg","200");
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
 }

@@ -529,6 +529,16 @@ public class IbsCmsDAO {
 		Map<String, Object> map=sqlTemplate.selectOne("getLayoutDetail",idx);
 		return map;
 	}
+	public void deleteTarget(int channel) {
+		sqlTemplate.delete("deleteTarget",channel);
+	}
+	public void insertTarget(Map<String, Object> commandMap) {
+		sqlTemplate.insert("insertTarget", commandMap);
+	}
+	public int getTotalTargetCount() {
+		int count=sqlTemplate.selectOne("targetCount");
+		return count;
+	}
 	
 	
 	

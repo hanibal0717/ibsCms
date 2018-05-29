@@ -86,24 +86,25 @@ var menuJs = (function() {
 	};
 	var makeSelJstree = function() {
 		$.ajax({
-			url : "${pageContext.request.contextPath}/api/checkJstree/"
-					+ $("#sort").val(),
+			url : "${pageContext.request.contextPath}/api/checkJstree/stb-schedule",
 			async : true,
 			success : function(data) {
-				$("#scheduleInsertModel").empty();
-				$("#scheduleInsertModel").html(data);
+				var retString=data;
+				$("#stbGroupCheck").empty();
+				$("#stbGroupCheck").html(retString);
 			},
 			error : exception.ajaxException
 		});
 	};
 	var editSelJstree = function() {
 		$.ajax({
-			url : "${pageContext.request.contextPath}/api/checkJstreeEdit/"
-					+ $("#sort").val()+"?groupArr="+$("#groupArr").val(),
+			url : "${pageContext.request.contextPath}/api/checkJstreeEdit/stb-schedule"
+					+"?groupArr="+$("#groupArr").val(),
 			async : true,
 			success : function(data) {
-				$("#scheduleInsertModel").empty();
-				$("#scheduleInsertModel").html(data);
+				var retString=data;
+				$("#stbGroupCheck").empty();
+				$("#stbGroupCheck").html(retString);
 			},
 			error : exception.ajaxException
 		});
@@ -148,18 +149,53 @@ var arange=(function(){
 	};
 	var targetView=function(idx){
 		$.ajax({
-			url : "${pageContext.request.contextPath}/cms/target/"+idx,
-			success : function(data){
-				$('#pageView').html(data);
+			url : "${pageContext.request.contextPath}/cms/liveTarget/"+idx,
+			success : function(responseData){
+				var data=JSON.parse(responseData);
+				$('#channelName').text(data.categoryName);
+				var retHtml='';
+				var idxList=[];
+				for(var i=0;i<data.ret.targetList.length;i++){
+					retHtml+='<button class="btn btn-sm targetBtn" id="target_'+data.ret.targetList[i].group_idx+'">'+data.ret.targetList[i].target_name+' <span class="del" style="margin-left: 5px; font-size: 18px;line-height: 0;top: 4px;position: relative;font-weight: 500;" onClick="checkJs.targetCheck('+data.ret.targetList[i].group_idx+')">×</span></button>';
+					idxList.push(data.ret.targetList[i].group_idx);
+				}
+				$('#groupArr').val(idxList.join(','));
+				menuJs.editSelJstree();
+				$('#modelTargetList').html(retHtml);
 			},
 			error : exception.ajaxException
 		});
+	};
+	var targetPreview=function(idxArr){
+		if(idxArr.length==0){
+			$('#modelTargetList').html('방송 타겟이 없습니다.');
+		}else{
+			$.ajax({
+				url : "${pageContext.request.contextPath}/api/categoryNames/stb-schedule"
+					+ "?idxArr="+idxArr,
+				cache : false,
+				type : 'post',
+				data : {"idxArr":idxArr},
+				async : false,
+				success : function(responseData){
+					var data=JSON.parse(responseData);
+					var retHtml='';
+					for(var i=0;i<data.categoryList.length;i++){
+						retHtml+='<button class="btn btn-sm targetBtn" id="target_'+data.categoryList[i].idx+'">'+data.categoryList[i].category_name+' <span class="del" style="margin-left: 5px; font-size: 18px;line-height: 0;top: 4px;position: relative;font-weight: 500;" onClick="checkJs.targetCheck('+data.categoryList[i].idx+')">×</span></button>';
+					}
+					$('#modelTargetList').empty();
+					$('#modelTargetList').html(retHtml);
+				},
+				error : exception.ajaxException
+			});
+		}
 	};
 	return {
 		naviBar : naviBar,
 		list : list,
 		contentsView : contentsView,
-		targetView : targetView
+		targetView : targetView,
+		targetPreview : targetPreview 
 	}
 }());
 </script>
@@ -172,5 +208,19 @@ var arange=(function(){
 	$('#addLiveTarget').click(function(){
 		arange.targetView($('#treeIdx').val());
 		$('#liveTargetAdd').modal();
+	});
+	$('#targetInsert').click(function(){
+		$.ajax({
+			url : "${pageContext.request.contextPath}/cms/target/insert",
+			cache : false,
+			type : 'post',
+			data : {"groupArr":$('#groupArr').val(),"categoryIdx":$('#categoryIdx').val()},
+			async : false,
+			success : function(data){
+				arange.list($("#categoryIdx").val());
+				$('#liveTargetAdd').modal('hide');
+			},
+			error : exception.ajaxException
+		});
 	});
 </script>

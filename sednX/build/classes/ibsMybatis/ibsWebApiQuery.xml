@@ -1260,6 +1260,43 @@
 				wl_category
 			from tb_web_layout where idx=#{idx};
 		</select>
+		
+		<resultMap id="categoryResult" type="java.util.HashMap">
+			<result javaType="java.lang.String" column="category_idx" property="category_idx"/>
+			<result javaType="java.lang.String" column="category_name" property="category_name"/>
+		</resultMap>
+		<select id="getCategoryNames" resultMap="categoryResult" parameterType="java.util.Map">
+			select ifnull(category_name,'인터넷방송') as category_name,ifnull(idx,'0') as idx from ${table} 
+			where 1=1
+			<if test='eachFlag!=""'>
+	  			and idx in
+	  			<foreach collection="idxArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+      		</if>
+		</select>
+		
+		<delete id="deleteTarget" parameterType="int">
+			delete from tb_live_channel_target where channel_idx=#{categoryIdx}
+		</delete>
+		<insert id="insertTarget" parameterType="java.util.HashMap">
+			 	<if test='listFlag !=""'>
+				 	insert into tb_live_channel_target(
+	            		channel_idx,
+	            		group_idx
+	       	 		)values
+	       	 		<foreach collection="groupArr" item="item" separator=",">
+	       	 			(
+	            		#{categoryIdx},
+	            		#{item}
+	        			)
+	       	 		</foreach>
+       	 		</if>
+		</insert>
+		
+		<select id="targetCount" resultType="int">
+			select count(idx) from tb_stb_category;
+		</select>
 </mapper>
 
 

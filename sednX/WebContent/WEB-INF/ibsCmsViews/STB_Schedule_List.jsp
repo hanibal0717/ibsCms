@@ -23,6 +23,13 @@
 	    	<c:when test="${empty targetLists}">
 	    			<li class="round m-r-5">방송 그룹이 없습니다.</li>
 	    	</c:when>
+	    	<c:when test="${internet=='true' and stbAll=='true'}">
+	    			<li class="round m-r-5">인터넷 방송</li>
+	    			<li class="round m-r-5">OTT 전체</li>
+	    	</c:when>
+	    	<c:when test="${internet=='false' and stbAll=='true'}">
+	    			<li class="round m-r-5">OTT 전체</li>
+	    	</c:when>
 	    	<c:otherwise>
 	    	<c:forEach items="${targetLists}" var="targetList" varStatus="loop">
 	    		<li class="round m-r-5">${targetList.target_name }</li>
@@ -31,7 +38,6 @@
 		 </c:choose>
 		 </ul>
 	</div>
-
 	<div id="calendar" class="p-relative p-5 m-b-10">
         <!-- Calendar Views -->
         <ul class="calendar-actions list-inline clearfix">

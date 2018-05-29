@@ -6,7 +6,9 @@
 <%@ taglib prefix="hn" uri="/WEB-INF/tlds/hanibalWebDev.tld" %>
 <style>
 .colorpicker { z-index: 9999; } 
-#confirmModal { z-index: 9999; } 
+#confirmModal { z-index: 9999; }
+.dropdown-menu a.jstree-anchor{color:#fff; background:none;}
+.dropdown-menu a:hover, .dropdown-menu a:focus{color:#fff;}
 </style>
 <!-- Sidebar -->
 <aside id="sidebar">
@@ -484,66 +486,55 @@
         <div class="modal-content">
             <div class="modal-body" style="padding: 30px; overflow: hidden;">
                 <div class="col-md-12">
-                    <div class="m-b-15 col-md-2" style="top: 5px;">
+                    <div class="m-b-15 col-md-10" style="top: 5px;">
                         <label class="checkbox-inline">
-                            채널이름 :
+                            채널이름 : <span id="channelName"></span>
                         </label>
                     </div>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" value="공용채널 #1" />
-                    </div>
                 </div>
-
+				<script>
+				$(function(){
+					$("button.dropdown-toggle").click(function(){
+						if($(".dropdown-menu.open").css("display") == "none"){
+							$(".dropdown-menu.open").css("display","block");
+							$(this).parent().parent().after(
+								'<div class="col-md-3 m-b-15">'+
+									'<button class="btn btn-sm" id="asd">닫기</button>'+
+								'</div>'
+							);
+						};
+						$("#asd").on('click', function(){
+							$(".dropdown-menu.open").css("display","none");
+							$("#asd").parent("div").remove();
+						});
+					});
+				});
+				</script>
                 <div class="col-md-12 m-t-20 m-b-15 p-20" style="border: 1px solid rgba(255, 255, 255, 0.5); width: calc(100% - 29px); left: 15px;">
                     <p style="position: absolute; top: -11px; background: #2c3a45; padding: 0 10px;">방송 대상 선택</p>                            
-                    <div class="col-md-4 m-b-15">
+                    <div class="col-md-7 m-b-15">
                         <div class="btn-group bootstrap-select select">
-                            <button type="button" class="btn btn-sm form-control dropdown-toggle" data-toggle="dropdown">
-                                <div class="pull-left"><i class="fa fa-desktop m-r-10"></i>인터넷 방송</div>
+                            <button type="button" class="btn btn-sm form-control dropdown-toggle">
+                                <span class="pull-left">타겟 선택</span>
                             </button>
-                            <div class="dropdown-menu open" style="max-height: 654px; overflow: hidden; min-height: 83px; padding: 0;">
-                                <div class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: 83px;">
-                                    <ul>
-                                    <li><a href="#"><i class="fa fa-desktop m-r-10"></i><span class="text">인터넷 방송</span></a></li>
-                                    <li><a href="#"><i class="fa fa-desktop m-r-10"></i>전체 셋탑박스</a></li>
-                                    <li class="p-l-10"><a href="#"><i class="fa fa-desktop m-r-10"></i>플래너 본부</a></li>
-                                    <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>1본부</a></li>
-                                    <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>2본부</a></li>
-                                    <li  class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>3본부</a></li>
-                                    <li class="p-l-20"><a href="#"><i class="fa fa-desktop m-r-10"></i>4본부</a></li>
-                                    <li class="p-l-10"><a href="#"><i class="fa fa-desktop m-r-10"></i>PCC 지사</a></li>
-                                    </ul>
+                            <div class="dropdown-menu open" style="max-height: 654px; overflow: hidden; min-height: 83px; padding: 0; background:rgb(25, 27, 31);">
+                                <div class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: 83px;" id="stbGroupCheck">
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 m-b-15">
-                        <button class="btn btn-sm">방송타겟추가 </button>
-                    </div>
+                    <input type="hidden" id="groupArr" />
                 	<div class="col-md-12" id="modelTargetList">
                     	<!-- 20180419 메뉴삭제 -->
-                    	
-	                    	 <c:choose>
-						    	<c:when test="${empty targetLists}">
-						    		<div>방송 그룹이 없습니다.</div>
-						    	</c:when>
-						    	<c:otherwise>
-						    	<c:forEach items="${targetLists}" var="targetList" varStatus="loop">
-						    		<div class="col-md-3 m-b-15">
-						    		<button class="btn btn-sm">${targetList.target_name }<span class="del" style="margin-left: 5px; font-size: 18px;line-height: 0;top: 4px;position: relative;font-weight: 500;">×</span></button>
-							    	</div>
-							    </c:forEach>
-							   </c:otherwise>
-							 </c:choose>
-                    	
                     	
                     </div>
                 </div>
             </div>
                
             <div class="modal-footer">
-                <button class="btn btn-sm cancel">취소</button>
-                <button class="btn btn-sm pull-right" data-dismiss="modal">확인</button>
+                <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+                <button class="btn btn-sm pull-right" id="targetInsert">확인</button>
             </div>
         </div>
     </div>
@@ -1146,12 +1137,22 @@ $(function(){
             var hh = formatZeroDate(StringDate.getHours(),2);
             var mm = formatZeroDate(StringDate.getMinutes(),2);
             return $.datepicker.formatDate('yy-mm-dd '+hh+':'+mm,StringDate);
+		};
+		var removeOverlap=function(array){
+			var result = [];
+		    $.each(array, function(index, element) {   // 배열의 원소수만큼 반복
+		 		if ($.inArray(element, result) == -1) {  // result 에서 값을 찾는다.  //값이 없을경우(-1)
+		            result.push(element);              // result 배열에 값을 넣는다.
+		        }
+		    });
+		    return result;
 		}
 		return{
 			formatZeroDate:formatZeroDate,
 			isNotEmpty:isNotEmpty,
 			runtimeToSecond:runtimeToSecond,
-			setDate:setDate
+			setDate:setDate,
+			removeOverlap
 		};
 	}());
 	$(function(){

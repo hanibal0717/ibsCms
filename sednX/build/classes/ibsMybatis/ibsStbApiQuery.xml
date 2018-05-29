@@ -101,23 +101,22 @@
 	</select>
 	
 	<select id="stbChannelList" resultType="java.util.HashMap">
-		select (idx) as ch_idx,(live_title) as ch_nm from tb_live_repository where del_flag='N';
+		select distinct(a.channel_idx)  as ch_idx,(select category_name from tb_live_category where idx=a.channel_idx) as ch_nm from tb_live_channel_target a where group_idx !=0 group by channel_idx;
 	</select>
 	<select id="todayScheduleInfo" resultType="hanibal.ibs.model.stb.TodayScheduleDTO" parameterType="java.util.Map">
 		select 
-			(idx) as id,
+			(a.idx) as id,
 			(name) as name,
 			concat(substring(time(start), 1, 5), ' ~ ', substring(time(end), 1, 5)) as duration,
 			target_type,
 			(concat(#{repositoryPath},"SCHIMG/",image_path)) as image_path,
 			desc_text
 		from tb_stb_schedule a
-		left outer join tb_stb_schedule_group b 
-			on a.idx=b.schedule_id
+		left outer join tb_live_channel_target b 
+			on a.category_idx = b.channel_idx
 		where 
 			start > now() 
-			and dayofyear(start)=dayofyear(now()) 
-			and (target_type='ALL' or b.group_id=#{groupId}) group by idx order by start;
+			and b.group_idx =#{groupId} group by a.idx order by start;
 	</select>
 	<select id="idByGroupName" resultType="String" parameterType="int">
 		select B.category_name from tb_stb_schedule_group A, tb_stb_category B where A.group_id = B.idx and schedule_id=#{id}
@@ -138,13 +137,13 @@
 			tb_stb_schedule
         where 
         		source_type = 'LIVE' 
-        		and live_ch_idx =#{chIdx} 
+        		and category_idx=#{chIdx} 
         		and <![CDATA[!((date(start) < date(now()) and date(end) < date(now())) or (date(start) > date(now()) and date(end) > date(now()))) ]]>
         	order by start;
 	</select>
 	<select id="totalScheduleInfo" resultType="hanibal.ibs.model.stb.TotalScheduleDTO" parameterType="int">
-		select 
-			(idx) as id, 
+        select 
+			(a.idx) as id, 
 			name, 
 			start, 
 			end, 
@@ -158,14 +157,10 @@
 		from 
 			tb_stb_schedule a 
 		left join 
-			tb_stb_schedule_group b 
+			tb_live_channel_target b 
 		on 
-			a.idx = b.schedule_id
-        where 
-        		(target_type = 'ALL' or (target_type = 'GROUP' and b.group_id =#{groupId})) 
-        		and end <![CDATA[>]]> now() 
-        	group by idx 
-        	order by start;
+			a.category_idx = b.channel_idx
+        where end <![CDATA[>]]> now() and b.group_idx =#{group_id}  group by a.idx order by start;
 	</select>
  	<select id="relativeVodList" resultType="hanibal.ibs.model.stb.VodSchduleDTO" parameterType="int">
  		select

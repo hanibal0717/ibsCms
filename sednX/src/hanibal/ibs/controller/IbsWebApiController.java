@@ -312,8 +312,6 @@ public class IbsWebApiController {
 			}*/
 			treeMenu+="}},";
 		}
-		String defaultMenuName="";
-		String defaultMenuIdx="";
 		model.addAttribute("treeMenu", treeMenu);
 		model.addAttribute("sort", order);
 		return "/ibsInclude/advenceTree.inc";
@@ -382,10 +380,22 @@ public class IbsWebApiController {
 	public String checkJstreeEdit(@PathVariable String order,@RequestParam String groupArr,
 			HttpServletRequest req,
 			Model model) throws JsonGenerationException, JsonMappingException, IOException {
+		int [] compareArr=HanibalWebDev.StringToIntArray(groupArr);
 		String treeMenu="";
+		if(order.equals("stb-schedule")) {
+			boolean interFlag=false;
+			for(int i=0;i<compareArr.length;i++) {
+				if(compareArr[i]==0) interFlag=true; 
+			}
+			treeMenu+="{\"id\":\"0\",\"parent\":\"#\",\"text\":\"인터넷 방송\","
+					+ "\"name\":\"인터넷방송\",\"num\":\"0\""
+					+ ",\"state\":{\"opened\":false";
+					treeMenu+=",\"selected\":"+interFlag;	
+					treeMenu+="}},";
+		}
 		List<TreeMenu> lists=null;
 		lists=webApiDao.getMenuTree(order);
-		int [] compareArr=HanibalWebDev.StringToIntArray(groupArr);
+		
 		
 		lists.get(0).setParent("#");
 		for(int i=0;i<lists.size();i++) {
@@ -573,9 +583,26 @@ public class IbsWebApiController {
 					+ "allDay:false,"
 					+ "idx :'"+eventLists.get(i).getIdx()+"' }"+comma+"";
 		}
-
 		return events;
 	}
+	@RequestMapping("/api/categoryNames/{sort}")
+	public void categoryNames(@PathVariable String sort,@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException{
+		String table=HanibalWebDev.targetTable(sort);
+		commandMap.put("table",table);
+		String eachFlag="";
+		if(String.valueOf(commandMap.get("idxArr")).length()!=0) {
+			eachFlag="Y";
+		}
+		commandMap.put("eachFlag",eachFlag);
+		commandMap.put("idxArr", HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("idxArr"))));
+		List<HashMap<String,Object>> categoryList=webApiDao.getCategoryNames(commandMap);
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		mainData.put("categoryList",categoryList);
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+		
+	}
+	
  }
 
 
