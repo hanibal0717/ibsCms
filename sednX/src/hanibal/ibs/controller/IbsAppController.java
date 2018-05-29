@@ -373,4 +373,39 @@ public class IbsAppController {
 		res.setCharacterEncoding("utf8");
 		res.getWriter().print(mapper.writeValueAsString(mainData));
 	}
+	
+	//공통 API
+	@RequestMapping(value = "/api/app/common/{order}")
+	public void commonApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException {
+		subData.clear();
+		mainData.clear();
+		int tokenCount = ibsAppDAO.checkToken((String)commandMap.get("token"));
+		if(tokenCount == 0) {
+			mainData.put("code","000");
+			mainData.put("type","1");
+			mainData.put("msg", "로그인을 해주세요.");
+			mainData.put("ret", subData);
+		}
+		else {
+			if(order.equals("username")) {
+				try {
+					String userName = ibsAppDAO.getUserName(commandMap);
+					subData.put("user_name", userName);
+					mainData.put("code", "200");
+					mainData.put("type", "0");
+					mainData.put("msg", "");
+					mainData.put("ret", subData);
+				}
+				catch (Exception e) {
+					mainData.put("code", "400");
+					mainData.put("type", "0");
+					mainData.put("msg", "유저이름 조회에 오류가 발생했습니다.");
+					mainData.put("ret", subData);					
+				}
+			}
+		}
+		
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}	
 }
