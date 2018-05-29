@@ -331,4 +331,12 @@ public class IbsAppDAO {
 		}
 		return channelList;
 	}
+	
+	public String getUserName(Map<String, Object> commandMap) throws ParseException {
+		// token에 담긴 member_id를 풀어내여 해당 정보를 조회한다
+		JWT signJWTReturn = (SignedJWT)SignedJWT.parse((String)commandMap.get("token"));
+		commandMap.put("member_id", signJWTReturn.getJWTClaimsSet().getClaim("member_id"));
+		String userName = sqlTemplate.selectOne("getUserName", commandMap);
+		return userName;
+	}	
 }
