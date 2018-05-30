@@ -378,4 +378,13 @@
 	   	and
 	   		c.del_flag = "N"					
 	</select>
+	
+	<select id="getUserName" resultType="String" parameterType="java.util.Map">
+		select
+			member_name as user_name
+		from 
+			tb_account_member
+		where
+			member_id = #{member_id}
+	</select>	
 </mapper>
