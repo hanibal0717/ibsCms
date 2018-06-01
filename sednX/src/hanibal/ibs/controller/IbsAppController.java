@@ -376,7 +376,7 @@ public class IbsAppController {
 	}
 	
 	//공통 API
-	@RequestMapping(value = "/api/app/common/{order}")
+	@RequestMapping("/api/app/common/{order}")
 	public void commonApi(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException {
 		subData.clear();
 		mainData.clear();

@@ -182,11 +182,13 @@ public class HanibalWebDev  extends MysqlConnect{
 	public static String targetTable(String sort) {
 		String tableName="";
 		if(sort.equals("vod")) {
-			tableName="tb_vod_category";
+			tableName="tb_content_category";
 		}else if(sort.equals("photo")) {
-			tableName="tb_photo_category";
+			tableName="tb_content_category";
 		}else if(sort.equals("file")) {
-			tableName="tb_file_category";
+			tableName="tb_content_category";
+		}else if(sort.equals("stream")) {
+			tableName="tb_content_category";
 		}else if(sort.equals("live")) {
 			tableName="tb_live_category";
 		}else if(sort.equals("board")) {
@@ -872,6 +874,54 @@ public class HanibalWebDev  extends MysqlConnect{
 		}
 		return name;
 	}
+	
+	public static String getDefaultContentsIdx() throws Exception {
+		String idx="";
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="select idx from tb_content_category  where idx in (select * from (select idx from tb_content_category where pid=1 order by position desc limit 0,1 ) as tmpTable)";
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()){
+				idx=String.valueOf(rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return idx;
+	}
+	public static String getDefaultContentsName() throws Exception {
+		String name="";
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="select category_name from tb_content_category  where idx in (select * from (select idx from tb_content_category where pid=1 order by position desc limit 0,1 ) as tmpTable)";
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()){
+				name=rs.getString(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return name;
+	}
+	
+	
 	public static String getFileVolume(long volume) {
 		String CalcuSize=null;
 		int i=0;

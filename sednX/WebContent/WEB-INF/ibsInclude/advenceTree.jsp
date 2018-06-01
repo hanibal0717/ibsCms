@@ -45,6 +45,16 @@ $(function(){
 		"plugins" : ["dnd"]
 	});
 	$('#jstree').jstree("open_all");
+	$('#jstree').on("ready.jstree",function(e,data){
+		var ref = $('#jstree').jstree(true);
+		var naviString="";
+		sel = ref.get_selected("full");
+		if(!sel.length) { return false; }
+		sel = sel[0];
+		if($('#sort').val()!="live"||sel.id!='1'){
+			$("#treeIdx").val(sel.id+","+sel.children_d);
+		}
+	});
 	$('#jstree').on("select_node.jstree", function (e, data) {
 		var ref = $('#jstree').jstree(true);
 		var naviString="";
@@ -82,8 +92,7 @@ $(function(){
 		$("#categoryIdx").val(sel.id);
 		console.log($('#sort').val()+"/"+sel.id);
 		if($('#sort').val()!="live"||sel.id!='1'){
-			
-			arange.list(sel.id,sel.original.property);
+			arange.list($('#treeIdx').val(),sel.original.property);
 			arange.naviBar($('#sort').val(),$('#treeIdx').val(),naviString);
 		}
 	});
@@ -256,6 +265,7 @@ var menuTree=(function(){
   getNewGroupID:getNewGroupID
  };
 }());
+
 </script>
 <div id="jstree" ></div> 
   <div class="p-10 text-center">

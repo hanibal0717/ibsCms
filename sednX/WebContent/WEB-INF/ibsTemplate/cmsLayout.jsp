@@ -97,6 +97,8 @@
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-contrib-hls.js"></script>
 		<!-- new user page -->
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.bxslider.min.js"></script>
+		
+		
 </head>
 <body id="skin-blur-ocean">
 		<!-- top start-->

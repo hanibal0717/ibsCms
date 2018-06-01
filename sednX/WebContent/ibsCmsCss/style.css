@@ -2294,6 +2294,10 @@ a.list-group-item.active > .badge,
    position: absolute;
    left: -188px;
 }
+
+.form_div { overflow-y: auto; height: 770px; padding: 10px;}
+.img_box { width: calc(25% - 10px); height: 180px; border: 1px solid rgba(255, 255, 255, 0.7); float: left; margin: 5px;}
+
 .bx-wrapper {margin: 10px 20px; position: relative;}
 .bx-prev {position: absolute; top: 50%; left: -20px; font-size: 0; background: url(img/arr_prev.png) no-repeat; width: 14px; height: 57px; margin-top: -28px;}
 .bx-next {position: absolute; top: 50%; right: -20px; font-size: 0; background: url(img/arr_next.png) no-repeat; width: 14px; height: 57px; margin-top: -28px;}

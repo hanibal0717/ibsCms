@@ -146,7 +146,7 @@
                 
                 $('body').on('click', '#addEvent', function(){
                 	
-                	if($('#source_type').val()=='VOD'){
+                	/*if($('#source_type').val()=='VOD'){
                 		var optionCount=$('#vodSource > option').length;
                 		if(optionCount==0){
                     		jQuery('#vodSource').validationEngine('showPrompt', 'VOD 영상소스를 선택하세요.', 'pass');
@@ -181,7 +181,7 @@
                      eventForm.validationEngine('validate');
                      if (!(eventForm).find('.formErrorContent')[0]) {
                     	 var dataObject={};
-                    	 //공통 자막
+                    	
                     	 if($("#captionYn").val()=="Y"){
                     		dataObject['caption']=$('#caption').val();
                    		 	dataObject['caption_size']=$("#caption_size").val();
@@ -195,13 +195,13 @@
                     		 dataObject['caption_text_color']='';
                     		 dataObject['caption_bg_color']='';
                     	 }
-                    	 //라이브 일 경우 필드 
+                    	
                     	if($('#source_type').val()=='LIVE'){
                     		dataObject['live_ch_idx']=$('#live_ch_idx').val();
                         	dataObject['live_stream_url']=$("#live_stream_url").val();
                     		
                     	 }
-                    	 //비디오 일 경우 필드
+                    	
                     	if($('#source_type').val()=='VOD'){
                     		dataObject['vodArr']=$('#vodArr').val();
                     	}
@@ -219,7 +219,7 @@
                     	 if($('#order').val()=="update"){
                     		 dataObject['idx']=$('#idx').val()
                     	 }
-                    	 //console.log(dataObject);
+                    	
                     	 $.ajax({
                     	 		url:'/cms/excute/stb-schedule/'+$("#order").val(),
                     	 		cache:false,
@@ -236,16 +236,14 @@
                     	 		},
                     	 		error:exception.ajaxException
                     	 	});
-                          //Event Name
-                          /*var eventName = $('#eventName').val();
-                          //Render Event
+                         
                           $('#calendar').fullCalendar('renderEvent',{
                                title: eventName,
                                url:'javascript:calClick.viewEvent(2);',
                                start: $('#getStart').val(),
                                end:  $('#getEnd').val(),
                                allDay: false,
-                          },true ); //Stick the event*/
+                          },true );*/
                           
                           
                      } 
@@ -265,7 +263,7 @@
            
             $(function(){
             	 $("#createEvent").click(function(){
-            		 $('#addNew-event form')[0].reset();
+            		/* $('#addNew-event form')[0].reset();
             		 $("#order").val('insert');
             		 if($('#order').val()=="update"){
                      	$("#deleteEvent").css('display','block');
@@ -284,7 +282,7 @@
                      var he = common.formatZeroDate(end.getHours(),2);
                      var me = common.formatZeroDate(end.getMinutes(),2);
                      $('#getStart').val($.datepicker.formatDate('yy-mm-dd '+hs+':'+ms, new Date()));
-                     $('#getEnd').val($.datepicker.formatDate('yy-mm-dd '+he+':'+me, new Date()));
+                     $('#getEnd').val($.datepicker.formatDate('yy-mm-dd '+he+':'+me, new Date()));*/
                  });
             });
        </script>

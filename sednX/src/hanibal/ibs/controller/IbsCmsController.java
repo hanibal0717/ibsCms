@@ -208,12 +208,14 @@ public class IbsCmsController {
 			model.addAttribute("pagingStr", pagingStr);
 			viewPage="/ibsCmsViews/WEB_ManagerAccountList.inc";
 		}else if(order.equals("vod")) {
-			pageSize=18;
-			blockPage=18;
+			//pageSize=18;
+			//blockPage=18;
 			totalRecordCount = ibsCmsDao.getVodTotalRecordCount(searchWord,childIdx);
-			totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
-			start = (Integer.parseInt(nowPage)-1)*pageSize;
-			end = blockPage;
+			//totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
+			//start = (Integer.parseInt(nowPage)-1)*pageSize;
+			//end = blockPage;
+			start=0;
+			end = totalRecordCount;
 			List<VodDTO> lists=ibsCmsDao.vodList(searchWord,childIdx,start,end);
 			for(int i=0;i<lists.size();i++) {
 				lists.get(i).setMain_thumbnail("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getMain_thumbnail())+lists.get(i).getMain_thumbnail());
@@ -222,12 +224,12 @@ public class IbsCmsController {
 				lists.get(i).setVod_path("http://"+mediaIp+"/"+order.toUpperCase()+HanibalWebDev.getDataPath(lists.get(i).getVod_path())+lists.get(i).getVod_path()+"/index.m3u8");
 			}
 			model.addAttribute("lists", lists);
-			model.addAttribute("totalPage", totalPage);
-			model.addAttribute("totalRecordCount", totalRecordCount);
-			model.addAttribute("pageSize", pageSize);
+			//model.addAttribute("totalPage", totalPage);
+			//model.addAttribute("totalRecordCount", totalRecordCount);
+			//model.addAttribute("pageSize", pageSize);
 			model.addAttribute("searchWord",searchWord);
-			model.addAttribute("nowPage", nowPage);
-			String pagingStr = 
+			//model.addAttribute("nowPage", nowPage);
+			/*String pagingStr = 
 					IbsCmsPagingUtil.vodPagingText(req,
 							searchWord,
 							childIdx,
@@ -236,27 +238,29 @@ public class IbsCmsController {
 							blockPage, 
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/vod?");
-			model.addAttribute("pagingStr", pagingStr);
-			viewPage="/ibsCmsViews/WEB_Contents_vodList.inc";
+			model.addAttribute("pagingStr", pagingStr);*/
+			viewPage="/ibsCmsViews/WEB_Contents_vodPage.inc";
 		}else if(order.equals("photo")) {
-			pageSize=18;
-			blockPage=18;
+			//pageSize=18;
+			//blockPage=18;
 			totalRecordCount = ibsCmsDao.getPhotoTotalRecordCount(searchWord,childIdx);
-			totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
-			start = (Integer.parseInt(nowPage)-1)*pageSize;
-			end = blockPage;
+			//totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
+			//start = (Integer.parseInt(nowPage)-1)*pageSize;
+			//end = blockPage;
+			start=0;
+			end = totalRecordCount;
 			List<PhotoDTO> lists=ibsCmsDao.photoList(searchWord,childIdx,start,end);
 			for(int i=0;i<lists.size();i++) {
 				lists.get(i).setPhoto_path("/REPOSITORY/"+order.toUpperCase()+HanibalWebDev.getDataPath(lists.get(i).getPhoto_path())+lists.get(i).getPhoto_path());
 			}
 			model.addAttribute("lists", lists);
 			model.addAttribute("childIdx", childIdx);
-			model.addAttribute("totalPage", totalPage);
+			//model.addAttribute("totalPage", totalPage);
 			model.addAttribute("totalRecordCount", totalRecordCount);
-			model.addAttribute("pageSize", pageSize);
+			//model.addAttribute("pageSize", pageSize);
 			model.addAttribute("searchWord",searchWord);
-			model.addAttribute("nowPage", nowPage);
-			String pagingStr = 
+			//model.addAttribute("nowPage", nowPage);
+			/*String pagingStr = 
 					IbsCmsPagingUtil.photoPagingText(req,
 							searchWord,
 							childIdx,
@@ -265,24 +269,26 @@ public class IbsCmsController {
 							blockPage, 
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/photo?");
-			model.addAttribute("pagingStr", pagingStr);
-			viewPage="/ibsCmsViews/WEB_Contents_photoList.inc";
+			model.addAttribute("pagingStr", pagingStr);*/
+			viewPage="/ibsCmsViews/WEB_Contents_photoPage.inc";
 		}else if(order.equals("file")) {
-			pageSize=15;
-			blockPage=15;
+			//pageSize=15;
+			//blockPage=15;
 			totalRecordCount = ibsCmsDao.getFileTotalRecordCount(searchWord,childIdx);
-			totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
-			start = (Integer.parseInt(nowPage)-1)*pageSize;
-			end = blockPage;
+			//totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
+			//start = (Integer.parseInt(nowPage)-1)*pageSize;
+			//end = blockPage;
+			start=0;
+			end = totalRecordCount;
 			List<FileDTO> lists=ibsCmsDao.fileList(searchWord,childIdx,start,end);
 			model.addAttribute("lists", lists);
 			model.addAttribute("childIdx", childIdx);
-			model.addAttribute("totalPage", totalPage);
+			//model.addAttribute("totalPage", totalPage);
 			model.addAttribute("totalRecordCount", totalRecordCount);
-			model.addAttribute("pageSize", pageSize);
-			model.addAttribute("searchWord",searchWord);
-			model.addAttribute("nowPage", nowPage);
-			String pagingStr = 
+			//model.addAttribute("pageSize", pageSize);
+			//model.addAttribute("searchWord",searchWord);
+			//model.addAttribute("nowPage", nowPage);
+			/*String pagingStr = 
 					IbsCmsPagingUtil.filePagingText(req,
 							searchWord,
 							childIdx,
@@ -291,24 +297,26 @@ public class IbsCmsController {
 							blockPage, 
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/file?");
-			model.addAttribute("pagingStr", pagingStr);
-			viewPage="/ibsCmsViews/WEB_Contents_fileList.inc";
-		}else if(order.equals("stb-schedule")) {
-			pageSize=15;
-			blockPage=15;
+			model.addAttribute("pagingStr", pagingStr);*/
+			viewPage="/ibsCmsViews/WEB_Contents_filePage.inc";
+		}else if(order.equals("stream")) {
+			//pageSize=15;
+			//blockPage=15;
 			totalRecordCount = ibsCmsDao.getLiveTotalRecordCount(searchWord,childIdx);
-			totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
-			start = (Integer.parseInt(nowPage)-1)*pageSize;
-			end = blockPage;
+			//totalPage=(int)Math.ceil((double)totalRecordCount/pageSize);
+			//start = (Integer.parseInt(nowPage)-1)*pageSize;
+			//end = blockPage;
+			start=0;
+			end = totalRecordCount;
 			List<LiveDTO> lists=ibsCmsDao.liveList(searchWord,childIdx,start,end);
 			model.addAttribute("lists", lists);
 			model.addAttribute("childIdx", childIdx);
-			model.addAttribute("totalPage", totalPage);
+			//model.addAttribute("totalPage", totalPage);
 			model.addAttribute("totalRecordCount", totalRecordCount);
-			model.addAttribute("pageSize", pageSize);
+			//model.addAttribute("pageSize", pageSize);
 			model.addAttribute("searchWord",searchWord);
-			model.addAttribute("nowPage", nowPage);
-			String pagingStr = 
+			//model.addAttribute("nowPage", nowPage);
+			/*String pagingStr = 
 					IbsCmsPagingUtil.livePagingText(req,
 							searchWord,
 							childIdx,
@@ -317,8 +325,8 @@ public class IbsCmsController {
 							blockPage, 
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/live?");
-			model.addAttribute("pagingStr", pagingStr);
-			viewPage="/ibsCmsViews/WEB_Contents_liveList.inc";
+			model.addAttribute("pagingStr", pagingStr);*/
+			viewPage="/ibsCmsViews/WEB_Contents_livePage.inc";
 		}else if(order.equals("board")) {
 			/*pageSize=10;
 			blockPage=10;*/
@@ -758,6 +766,7 @@ public class IbsCmsController {
 		if(section.equals("statistics")) returnPage="/ibsCmsViews/WEB_Statistics.cms";
 		if(section.equals("makepage")) returnPage="/ibsCmsViews/WEB_MakePage.cms";
 		if(section.equals("liveManages")) returnPage="/ibsCmsViews/WEB_LiveManages.cms";
+		if(section.equals("media")) returnPage="/ibsCmsViews/WEB_Media.cms";
 		return returnPage;
 	}
 	@RequestMapping("/sedn/stb/{section}")

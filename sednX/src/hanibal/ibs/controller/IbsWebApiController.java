@@ -278,13 +278,17 @@ public class IbsWebApiController {
 		return "/ibsInclude/jsTree.inc";
 	}
 	@RequestMapping("/api/advenceTree/{order}")
-	public String advenceTree(@PathVariable String order,Model model,HttpServletRequest req) {
+	public String advenceTree(@PathVariable String order,Model model,HttpServletRequest req) throws Exception {
 		String selected_node_id = "1";
 		
 		String treeMenu="";
 		List<AdvenceTree> lists=webApiDao.getAdvenceTree(order);
 		if(order.equals("live")) {
 			selected_node_id=lists.get(1).getId();
+		}else if(order.equals("board")){
+			selected_node_id="1";
+		}else {
+			selected_node_id=HanibalWebDev.getDefaultContentsIdx();
 		}
 		log.info("-------"+order+"--------->"+selected_node_id);
 		lists.get(0).setParent("#");
@@ -306,10 +310,6 @@ public class IbsWebApiController {
 			if(lists.get(i).getId().equals(selected_node_id)) {
 					treeMenu+=",\"selected\":true";	
 			}
-			/*if(order.equals("live")&&i==0) {
-				treeMenu+=",\"disabled\":true";
-				//treeMenu+=",\"hidden\":true";	
-			}*/
 			treeMenu+="}},";
 		}
 		model.addAttribute("treeMenu", treeMenu);

@@ -9,6 +9,9 @@
 #confirmModal { z-index: 9999; }
 .dropdown-menu a.jstree-anchor{color:#fff; background:none;}
 .dropdown-menu a:hover, .dropdown-menu a:focus{color:#fff;}
+.bell {font-size: 15px; font-weight: normal;}
+.modal .thumnail a.close {position: absolute; right: 2px; top: 2px; opacity: 1; background: rgba(0,0,0,0.5); width: 16px; height: 16px; border-radius: 8px !important; }
+.modal .thumnail a.close img {margin-top: -1px;}
 </style>
 <!-- Sidebar -->
 <aside id="sidebar">
@@ -118,6 +121,10 @@
 		<li class="active"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/dashboard"> <span
 				class="icon">&#61753;</span> <span class="menu-item">DASH BOARD</span>
+		</a></li>
+		<li><a class="sa-side"
+			href="${pageContext.request.contextPath}/sedn/web/media"> <span
+				class="icon">&#61803;</span> <span class="menu-item">CONTENTS</span>
 		</a></li>
 		<li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/contents"> <span
@@ -539,7 +546,224 @@
         </div>
     </div>
 </div>
- <!-- ################# ADD LIVE TARGET MODAL START################### -->                          
+ <!-- ################# ADD LIVE TARGET MODAL START################### -->   
+ <!-- ###############영상 보기 모달 시작 ######################### -->
+ <div class="modal fade in" id="vodViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+	<div class="modal-dialog">
+          <div class="modal-content mainImgPopup">
+              <div class="media-form">
+                  <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
+                  <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                  <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                  <div class="infoForm" style="display: none;">
+                      <ul>
+                          <li>해상도 : 1808 x 920</li>
+                          <li>재생시간 : 01:00:24</li>
+                          <li>용량 : 3.7GB</li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="contents">
+                  <p class="title">레디 플레이어 원</p>
+                  <div class="data">
+                      <p>등록일 : 2018.04.10</p>
+                      <a class="down" href="#"><img src="${pageContext.request.contextPath}/ibsImg/btn_download.png" alt="다운로드"></a>
+                      <div class="downForm">
+                          <div class="triangle"></div>
+                          <a href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"></a>
+                          <ul>
+                              <li>· <a href="#">Sednmanager.ppt (2MB)</a></li>
+                          </ul>
+                      </div>
+                      <p class="hits">580</p>
+                  </div>
+                  <p class="text">
+                      2045년, 암울한 현실과 달리 가상현실 오아시스(OASIS)에서는  누구든 원하는 캐릭터로 어디든지 갈 수 있고, 뭐든지 할 수 있고 상상하는 모든 게 가능하다.<br>웨이드 와츠(타이 쉐리던) 역시 유일한 낙은 대부분의 사람들이 하루를 보내는 오아시스에 접속하는 것이다. 어느 날 오아시스의 창시자인 괴짜 천재 제임스 할리데이(마크 라이런스)는 자신이 가상현실 속에 숨겨둔 3개의 미션에서 우승하는 사람에게 오아시스의 소유권과 막대한 유산을 상속한다는 유언을 남기고, 그가 사랑했던 80년대 대중문화 속에 힌트가 있음을 알린다.<br>제임스 할리데이를 선망했던 소년 ‘웨이드 와츠’가 첫 번째 수수께끼를 푸는 데 성공하자 이를 저지하기 위해 현실에서 살인도 마다하지 않는 ‘IOI’라는 거대 기업이 뛰어든다. 
+                  </p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-sm cancel">취소</button>
+                  <button class="btn btn-sm">삭제</button>
+                  <button class="btn btn-sm pull-right" id="popupSub">편집</button>
+              </div>
+          </div>
+          <!-- 수정  -->
+          <div class="modal-content">
+                <div class="modal-header" style="overflow: hidden;">
+                    <h4 class="pull-left">VOD 수정</h4>
+                    <button class="btn btn-sm pull-right m-t-10">불러오기</button>
+                </div>
+                <div class="modal-body">
+                    <div class="media-form">
+                        <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
+                        <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                        <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                    </div>
+                    <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-810px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
+                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
+                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
+                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"><a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가"></a></div>
+                    <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
+                    <input type="text" class="form-control m-b-10" placeholder="제목">
+                    <textarea class="form-control m-b-10" placeholder="내용"></textarea>
+                    <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm cancel">취소</button>
+                    <button class="btn btn-sm">확인</button>
+                </div>
+            </div>
+                        
+      </div>
+ </div>                  
+ <!-- ###############영상 보기 모달  끝 ######################### --> 
+ <!-- ###############영상 추가 모달 시작 ######################### -->
+ <div class="modal fade in" id="vodEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ 	<div class="modal-content">
+        <div class="modal-header" style="overflow: hidden;">
+            <h4 class="pull-left">VOD 수정</h4>
+            <button class="btn btn-sm pull-right m-t-10">불러오기</button>
+        </div>
+        <div class="modal-body">
+            <div class="media-form">
+                <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
+                <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+            </div>
+            <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-810px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
+                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
+                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
+                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"><a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가"></a></div>
+            <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
+            <input type="text" class="form-control m-b-10" placeholder="제목">
+            <textarea class="form-control m-b-10" placeholder="내용"></textarea>
+            <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm cancel">취소</button>
+            <button class="btn btn-sm">확인</button>
+        </div>
+    </div>
+ </div>   
+ <!-- ###############영상 편집 모달 끝 ######################## -->
+ <!-- ###############라이브 편집 모달 시작 ######################### -->
+ <div class="modal fade in" id="liveEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ 라이브편집 
+ </div>  
+ <!-- ###############라이브 편집 모달 끝 ######################## -->
+ <!-- ###############게시물 보기 모달 시작 ######################### -->
+ <div class="modal fade in" id="scheduleViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ 게시물보기 
+ </div>  
+ <!-- ###############게시물 보기 모달  끝 ######################### --> 
+ <!-- ###############게시물 추가 모달 시작 ######################### -->
+ <div class="modal fade in" id="scheduleEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ 게시물편집 
+ </div> 
+ <!-- ###############게시물 편집 모달 끝 ######################## -->  
+ <!-- ###############스케쥴 보기 모달 시작 ######################### -->
+ <div class="modal fade in" id="scheduleViewModal" tabindex="-1" role="dialog" aria-hidden="false">
+ 	<div class="modal-dialog">
+        <div class="modal-content mainImgPopup">
+            <div class="media-form">
+                <div class="video"><img src="img/img_video.png" alt="샘플"></div>
+                <a class="play" href="#"><img src="img/img_play.png" alt="재생"></a>
+                <a class="info" href="#"><img src="img/img_info.png" alt="정보"></a>
+                <div class="infoForm">
+                    <ul>
+                        <li>해상도 : 1808 x 920</li>
+                        <li>재생시간 : 01:00:24</li>
+                        <li>용량 : 3.7GB</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="contents">
+               
+                <p class="title">VOD 방송 #1</p>
+                <div class="data">
+                    <p class="bell"><i class="fa fa-bell"></i> 2018.4.10 13:30~15:00</p>
+                </div>
+                <p class="text">
+                    2045년, 암울한 현실과 달리 가상현실 오아시스(OASIS)에서는  누구든 원하는 캐릭터로 어디든지 갈 수 있고, 뭐든지 할 수 있고 상상하는 모든 게 가능하다.<br>웨이드 와츠(타이 쉐리던) 역시 유일한 낙은 대부분의 사람들이 하루를 보내는 오아시스에 접속하는 것이다. 어느 날 오아시스의 창시자인 괴짜 천재 제임스 할리데이(마크 라이런스)는 자신이 가상현실 속에 숨겨둔 3개의 미션에서 우승하는 사람에게 오아시스의 소유권과 막대한 유산을 상속한다는 유언을 남기고, 그가 사랑했던 80년대 대중문화 속에 힌트가 있음을 알린다.<br>제임스 할리데이를 선망했던 소년 ‘웨이드 와츠’가 첫 번째 수수께끼를 푸는 데 성공하자 이를 저지하기 위해 현실에서 살인도 마다하지 않는 ‘IOI’라는 거대 기업이 뛰어든다. 
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm cancel">취소</button>
+                <button class="btn btn-sm">삭제</button>
+                <button class="btn btn-sm pull-right" id="popupSub">편집</button>
+            </div>
+        </div>
+    </div> 
+ 	<div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header" style="overflow: hidden;">
+               <h4 class="pull-left">LIVE 추가</h4>
+               <button class="btn btn-sm pull-right m-t-10" id="channel">주소입력</button>
+           </div>
+           <div class="modal-body">
+               <div class="media-form">
+                   <div class="video"><img src="img/img_video.png" alt="샘플"></div>
+                   <a class="play" href="#"><img src="img/img_play.png" alt="재생"></a>
+               </div>
+               <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-540px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
+               <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
+               <input type="text" class="form-control m-b-10" placeholder="제목">
+               <textarea class="form-control m-b-10" placeholder="내용"></textarea>
+               <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
+           </div>
+           <div class="modal-footer">
+               <button class="btn btn-sm cancel">취소</button>
+               <button class="btn btn-sm pull-right">확인</button>
+           </div>
+       </div>
+   </div>
+ </div>  
+ <!-- ###############스케쥴 보기 모달  끝 ######################### --> 
+ <!-- ###############스케쥴 편집 모달 시작 ######################### -->
+ <div class="modal fade in" id="scheduleEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+	<div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header" style="overflow: hidden;">
+               <h4 class="pull-left">LIVE 추가</h4>
+               <button class="btn btn-sm pull-right m-t-10" id="channel">주소입력</button>
+           </div>
+           <div class="modal-body">
+               <div class="media-form">
+                   <div class="video"><img src="img/img_video.png" alt="샘플"></div>
+                   <a class="play" href="#"><img src="img/img_play.png" alt="재생"></a>
+               </div>
+               <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-540px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
+                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
+               <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
+               <input type="text" class="form-control m-b-10" placeholder="제목">
+               <textarea class="form-control m-b-10" placeholder="내용"></textarea>
+               <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
+           </div>
+           <div class="modal-footer">
+               <button class="btn btn-sm cancel">취소</button>
+               <button class="btn btn-sm pull-right">확인</button>
+           </div>
+       </div>
+   </div>
+ </div> 
+ <!-- ###############스케쥴 편집 모달 끝 ######################## -->                             
 <script>
 $(function(){
 	system.nowInfo();
