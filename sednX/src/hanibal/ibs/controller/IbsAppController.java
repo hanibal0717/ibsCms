@@ -404,6 +404,46 @@ public class IbsAppController {
 					mainData.put("ret", subData);					
 				}
 			}
+			else if(order.equals("settings")) {
+				try {
+					List<HashMap<String, Object>> list = ibsAppDAO.getSettingInfo();
+					mainData.put("code", "200");
+					mainData.put("type", "0");
+					mainData.put("msg", "");
+					mainData.put("ret", list);
+				}
+				catch (Exception e) {
+					mainData.put("code", "400");
+					mainData.put("type", "0");
+					mainData.put("msg", "설정파일 조회에 실패했습니다.");
+					mainData.put("ret", subData);					
+				}
+			}			
+		}
+		
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	
+	// 기본 API
+	@RequestMapping("/api/app/{order}")
+	public void defaultAPI(@PathVariable String order, @RequestParam(required=false) Map<String, Object> commandMap, ModelMap mav, HttpServletResponse res, HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException {
+		subData.clear();
+		mainData.clear();
+		if(order.equals("forceUpdate")) {
+			try {
+				List<HashMap<String, Object>> list = ibsAppDAO.getUpdateVer();
+				mainData.put("code", "200");
+				mainData.put("type", "0");
+				mainData.put("msg", "");
+				mainData.put("ret", list);
+			}
+			catch (Exception e) {
+				mainData.put("code", "400");
+				mainData.put("type", "0");
+				mainData.put("msg", "업데이트 버전 확인에 실패했습니다.");
+				mainData.put("ret", subData);						
+			}
 		}
 		
 		res.setCharacterEncoding("utf8");
