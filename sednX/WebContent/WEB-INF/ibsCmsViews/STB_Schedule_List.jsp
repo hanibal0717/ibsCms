@@ -78,8 +78,9 @@
                      
                     //On Day Select
                     select: function(start, end, allDay) {
-                    	$('#addNew-event form')[0].reset();
-                    	menuJs.makeSelJstree();
+                    	$('#scheduleInsertModal').modal();
+                    	//$('#addNew-event form')[0].reset();
+                    	/*menuJs.makeSelJstree();
                     	$('#addNew-event').modal('show');   
                         $('#order').val('insert');
                         if($('#order').val()=="update"){
@@ -89,15 +90,16 @@
                          	$("#deleteEvent").css('display','none');
               	 			$("#addEvent").val("생방송 추가");
                         }
-                        
+                        */  
                     	var selStart = new Date(start);
                         var selEnd=new Date(end);
                         var hs = common.formatZeroDate(selStart.getHours(),2);
                         var ms = common.formatZeroDate(selStart.getMinutes(),2);
                         var he = common.formatZeroDate(selEnd.getHours(),2);
                         var me = common.formatZeroDate(selEnd.getMinutes(),2);
+                        
                         $('#getStart').val($.datepicker.formatDate('yy-mm-dd '+hs+':'+ms,start));
-                        $('#getEnd').val($.datepicker.formatDate('yy-mm-dd '+he+':'+me,end));                        
+                        $('#getEnd').val($.datepicker.formatDate('yy-mm-dd '+he+':'+me,end)); 
                     },
                      
                     eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
@@ -145,7 +147,7 @@
                 });
                 
                 $('body').on('click', '#addEvent', function(){
-                	
+                	alert("ok");
                 	/*if($('#source_type').val()=='VOD'){
                 		var optionCount=$('#vodSource > option').length;
                 		if(optionCount==0){
@@ -160,7 +162,8 @@
                     	}
                     	$("#vodArr").val('');
                     	$("#vodArr").val(vodArray);
-                	}
+                	}*/
+                	/*
                 	if($("#captionYn").val()=="Y"){
                 		if($('#caption').val().length==0||$('#caption_text_color').val().length==0){
                 			jQuery('#caption').validationEngine('showPrompt', '자막 내용과 자막 색상을 입력해주세요.', 'pass');
@@ -176,7 +179,8 @@
                 		}else{
                 			jQuery('#live_stream_url').validationEngine('hideAll');
                 		}
-                	}
+                	}*/
+                	/*
                      var eventForm =  $(this).closest('.modal').find('.form-validation');
                      eventForm.validationEngine('validate');
                      if (!(eventForm).find('.formErrorContent')[0]) {
@@ -243,10 +247,10 @@
                                start: $('#getStart').val(),
                                end:  $('#getEnd').val(),
                                allDay: false,
-                          },true );*/
+                          },true );
                           
                           
-                     } 
+                     } */
                 });
                 
             });    
@@ -263,6 +267,7 @@
            
             $(function(){
             	 $("#createEvent").click(function(){
+            		 alert("create event");
             		/* $('#addNew-event form')[0].reset();
             		 $("#order").val('insert');
             		 if($('#order').val()=="update"){

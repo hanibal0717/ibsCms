@@ -329,164 +329,7 @@
 		</div>
 	</div>
 </div>
-<!-- ##########ADD SCHEDULE##################### -->
-<!-- Schedule Time Resize alert -->
- <div class="modal fade" id="addNew-event">
-      <div class="modal-dialog">
-           <div class="modal-content">
-                <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                     <h4 class="modal-title">Add Schedule</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-validation" role="form" id="liveAddForm">
-                        <div class="form-group col-lg-12">
-                             <label for="eventName">방송 제목</label>
-                             <input type="text" class="input-sm m-b-10  form-control validate[required]" id="eventName" placeholder="방송 제목">
-                        </div>
-                        <div class="form-group col-lg-6 m-b-10 ">
-                        	<label for="getStart">방송 시작</label>
-                         	<input type="text" class="input-sm form-control validate[required]" id="getStart" placeholder="예)2018-01-01 23:12:06:49"/>  
-          				</div>
-                        <div class="form-group col-lg-6 p-b-10">
-                         	<label for="getStart">방송 종료</label>
-                          	<input type="text" class="input-sm form-control validate[required,funcCall[uploadFile.checkSchedule]]" id="getEnd" placeholder="예)2018-01-01 23:12:06:49"/>
-                        </div>
-                        
-                        <!-- 대상  -->
-                        <div class="form-group col-lg-12">
-                        <label>대상 그룹</label>
-                        	<div id="scheduleInsertModel"  style="border:1px solid rgba(255,255,255,0.3);"></div>
-                        	<input type="text" id="groupArr" class="input-sm form-control validate[required]" style="width:1px;height:1px;opacity: 0;"/>
-                        </div>
-                        <!-- 소스  -->
-                        <div class="form-group col-lg-12">
-                        	<label>영상 소스</label>
-                        	<div class="tab-container tile">
-                        		<ul class="nav tab nav-tabs">
-                        			<li class="sourceTab active" value="LIVE" id="liveTab"><a href="#live">STREAM URL</a></li>
-                            		<li class="sourceTab" value="VOD" id="vodTab"><a href="#video">VIDEO</a></li>
-                        		</ul>
-                        		<div class="tab-content" style="padding:5px;">
-                        			<div class="tab-pane active" id="live">
-                        				${hn:getLiveSource()}
-                        			</div>
-                        			<div class="tab-pane" id="video" >
-                        				
-                        			</div>
-                        		</div>
-                        	</div>
-                        	<input type="hidden" id="live_stream_url"/>
-                        </div> 
-                        <!-- 자막폼 -->
-                        <div class="form-group col-lg-12">
-                        	<button class="btn btn-xs btn-alt m-r-5" id="captionView">자 막 설 정 열 기</button>
-                        </div>
-                       	<div class="clearfix"></div>
-                        <div id="captionForm" style="border:1px solid rgba(255,255,255,0.3);display:none;">
-                        	<!-- 자막  -->
-	                        <div class="col-lg-12 p-b-10">
-	                        	<div></div>
-	                       		<div class="form-group col-lg-3">
-	                       			<label for="caption_size" class="control-label">글자 크기</label>
-	                       			<div>
-	                       				<select id="caption_size" class="form-control input-sm">
-	                       					<option value="1">작게</option>
-	                       					<option value="2">보통</option>
-	                       					<option value="3">크게</option>
-	                       				</select>
-	                       			</div>
-	                       		</div>
-	                       		<div class="form-group col-lg-3">
-	                       			<label for="caption_text_color" class="control-label">자막 색상</label>
-	                       			<div class="color-pick input-icon">
-	                       				<input id="caption_text_color" class="form-control color-picker input-sm" type="text">
-	                       				<span class="color-preview"></span>
-	                                	<span class="add-on">
-	                                    <i class="sa-plus"></i>
-	                                	</span>
-	                       			</div>
-	                       		</div>
-	                       		<div class="form-group col-lg-3">
-	                       			<label for="caption_bg_color" class="control-label">자막 색상</label>
-	                       			<div class="color-pick input-icon">
-	                       				<input id="caption_bg_color" class="form-control color-picker input-sm" type="text">
-	                       				<span class="color-preview"></span>
-	                                	<span class="add-on">
-	                                    <i class="sa-plus"></i>
-	                                	</span>
-	                       			</div>
-	                       		</div>
-	                       		<div class="form-group col-lg-3">
-	                       			<label for="caption_speed" class="control-label">자막 동작</label>
-	                       			<div>
-	                       				<select id="caption_speed" class="form-control input-sm">
-	                       					<option value="1">고정</option>
-	                       					<option value="2">보통</option>
-	                       					<option value="3">빠르게</option>
-	                       					<option value="4">천천히</option>
-	                       				</select>
-	                       			</div>
-	                       		</div>
-	                       		<div class="form-group col-lg-12">
-	                       			<textarea class="form-control overflow" id="caption" tabindex="5001" style="overflow: hidden; outline: none;" placeholder="자막 내용"></textarea>
-	                       			<span>자막설정은 최대 255자, 3줄까지만 가능합니다.</span><span style="float:right;"><small id="nowLetter">0</small>/<small>255</small></span>
-	                       		</div>
-	                       	</div> 
-	                       <!-- 자막폼 -->
-	                        <div class="clearfix"></div>
-                        </div>
-                         <!-- 편성 색상  -->
-	                        <div class="form-group col-lg-12 p-b-10">
-	                        	<div class="form-group col-lg-3">
-	                       			<label for="caption_bg_color">편성 색상</label>
-	                       			<div class="color-pick input-icon">
-	                       				<input id="color" class="form-control color-picker input-sm validate[required]">
-	                       				<span class="color-preview"></span>
-	                                	<span class="add-on">
-	                                    <i class="sa-plus"></i>
-	                                	</span>
-	                       			</div>
-	                       		</div>
-	                        </div> 
-                        <!-- 대표이미지  -->
-	                        <div class="form-group col-lg-12 p-b-10">
-	                        	<label for="caption_bg_color">편성 이미지</label>
-	                        	<div class="fileupload fileupload-new p-5" data-provides="fileupload">
-		       						<div class="fileupload-preview thumbnail form-control" id="imgName_view">편성 이미지를 업로드하세요</div>
-		        					<div class="pull-right">
-		            					<span class="btn btn-file btn-alt btn-sm">
-		                					<span class="fileupload-new">이미지 선택</span>
-		                					<span class="fileupload-exists">이미지 바꾸기</span>
-		                					<input type="file" id="imgName" onchange="uploadFile.scheduleImg(this,'imgName');" />
-		                					
-		                				</span>
-		            				</div>
-		    					</div> 
-		    					<input type="text" id="image_path" class="validate[required]" style="opacity: 0;width:1px;height:1px;"> 
-	                        </div>
-                        <!-- 내용 -->
-                        <div class="form-group col-lg-12 p-b-10">
-                        	<label for="desc_text">생방송 내용</label>
-                        	<textarea class="form-control overflow" id="desc_text" tabindex="5001" style="overflow: hidden; outline: none;"></textarea>
-                        </div>
-                        <input type="hidden" id="idx"/>
-                        <input type="hidden" id="source_type"  value="LIVE"/>
-                    	<input type="hidden" id="live_ch_idx" class="form-control"/>
-                        <input type="hidden" id="captionYn" value="N">
-                        <input type="hidden" id="order">
-                     </form>
-                </div>
-                
-                <div class="modal-footer">
-                     <input type="button" class="btn btn-info btn-sm" id="addEvent" value="생방송 추가">
-                     <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">닫기</button>
-                     <button type="button" class="btn btn-info btn-sm" id="deleteEvent" onClick="calClick.deleteEvent();" style="display:none;float:right;">삭 제</button>
-                </div>
-           </div>
-      </div>
- </div>
- <!-- ##########ALL MODAL END SCHEDULE##################### -->   
+
  <!-- ################# ADD LIVE TARGET MODAL START################### -->
 <div class="modal fade in" id="liveTargetAdd" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-dialog" style="top: 30%;">
@@ -672,9 +515,9 @@
  	<div class="modal-dialog">
         <div class="modal-content mainImgPopup">
             <div class="media-form">
-                <div class="video"><img src="img/img_video.png" alt="샘플"></div>
-                <a class="play" href="#"><img src="img/img_play.png" alt="재생"></a>
-                <a class="info" href="#"><img src="img/img_info.png" alt="정보"></a>
+                <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
+                <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                <!-- <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a> -->
                 <div class="infoForm">
                     <ul>
                         <li>해상도 : 1808 x 920</li>
@@ -701,67 +544,173 @@
         </div>
     </div> 
  	<div class="modal-dialog">
-       <div class="modal-content">
-           <div class="modal-header" style="overflow: hidden;">
-               <h4 class="pull-left">LIVE 추가</h4>
-               <button class="btn btn-sm pull-right m-t-10" id="channel">주소입력</button>
-           </div>
-           <div class="modal-body">
-               <div class="media-form">
-                   <div class="video"><img src="img/img_video.png" alt="샘플"></div>
-                   <a class="play" href="#"><img src="img/img_play.png" alt="재생"></a>
-               </div>
-               <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-540px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
-               <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
-               <input type="text" class="form-control m-b-10" placeholder="제목">
-               <textarea class="form-control m-b-10" placeholder="내용"></textarea>
-               <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
-           </div>
-           <div class="modal-footer">
-               <button class="btn btn-sm cancel">취소</button>
-               <button class="btn btn-sm pull-right">확인</button>
-           </div>
-       </div>
-   </div>
+         <div class="modal-content mainImgPopup">
+             <div class="modal-body" style="overflow:hidden;">
+                 <div class="media-form">
+                     <button class="btn btn-sm" style="position:  absolute; z-index: 1; top: 10px; left: 10px;">영상변경</button>  
+                     <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
+                     <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                     <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                 </div>
+                 <div class="thumnail">
+                     <div style="background: url(img/20180413141747_0.jpg) no-repeat center; background-size: cover;">
+                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
+                     </div>
+                     <div style="background: url(img/bg-pc.jpg) no-repeat center; background-size: cover;">
+                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
+                     </div>
+                     <div style="background: url(img/20180413144149_0.jpg) no-repeat center; background-size: cover;">
+                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
+                     </div>
+                     <div style="background: url(img/20180131173529_0.jpg) no-repeat center; background-size: cover;">
+                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
+                                    </div>
+                                    <div style="background: url(img/20180130101004_4.jpg) no-repeat center; background-size: cover;">
+                                        <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
+                                    </div>
+                                    <div>
+                                        <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                                    </div>
+                                </div>
+				                 <script>
+				                     $(function () {
+				                    	 $('.thumnail').bxSlider({
+				                    	        mode: 'horizontal',
+				                    	        slideWidth: 125,
+				                    	        pager: false,
+				                    	        captions: true,
+				                    	        minSlides: 4,
+				                    	        maxSlides: 4,     
+				                    	        slideMargin: 10,
+				                    	        controls: true,
+				                    	        moveSlides: 1
+				                    	    });
+				                         $(".thumnail a.add").click(function () {
+				                             $(".get").css("display","block");
+				                         });
+				                         $("#getForm").click(function () {
+				                             $("#popupGetForm").show();
+				                         }); //저장소
+				                     })
+				                 </script>
+                 <span class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
+                     <button class="btn btn-sm pull-left m-b-5">PC에서 가져오기</button><br>
+                     <button class="btn btn-sm pull-left" id="getForm">저장소에서 가져오기</button>
+                 </span>
+                 <div class="col-md-9 m-b-10">
+                     <input type="text" class="form-control" placeholder="제목" value="VOD 방송 #1">
+                 </div>
+                 <div class="col-md-3 m-b-10" id="check">
+                     <label>
+                         <div class="icheckbox_minimal"><div aria-checked="false" aria-disabled="false" style="position: relative;">
+                         <input type="checkbox" />
+                         방송 시작 알림
+                         </div></div>
+                     </label>
+                 </div>
+                 <div class="col-md-6 m-b-10">
+                     <input type="text" class="form-control" value="2018.04.23 13:30">
+                 </div>
+                 <div class="col-md-6 m-b-10">
+                     <input type="text" class="form-control" value="2018.04.23 15:00">
+                 </div>
+                 <div class="col-md-12 m-b-10"><textarea class="form-control m-b-10" placeholder="내용"></textarea></div>
+             </div>                     
+             <div class="modal-footer" style="margin-top:0;">
+                 <button class="btn btn-sm cancel">취소</button>
+                 <button class="btn btn-sm">삭제</button>
+                 <button class="btn btn-sm pull-right">확인</button>
+             </div>
+         </div>
+     </div>
  </div>  
  <!-- ###############스케쥴 보기 모달  끝 ######################### --> 
- <!-- ###############스케쥴 편집 모달 시작 ######################### -->
- <div class="modal fade in" id="scheduleEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ <!-- ###############스케쥴 추가 모달 시작 ######################### -->
+ <div class="modal fade in" id="scheduleInsertModal" tabindex="-1" role="dialog" aria-hidden="false"> 
 	<div class="modal-dialog">
-       <div class="modal-content">
-           <div class="modal-header" style="overflow: hidden;">
-               <h4 class="pull-left">LIVE 추가</h4>
-               <button class="btn btn-sm pull-right m-t-10" id="channel">주소입력</button>
-           </div>
-           <div class="modal-body">
-               <div class="media-form">
-                   <div class="video"><img src="img/img_video.png" alt="샘플"></div>
-                   <a class="play" href="#"><img src="img/img_play.png" alt="재생"></a>
-               </div>
-               <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-540px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
-                   <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
-               <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
-               <input type="text" class="form-control m-b-10" placeholder="제목">
-               <textarea class="form-control m-b-10" placeholder="내용"></textarea>
-               <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
-           </div>
-           <div class="modal-footer">
-               <button class="btn btn-sm cancel">취소</button>
-               <button class="btn btn-sm pull-right">확인</button>
-           </div>
-       </div>
-   </div>
+         <div class="modal-content mainImgPopup">
+         	<form class="form-validation" role="form" id="liveAddForm">
+             <div class="modal-body" style="overflow:hidden;">
+                 <div class="media-form">
+                 	 <div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;">
+     					<div class="fileupload-preview thumbnail form-control" id="imgName_view" style="padding:0;"><img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플"></div>
+      					<div class="pull-right">
+          					<span class="btn btn-file btn-alt btn-sm" style="position: absolute; top: 20px; left: 20px;">
+              					<span class="fileupload-new">이미지 선택</span>
+              					<span class="fileupload-exists">이미지 바꾸기</span>
+              					<input type="file" id="imgName" onchange="uploadFile.scheduleImg(this,'imgName');" />
+              				</span>
+          				</div>
+          				<input type="text" id="image_path" class="validate[required]" style="opacity: 0;width:1px;height:1px;"> 
+  					</div> 
+  					
+                 <!--  -->
+                 	<!--  <button class="btn btn-sm" style="position:  absolute; z-index: 1; top: 10px; left: 10px;">대표이미지</button>   -->
+                     <!-- <div class="video"><img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플"></div> -->
+                     <!-- <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a> -->
+                     <!-- <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a> -->
+                 </div>
+                 <div class="thumnail">
+                     <!-- <div style="background: url(img/20180130101004_4.jpg) no-repeat center; background-size: cover;">
+                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
+                     </div> -->
+                      <div>
+                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                      </div>
+                  </div>
+				                 <script>
+				                     $(function () {
+				                    	 $('.thumnail').bxSlider({
+				                    	        mode: 'horizontal',
+				                    	        slideWidth: 125,
+				                    	        pager: false,
+				                    	        captions: true,
+				                    	        minSlides: 4,
+				                    	        maxSlides: 4,     
+				                    	        slideMargin: 10,
+				                    	        controls: true,
+				                    	        moveSlides: 1
+				                    	    });
+				                         $(".thumnail a.add").click(function () {
+				                             $(".get").css("display","block");
+				                         });
+				                         $("#getForm").click(function () {
+				                             $("#popupGetForm").show();
+				                         }); //저장소
+				                     })
+				                 </script>
+                 <span class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
+                     <button class="btn btn-sm pull-left m-b-5">PC에서 가져오기</button><br>
+                     <button class="btn btn-sm pull-left" id="getForm">저장소에서 가져오기</button>
+                 </span>
+                 <div class="col-md-9 m-b-10">
+                     <input type="text" class="form-control validate[required]" id="eventName" placeholder="제목" value="" placeholder="방송 제목">
+                 </div>
+                 <div class="col-md-3 m-b-10" id="check">
+                     <label>
+                         <div class="icheckbox_minimal"><div aria-checked="false" aria-disabled="false" style="position: relative;">
+                         <input type="checkbox" />
+                         방송 시작 알림
+                         </div></div>
+                     </label>
+                 </div>
+                 <div class="col-md-6 m-b-10">
+                     <input type="text" class="form-control validate[required]" id="getStart" value="" placeholder="예)2018-01-01 23:12:06:49">
+                 </div>
+                 <div class="col-md-6 m-b-10">
+                     <input type="text" class="form-control validate[required,funcCall[uploadFile.checkSchedule]]" id="getEnd"  value="" placeholder="예)2018-01-01 23:12:06:49">
+                 </div>
+                 <div class="col-md-12 m-b-10"><textarea class="form-control m-b-10 validate[required]" id="desc_text" placeholder="내용"></textarea></div>
+             </div>                     
+             <div class="modal-footer" style="margin-top:0;">
+                 <button class="btn btn-sm cancel">취소</button>
+                 <button class="btn btn-sm">삭제</button>
+                 <button class="btn btn-sm pull-right">확인</button>
+             </div>
+         </form>
+         </div>
+         
+     </div>
  </div> 
  <!-- ###############스케쥴 편집 모달 끝 ######################## -->                             
 <script>

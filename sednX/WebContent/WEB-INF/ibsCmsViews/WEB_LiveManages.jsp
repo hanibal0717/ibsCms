@@ -69,6 +69,8 @@ pageEncoding="UTF-8"%>
 <script>
 $('#categoryIdx').val('${hn:getDefaultLiveIdx()}');
 $('#categoryName').val('${hn:getDefaultLiveName()}');
+$("#getStart").datetimepicker({format:'Y-m-d H:i',step:30,theme:'dark'});
+$("#getEnd").datetimepicker({format:'Y-m-d H:i',step:30,theme:'dark'});
 var option='${hn:getBoardSelect()}';
 $('#optionText').val(option);
 var menuJs = (function() {
