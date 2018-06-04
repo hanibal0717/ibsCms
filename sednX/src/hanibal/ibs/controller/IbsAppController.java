@@ -406,11 +406,11 @@ public class IbsAppController {
 			}
 			else if(order.equals("settings")) {
 				try {
-					List<HashMap<String, Object>> list = ibsAppDAO.getSettingInfo();
+					HashMap<String, Object> map = ibsAppDAO.getSettingInfo();
 					mainData.put("code", "200");
 					mainData.put("type", "0");
 					mainData.put("msg", "");
-					mainData.put("ret", list);
+					mainData.put("ret", map);
 				}
 				catch (Exception e) {
 					mainData.put("code", "400");
@@ -432,11 +432,11 @@ public class IbsAppController {
 		mainData.clear();
 		if(order.equals("forceUpdate")) {
 			try {
-				List<HashMap<String, Object>> list = ibsAppDAO.getUpdateVer();
+				HashMap<String, Object> map = ibsAppDAO.getUpdateVer();
 				mainData.put("code", "200");
 				mainData.put("type", "0");
 				mainData.put("msg", "");
-				mainData.put("ret", list);
+				mainData.put("ret", map);
 			}
 			catch (Exception e) {
 				mainData.put("code", "400");
