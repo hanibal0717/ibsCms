@@ -343,27 +343,23 @@ public class IbsAppDAO {
 		return userName;
 	}
 	
-	public List<HashMap<String, Object>> getUpdateVer() {
-		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	public HashMap<String, Object> getUpdateVer() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("recommend_version", 1);
 		map.put("force_version", 1);
 		map.put("link_url", "");
 		map.put("title", "업데이트");
 		map.put("contents", "업데이트가 필요합니다.");
-		list.add(map);
 		
-		return list;
+		return map;
 	}
 	
-	public List<HashMap<String, Object>> getSettingInfo() {
-		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	public HashMap<String, Object> getSettingInfo() {
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("start_page", "vod");
 		map.put("conf_server_ip", "182.162.172.133");
 		map.put("conf_server_port", "8443");
-		list.add(map);
 		
-		return list;
+		return map;
 	}	
 }
