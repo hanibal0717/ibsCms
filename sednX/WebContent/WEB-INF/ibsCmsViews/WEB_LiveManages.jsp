@@ -61,6 +61,8 @@ pageEncoding="UTF-8"%>
 			<input id="sort" type="hidden" value="live">
 			<input id="treeIdx" type="hidden">
 			<input id="optionText" type="hidden" value="">
+			<input id="repoOrder" type="hidden" value="vod"/>
+			<input id="boardYn" type="hidden" value="N"/>
 			<!-- CONTENTS END -->	
 			</div>
 	    </div>
@@ -113,7 +115,7 @@ var menuJs = (function() {
 	};
 	var vodScheduleJstree = function() {
 		$.ajax({
-			url : "${pageContext.request.contextPath}/api/vodSchedule/vod",
+			url : "${pageContext.request.contextPath}/api/vodSchedule/"+$('#repoOrder').val(),
 			async : true,
 			success : function(data) {
 				$("#video").empty();
@@ -139,12 +141,24 @@ var arange=(function(){
 		contentsView(idx);
 	};
 	var contentsView=function(idx){
-		$("#pageView").empty();
 		$.ajax({
 			url : "${pageContext.request.contextPath}/cms/list/"
 				+ $("#sort").val() + "?childIdx="+idx,
+			async: false,
 			success : function(data){
+				$('#pageView').empty();
 				$('#pageView').html(data);
+			},
+			error : exception.ajaxException
+		});
+	};
+	var repolist = function(childIdx) {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/cms/list/"
+					+ $("#repoOrder").val() + "?childIdx=" + childIdx,
+			success : function(data) {
+				$("#repoListPage").empty();
+				$("#repoListPage").html(data);
 			},
 			error : exception.ajaxException
 		});
@@ -192,12 +206,39 @@ var arange=(function(){
 			});
 		}
 	};
+	var vodImgFactory=function(imgArr){
+		if(imgArr.length!=0){
+			$.ajax({
+				url : "${pageContext.request.contextPath}/api/imageNames",
+				cache : false,
+				type : 'post',
+				data : {"imgArr":imgArr},
+				async : false,
+				success : function(responseData){
+					var data=JSON.parse(responseData);
+					var retHtml='';
+					for(var i=0;i<data.imgList.length;i++){
+						retHtml+='<div  style="float:left; background: url(${pageContext.request.contextPath}'+data.imgList[i].img_url
+							+') no-repeat center; background-size: cover;">'
+	                        +'<a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>'
+		                    +'</div>';
+					}
+					$('.thumnail').empty();
+					$('.thumnail').html(retHtml);
+					//$('#scheduleVodList').before(retHtml);
+				},
+				error : exception.ajaxException
+			});
+		}
+	};
 	return {
 		naviBar : naviBar,
 		list : list,
 		contentsView : contentsView,
 		targetView : targetView,
-		targetPreview : targetPreview 
+		targetPreview : targetPreview,
+		repolist :repolist,
+		vodImgFactory : vodImgFactory
 	}
 }());
 </script>
@@ -224,5 +265,31 @@ var arange=(function(){
 			},
 			error : exception.ajaxException
 		});
+	});
+	$('#repositoryAdd').click(function(){
+		menuJs.vodScheduleJstree();
+		arange.repolist('');
+		$('#repositoryList').modal();
+	});
+	$('#selectIdxArr').click(function(){
+		
+		if($('#vodArr').val().length==0){
+			$('#vodArr').val($('#tempVodList').val());
+		}else{
+			$('#vodArr').val($('#vodArr').val()+","+$('#tempVodList').val());
+		}
+		arange.vodImgFactory($('#vodArr').val());
+		$('#repositoryList').modal('hide');
+	});
+	$('#repoType').change(function(){
+		if($(this).val()=="VOD"){
+			$('#repoOrder').val('vod');
+			menuJs.vodScheduleJstree();
+			arange.repolist('');
+		}else{
+			$('#repoOrder').val('stream');
+			menuJs.vodScheduleJstree();
+			arange.repolist('');
+		}
 	});
 </script>

@@ -416,32 +416,43 @@ public class IbsWebApiController {
 	@RequestMapping("/api/vodSchedule/{order}")
 	public String vodSchedule(@PathVariable String order,
 			HttpServletRequest req,
-			Model model) throws JsonGenerationException, JsonMappingException, IOException {
-		String treeMenu="";
-		List<TreeMenu> lists=null;
-		lists=webApiDao.getMenuTree(order);
-		Cookie[] cookies = req.getCookies();
+			Model model) throws Exception {
 		String selected_node_id = "1";
-		if(cookies!=null){
-			for(int i=0; i<cookies.length; i++){
-				if(cookies[i].getName().equals("selected_node")){
-					selected_node_id = cookies[i].getValue();
-    			}
-			}
+		
+		String treeMenu="";
+		List<AdvenceTree> lists=webApiDao.getAdvenceTree(order);
+		if(order.equals("live")) {
+			selected_node_id=lists.get(1).getId();
+		}else if(order.equals("board")){
+			selected_node_id="1";
+		}else {
+			selected_node_id=HanibalWebDev.getDefaultContentsIdx();
 		}
+		log.info("-------"+order+"--------->"+selected_node_id);
 		lists.get(0).setParent("#");
 		for(int i=0;i<lists.size();i++) {
-			treeMenu+="{\"id\":\""+lists.get(i).getId()+"\",\"parent\":\""+lists.get(i).getParent()+"\",\"text\":\""+lists.get(i).getText()+" ["+lists.get(i).getNum()+"]\","
-					+ "\"name\":\""+lists.get(i).getName()+"\",\"num\":\""+lists.get(i).getNum()+"\""
-					+ ",\"state\":{\"opened\":false";
-					if(lists.get(i).getId().equals(selected_node_id)) {
+			treeMenu+="{\"id\":\""+lists.get(i).getId()+"\",\"parent\":\""+lists.get(i).getParent()+"\",\"text\":\""+lists.get(i).getText();
+			if(lists.get(i).getProperty().equals("1")) {
+				treeMenu+=" ["+lists.get(i).getNum()+"]";
+			}
+			treeMenu+="\",";
+			treeMenu+= "\"name\":\""+lists.get(i).getName()+"\",\"num\":\""+lists.get(i).getNum()+"\",\"property\":\""+lists.get(i).getProperty()+"\",";
+			if(i==0) {
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/root.png\"";
+			}else if(lists.get(i).getProperty().equals("0")) {
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/menu.png\"";
+			}else{
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/list.png\"";
+			}		
+			treeMenu+= ",\"state\":{\"opened\":true";
+			if(lists.get(i).getId().equals(selected_node_id)) {
 					treeMenu+=",\"selected\":true";	
-					}
-					treeMenu+="}},";
+			}
+			treeMenu+="}},";
 		}
 		model.addAttribute("treeMenu", treeMenu);
 		model.addAttribute("sort", order);
-		return "/ibsInclude/vodSchedule.inc";
+		return "/ibsInclude/vodSchedulAdvence.inc";
 	}
 	@RequestMapping("/api/jstree/addGroup")
 	public void addGroup(@RequestParam Map<String, Object> commandMap, ModelMap mav,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
@@ -601,6 +612,21 @@ public class IbsWebApiController {
 		res.setCharacterEncoding("utf8");
 		res.getWriter().print(mapper.writeValueAsString(mainData));
 		
+	}
+	
+	@RequestMapping("/api/imageNames")
+	public void imageNames(@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		String eachFlag="";
+		if(String.valueOf(commandMap.get("idxArr")).length()!=0) {
+			eachFlag="Y";
+			commandMap.put("eachFlag",eachFlag);
+			commandMap.put("imgArr", HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("imgArr"))));
+			List<HashMap<String,Object>> imgList=webApiDao.getImgNames(commandMap);
+			Map<String,Object> mainData =new HashMap<String,Object>();
+			mainData.put("imgList",imgList);
+			res.setCharacterEncoding("utf8");
+			res.getWriter().print(mapper.writeValueAsString(mainData));
+		}
 	}
 	
  }

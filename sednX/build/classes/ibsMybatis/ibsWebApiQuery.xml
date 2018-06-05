@@ -520,7 +520,7 @@
 		</select>
 		<select id="EventList" parameterType="java.util.Map" resultType="hanibal.ibs.model.cms.ScheduleDTO">
 			select 
-				distinct(a.idx) as idx,
+				(a.idx) as idx,
 				(a.name) as name,
 				(a.start) as start,
 				(a.end) as end,
@@ -538,7 +538,7 @@
 				(a.desc_text) as desc_text,
 				(a.category_idx) as category_idx,
 				(a.del_flag) as del_flag
-			from vw_stb_group_schedule a 
+			from tb_stb_schedule a 
 			where 1=1 
 			and del_flag='N'
 		  		<if test='eachFlag!=""'>
@@ -938,7 +938,8 @@
 				source_type,
 				image_path,
 				color,
-				desc_text
+				desc_text,
+				category_idx
 				)
 				values
 				(
@@ -960,7 +961,8 @@
 				#{source_type},
 				#{image_path},
 				#{color},
-				#{desc_text}
+				#{desc_text},
+				#{category_idx}
 				)
 		</insert>
 		<insert id="insertScheduleGroup" parameterType="java.util.Map">
@@ -1297,6 +1299,22 @@
 		<select id="targetCount" resultType="int">
 			select count(idx) from tb_stb_category;
 		</select>
+		
+		<resultMap id="imgResult" type="java.util.HashMap">
+			<result javaType="java.lang.String" column="img_idx" property="img_idx"/>
+			<result javaType="java.lang.String" column="img_url" property="img_url"/>
+		</resultMap>
+		<select id="getImgNames" resultMap="imgResult" parameterType="java.util.Map">
+			select idx as img_idx,main_thumbnail as img_url from tb_vod_repository 
+			where 1=1
+			<if test='eachFlag!=""'>
+	  			and idx in
+	  			<foreach collection="imgArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+      		</if>
+		</select>
+
 </mapper>
 
 

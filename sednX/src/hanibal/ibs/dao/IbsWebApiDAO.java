@@ -267,6 +267,13 @@ public class IbsWebApiDAO {
 		}
 		return lists;
 	}
+	public List<HashMap<String, Object>> getImgNames(Map<String, Object> commandMap) {
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getImgNames",commandMap);
+		for(int i=0;i<lists.size();i++) {
+			lists.get(i).put("img_url","/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(String.valueOf(lists.get(i).get("img_url")))+String.valueOf(lists.get(i).get("img_url")));
+		}
+		return lists;
+	}
 	
 	
 	

@@ -326,7 +326,7 @@ public class IbsCmsController {
 							Integer.parseInt(nowPage),
 							req.getContextPath()+"/cms/list/live?");
 			model.addAttribute("pagingStr", pagingStr);*/
-			viewPage="/ibsCmsViews/WEB_Contents_livePage.inc";
+			viewPage="/ibsCmsViews/WEB_Contents_streamPage.inc";
 		}else if(order.equals("board")) {
 			/*pageSize=10;
 			blockPage=10;*/
@@ -621,9 +621,9 @@ public class IbsCmsController {
 	
 	
 	@RequestMapping("/cms/excute/{contents}/{order}")
+	@ResponseBody
 	public String excuteContents(@PathVariable String contents,@PathVariable String order,@RequestParam Map<String, Object> commandMap,Model model,HttpServletRequest req,HttpSession session) throws IOException {
 		int affectcount=0;
-		String msg="fail";
 		String reg_id=String.valueOf(session.getAttribute("member_email"));
 		String reg_ip = req.getHeader("X-FORWARDED-FOR");
 		if(reg_ip==null) reg_ip=req.getRemoteAddr();
@@ -718,10 +718,10 @@ public class IbsCmsController {
 			}else if(order.equals("insert")) {
 				affectcount=ibsCmsDao.insertSchedule(commandMap);
 				int topIdx=HanibalWebDev.getScheduleTop();
-				int groupArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("groupArr")));
+				/*int groupArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("groupArr")));
 				for(int idx : groupArr) {
 					ibsCmsDao.insertScheduleGroup(topIdx,idx);
-				}
+				}*/
 				if(String.valueOf(commandMap.get("source_type")).equals("VOD")) {
 					int vodArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("vodArr")));
 					for(int i=0;i<vodArr.length;i++) {
@@ -730,7 +730,8 @@ public class IbsCmsController {
 				}
 			}
 		}
-		if(affectcount>0) msg="success"; 
+		String msg="fail";
+		if(affectcount>0) msg="ok"; 
 		return msg;
 	}
 	

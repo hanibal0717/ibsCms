@@ -39,8 +39,8 @@ public class MainController implements MessageSourceAware {
 	
 	@RequestMapping("/sednmanager")
 	public String oneDept() {
-		returnView="/ibsCmsViews/WEB_Dashboard.cms";
-		return returnView;
+		//returnView="/ibsCmsViews/WEB_Dashboard.cms";
+		return "redirect:"+"/sedn/web/media";
 	}
 	@RequestMapping("/error/{section}")
 	public String error(@PathVariable String section,Model model,HttpServletRequest req) {

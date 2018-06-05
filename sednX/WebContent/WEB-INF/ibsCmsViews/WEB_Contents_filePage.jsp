@@ -11,18 +11,18 @@
 	</c:when>
 	<c:otherwise>
 		<c:forEach items="${lists}" var="list" varStatus="loop">
-			<div class="img_box imgPopup" id="${list.idx}" style="background: url('${pageContext.request.contextPath}${list.main_thumbnail}') no-repeat center; background-size: cover;">
-				<input class="pull-left m-l-5 vodCheck" type="checkbox" value="${list.idx}"/>
-			</div>
+			<div class="img_box imgPopup" style="background: url(${pageContext.request.contextPath}/ibsImg/doc_icon2_${list.resolution}.png) no-repeat 50% 40%; cursor: pointer;">
+                 <input class="pull-left m-l-5 fileCheck" type="checkbox" value="${list.idx}"/>
+                 <p class="text-center" style="margin-top: 110px; font-size:12px;">${list.file_title}<br/>[${list.file_path}]</p>
+             </div>
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
 <script>
 if($('#repoOrder').val()==undefined){
-	$('.vodCheck').css('display','none');
+	$('.fileCheck').css('display','none');
 	$('.imgPopup').click(function(){
 		$('#vodViewModal').modal();
-		
 	});
 }else{
 	var arr=[];

@@ -78,8 +78,9 @@
                      
                     //On Day Select
                     select: function(start, end, allDay) {
-                    	$('#scheduleInsertModal').modal();
-                    	//$('#addNew-event form')[0].reset();
+                    	$('#addNew-event').modal('show'); 
+                    	$('#addNew-event form')[0].reset();
+                    	 $('#order').val('insert');
                     	/*menuJs.makeSelJstree();
                     	$('#addNew-event').modal('show');   
                         $('#order').val('insert');
@@ -147,7 +148,7 @@
                 });
                 
                 $('body').on('click', '#addEvent', function(){
-                	alert("ok");
+                	
                 	/*if($('#source_type').val()=='VOD'){
                 		var optionCount=$('#vodSource > option').length;
                 		if(optionCount==0){
@@ -163,7 +164,7 @@
                     	$("#vodArr").val('');
                     	$("#vodArr").val(vodArray);
                 	}*/
-                	/*
+                	
                 	if($("#captionYn").val()=="Y"){
                 		if($('#caption').val().length==0||$('#caption_text_color').val().length==0){
                 			jQuery('#caption').validationEngine('showPrompt', '자막 내용과 자막 색상을 입력해주세요.', 'pass');
@@ -179,11 +180,12 @@
                 		}else{
                 			jQuery('#live_stream_url').validationEngine('hideAll');
                 		}
-                	}*/
-                	/*
+                	}
+                	
                      var eventForm =  $(this).closest('.modal').find('.form-validation');
                      eventForm.validationEngine('validate');
                      if (!(eventForm).find('.formErrorContent')[0]) {
+                    	
                     	 var dataObject={};
                     	
                     	 if($("#captionYn").val()=="Y"){
@@ -219,38 +221,40 @@
                     	 dataObject['desc_text']=$("#desc_text").val();
                     	 dataObject['groupArr']=$("#groupArr").val();
                     	 dataObject['captionYn']=$('#captionYn').val();
+                    	 dataObject['category_idx']=$('#categoryIdx').val();
                     	 dataObject['order']=$('#order').val();
                     	 if($('#order').val()=="update"){
-                    		 dataObject['idx']=$('#idx').val()
+                    		 dataObject['idx']=$('#idx').val();
                     	 }
-                    	
-                    	 $.ajax({
+                    	 console.log(dataObject);
+                    	 $('#addNew-event').modal('hide');
+
+                    	$.ajax({
                     	 		url:'/cms/excute/stb-schedule/'+$("#order").val(),
-                    	 		cache:false,
                     	 		type:'post',
                     	 		data:dataObject,
-                    	 		async : false,
+                    	 		async: false,
                     	 		success : function(result){
-                            		$('#addNew-event form')[0].reset();
+                            		//$('#addNew-event form')[0].reset();
                                     $('#addNew-event').modal('hide');
-                    	 			contents.naviBar('stb-schedule','', 'STB-SCHEDULE');
-                    	 			menuJs.makeJsTree();
-                    	 			menuJs.vodScheduleJstree();
-                    	 			contents.list('');
-                    	 		},
+                    	 			//contents.naviBar('stb-schedule','', 'STB-SCHEDULE');
+                    	 			//menuJs.makeJsTree();
+                    	 			//menuJs.vodScheduleJstree();
+                    	 			arange.list($("#categoryIdx").val());
+},
                     	 		error:exception.ajaxException
                     	 	});
-                         
-                          $('#calendar').fullCalendar('renderEvent',{
+                        
+                         /* $('#calendar').fullCalendar('renderEvent',{
                                title: eventName,
                                url:'javascript:calClick.viewEvent(2);',
                                start: $('#getStart').val(),
                                end:  $('#getEnd').val(),
                                allDay: false,
-                          },true );
+                          },true );*/
                           
                           
-                     } */
+                     } 
                 });
                 
             });    

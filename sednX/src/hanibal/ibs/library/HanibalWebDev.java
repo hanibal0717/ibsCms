@@ -214,6 +214,8 @@ public class HanibalWebDev  extends MysqlConnect{
 			tableName="tb_photo_repository";
 		}else if(sort.equals("file")) {
 			tableName="tb_file_repository";
+		}else if(sort.equals("stream")) {
+			tableName="tb_live_repository";
 		}else if(sort.equals("live")) {
 			tableName="tb_live_repository";
 		}else if(sort.equals("board")) {

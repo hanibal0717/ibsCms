@@ -14,32 +14,6 @@ pageEncoding="UTF-8"%>
 </c:import>
 <!--********* permittsion include **************-->
 <section id="content" class="container">
-    <!-- Messages Drawer 메세지 클릭햇을시 (최신영상이 )%%%대메뉴 공통 부 분-->
-	<div id="messages" class="tile drawer animated">
-		<c:import url = "/inc/incMsg">
-			<c:param name = "q" value = "보라매공원" />
-		</c:import>
-	</div>
-
-	<!-- Notification Drawer -->
-	<div id="notifications" class="tile drawer animated">
-		<c:import url = "/inc/incNoti">
-			<c:param name = "q" value = "보라매공원" />
-		</c:import>
-	</div>
-	<!--메뉴경로... -->
-	<ol class="breadcrumb hidden-xs">
-		<li><a href="${pageContext.request.contextPath}/sednmanager">Home</a></li>
-		<li>OTT</li>
-		<li class="active">OTT CONTROLE</li>
-	</ol>
-	<!-- 대메뉴-->
-	<h4 class="page-title">
-	<a href="${pageContext.request.contextPath}/sedn/stb/controle" style="padding-left:40px;padding-right:40px;font-weight:bold;color:#F8C529" class="active">OTT CONTROLE</a>
-	<a href="${pageContext.request.contextPath}/sedn/stb/schedule" style="padding-left:40px;padding-right:40px;">OTT SCHEDULE</a>
-	<a href="${pageContext.request.contextPath}/sedn/stb/log" style="padding-left:40px;padding-right:40px;">OTT LOG</a>
-	<a href="${pageContext.request.contextPath}/sedn/stb/ui" style="padding-left:40px;padding-right:40px;">OTT SETTING</a>
-	</h4>
 	<!-- Main Widgets -->
    	<div class="block-area">
    		<div class="row">
@@ -80,7 +54,7 @@ pageEncoding="UTF-8"%>
               </div>
           	</div>
             <!-- CONTENTS START -->
-			<div id="listView" class="tile"></div>
+			<div id="listView" class="tile">aaaaaa</div>
 			<!-- CONTENTS END -->	
 	    	</div>
 	    </div>
@@ -226,6 +200,7 @@ pageEncoding="UTF-8"%>
 		//페이지 초기화
 		contents.naviBar('stb-controle', '', 'OTT CONTROLE');
 		menuJs.makeJsTree();
+		$('#cmsPageTitle').html('OTT 관리');
 		contents.list('');
 		$("#mainSearch").keydown(function(key) {
 			if (key.keyCode == 13) {

@@ -12,6 +12,8 @@
 .bell {font-size: 15px; font-weight: normal;}
 .modal .thumnail a.close {position: absolute; right: 2px; top: 2px; opacity: 1; background: rgba(0,0,0,0.5); width: 16px; height: 16px; border-radius: 8px !important; }
 .modal .thumnail a.close img {margin-top: -1px;}
+.form_div.sm {height: 350px;}
+.form_div.sm .img_box {width: calc(50% - 10px); height: 105px;}
 </style>
 <!-- Sidebar -->
 <aside id="sidebar">
@@ -47,7 +49,7 @@
 			<div id="sidebar-calendar"></div>
 		</div>
 		<!-- Feeds -->
-		<div class="s-widget m-b-25">
+		<!-- <div class="s-widget m-b-25">
 			<h2 class="tile-title">Notice</h2>
 			<div class="s-widget-body">
 				<div id="news-feed">
@@ -60,7 +62,7 @@
 					<i class="icon">&#61710;</i> 라이브방송이 편성 되었습니다.
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- Server  Info -->
 		<div class="s-widget m-b-25">
 			<h2 class="tile-title">SERVER INFO</h2>
@@ -118,34 +120,34 @@
 
 	<!-- Side Menu -->
 	<ul class="list-unstyled side-menu">
-		<li class="active"><a class="sa-side"
+		<!-- <li class="active"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/dashboard"> <span
 				class="icon">&#61753;</span> <span class="menu-item">DASH BOARD</span>
-		</a></li>
+		</a></li> -->
 		<li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/media"> <span
-				class="icon">&#61803;</span> <span class="menu-item">CONTENTS</span>
+				class="icon">&#61696;</span> <span class="menu-item">CONTENTS</span>
 		</a></li>
-		<li><a class="sa-side"
+		<!-- <li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/contents"> <span
 				class="icon">&#61696;</span> <span class="menu-item">CONTENTS ARCHIVE</span>
-		</a></li>
-		<li><a class="sa-side"
+		</a></li> -->
+		<!-- <li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/communicate"> <span
-				class="icon">&#61875;</span> <span class="menu-item">CATEGORY MANAGER</span>
-		</a></li>
+				class="icon">&#61875;</span> <span class="menu-item">CATEGORY</span>
+		</a></li> -->
 		<li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/makepage"> <span
-				class="icon">&#61770;</span> <span class="menu-item">WORK SPACE</span>
+				class="icon">&#61875;</span> <span class="menu-item">MAKE PAGE</span>
 		</a></li>
 		<li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/liveManages"> <span
 				class="icon">&#61824;</span> <span class="menu-item">LIVE</span>
 		</a></li>
-		<li><a class="sa-side"
+		<!-- <li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/layout"> <span
 				class="icon">&#61717;</span> <span class="menu-item">MAIN PAGE EDITOR</span>
-		</a></li>
+		</a></li> -->
 		
 		<!-- <li class="dropdown"><a class="sa-side" href=""> <span
 				class="icon">&#61931;</span> <span class="menu-item">셋탑박스 관리</span>
@@ -166,22 +168,22 @@
 			href="${pageContext.request.contextPath}/sedn/web/managerAccount">
 				<span class="icon">&#61887;</span> <span class="menu-item">ACCOUNT MANAGEMENT</span>
 		</a></li>
-		<li><a class="sa-side"
+		<!-- <li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/statistics"> <span
 				class="icon">&#61721;</span> <span class="menu-item">CONTENTS ANALIZER</span>
-		</a></li>
+		</a></li> -->
 		<li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/stb/controle"> <span
 				class="icon">&#61931;</span> <span class="menu-item">OTT MANAGEMENT</span>
 		</a></li>
-		<li><a class="sa-side"
+		<!-- <li><a class="sa-side"
 			href="#"> <span
 				class="icon">&#61902;</span> <span class="menu-item">UCC MANAGEMENT</span>
-		</a></li>
-		<li><a class="sa-side"
+		</a></li> -->
+		<!-- <li><a class="sa-side"
 			href="#"> <span
 				class="icon">&#61782;</span> <span class="menu-item">CONFLUENCE MANAGEMENT</span>
-		</a></li>
+		</a></li> -->
 	</ul>
 
 </aside>
@@ -374,7 +376,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" id="groupArr" />
+                    <input type="hidden"/>
                 	<div class="col-md-12" id="modelTargetList">
                     	<!-- 20180419 메뉴삭제 -->
                     	
@@ -431,7 +433,7 @@
               </div>
           </div>
           <!-- 수정  -->
-          <div class="modal-content">
+         <!--  <div class="modal-content">
                 <div class="modal-header" style="overflow: hidden;">
                     <h4 class="pull-left">VOD 수정</h4>
                     <button class="btn btn-sm pull-right m-t-10">불러오기</button>
@@ -458,7 +460,7 @@
                     <button class="btn btn-sm cancel">취소</button>
                     <button class="btn btn-sm">확인</button>
                 </div>
-            </div>
+            </div> -->
                         
       </div>
  </div>                  
@@ -543,90 +545,11 @@
             </div>
         </div>
     </div> 
- 	<div class="modal-dialog">
-         <div class="modal-content mainImgPopup">
-             <div class="modal-body" style="overflow:hidden;">
-                 <div class="media-form">
-                     <button class="btn btn-sm" style="position:  absolute; z-index: 1; top: 10px; left: 10px;">영상변경</button>  
-                     <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
-                     <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
-                     <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
-                 </div>
-                 <div class="thumnail">
-                     <div style="background: url(img/20180413141747_0.jpg) no-repeat center; background-size: cover;">
-                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
-                     </div>
-                     <div style="background: url(img/bg-pc.jpg) no-repeat center; background-size: cover;">
-                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
-                     </div>
-                     <div style="background: url(img/20180413144149_0.jpg) no-repeat center; background-size: cover;">
-                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
-                     </div>
-                     <div style="background: url(img/20180131173529_0.jpg) no-repeat center; background-size: cover;">
-                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
-                                    </div>
-                                    <div style="background: url(img/20180130101004_4.jpg) no-repeat center; background-size: cover;">
-                                        <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
-                                    </div>
-                                    <div>
-                                        <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-                                    </div>
-                                </div>
-				                 <script>
-				                     $(function () {
-				                    	 $('.thumnail').bxSlider({
-				                    	        mode: 'horizontal',
-				                    	        slideWidth: 125,
-				                    	        pager: false,
-				                    	        captions: true,
-				                    	        minSlides: 4,
-				                    	        maxSlides: 4,     
-				                    	        slideMargin: 10,
-				                    	        controls: true,
-				                    	        moveSlides: 1
-				                    	    });
-				                         $(".thumnail a.add").click(function () {
-				                             $(".get").css("display","block");
-				                         });
-				                         $("#getForm").click(function () {
-				                             $("#popupGetForm").show();
-				                         }); //저장소
-				                     })
-				                 </script>
-                 <span class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
-                     <button class="btn btn-sm pull-left m-b-5">PC에서 가져오기</button><br>
-                     <button class="btn btn-sm pull-left" id="getForm">저장소에서 가져오기</button>
-                 </span>
-                 <div class="col-md-9 m-b-10">
-                     <input type="text" class="form-control" placeholder="제목" value="VOD 방송 #1">
-                 </div>
-                 <div class="col-md-3 m-b-10" id="check">
-                     <label>
-                         <div class="icheckbox_minimal"><div aria-checked="false" aria-disabled="false" style="position: relative;">
-                         <input type="checkbox" />
-                         방송 시작 알림
-                         </div></div>
-                     </label>
-                 </div>
-                 <div class="col-md-6 m-b-10">
-                     <input type="text" class="form-control" value="2018.04.23 13:30">
-                 </div>
-                 <div class="col-md-6 m-b-10">
-                     <input type="text" class="form-control" value="2018.04.23 15:00">
-                 </div>
-                 <div class="col-md-12 m-b-10"><textarea class="form-control m-b-10" placeholder="내용"></textarea></div>
-             </div>                     
-             <div class="modal-footer" style="margin-top:0;">
-                 <button class="btn btn-sm cancel">취소</button>
-                 <button class="btn btn-sm">삭제</button>
-                 <button class="btn btn-sm pull-right">확인</button>
-             </div>
-         </div>
-     </div>
+ 	
  </div>  
  <!-- ###############스케쥴 보기 모달  끝 ######################### --> 
  <!-- ###############스케쥴 추가 모달 시작 ######################### -->
- <div class="modal fade in" id="scheduleInsertModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ <div class="modal fade in" id="addNew-event" tabindex="-1" role="dialog" aria-hidden="false"> 
 	<div class="modal-dialog">
          <div class="modal-content mainImgPopup">
          	<form class="form-validation" role="form" id="liveAddForm">
@@ -636,7 +559,7 @@
      					<div class="fileupload-preview thumbnail form-control" id="imgName_view" style="padding:0;"><img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플"></div>
       					<div class="pull-right">
           					<span class="btn btn-file btn-alt btn-sm" style="position: absolute; top: 20px; left: 20px;">
-              					<span class="fileupload-new">이미지 선택</span>
+              					<span class="fileupload-new">대표 이미지</span>
               					<span class="fileupload-exists">이미지 바꾸기</span>
               					<input type="file" id="imgName" onchange="uploadFile.scheduleImg(this,'imgName');" />
               				</span>
@@ -650,14 +573,31 @@
                      <!-- <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a> -->
                      <!-- <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a> -->
                  </div>
-                 <div class="thumnail">
-                     <!-- <div style="background: url(img/20180130101004_4.jpg) no-repeat center; background-size: cover;">
-                         <a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>
-                     </div> -->
-                      <div>
+                 <div class="thumnail" style="width:5000px !important;">
+	                   
+                      <div id="scheduleVodList">
+                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                      </div>
+                      <div id="scheduleVodList">
+                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                      </div>
+                      <div id="scheduleVodList">
+                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                      </div>
+                      <div id="scheduleVodList">
                           <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
                       </div>
                   </div>
+                  <input type="hidden" id="groupArr" class="input-sm form-control"/>
+                  <input type="hidden" class="form-control" id="live_stream_url"/>
+                  <input type="hidden" class="form-control" id="color" value="#9FD5EF">
+                  <input type="hidden" id="vodArr" class="form-control"/>
+                  <input type="hidden" class="form-control" id="idx"/>
+                  <input type="hidden" class="form-control" id="source_type"  value="VOD"/>
+              	  <input type="hidden" class="form-control" id="live_ch_idx" class="form-control"/>
+                  <input type="hidden" class="form-control" id="captionYn" value="N">
+                  <input type="hidden" class="form-control" id="order" value="insert">
+                  
 				                 <script>
 				                     $(function () {
 				                    	 $('.thumnail').bxSlider({
@@ -679,10 +619,10 @@
 				                         }); //저장소
 				                     })
 				                 </script>
-                 <span class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
-                     <button class="btn btn-sm pull-left m-b-5">PC에서 가져오기</button><br>
-                     <button class="btn btn-sm pull-left" id="getForm">저장소에서 가져오기</button>
-                 </span>
+                 <div class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
+                     <div class="btn btn-sm pull-left m-b-5">PC에서 가져오기</div><br>
+                     <div class="btn btn-sm pull-left" id="repositoryAdd">저장소에서 가져오기</div>
+                 </div>
                  <div class="col-md-9 m-b-10">
                      <input type="text" class="form-control validate[required]" id="eventName" placeholder="제목" value="" placeholder="방송 제목">
                  </div>
@@ -703,16 +643,72 @@
                  <div class="col-md-12 m-b-10"><textarea class="form-control m-b-10 validate[required]" id="desc_text" placeholder="내용"></textarea></div>
              </div>                     
              <div class="modal-footer" style="margin-top:0;">
-                 <button class="btn btn-sm cancel">취소</button>
-                 <button class="btn btn-sm">삭제</button>
-                 <button class="btn btn-sm pull-right">확인</button>
+                 <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+                 <button class="btn btn-sm" style="display:none">삭제</button>
+                 <button class="btn btn-sm pull-right" id="addEvent">확인</button>
              </div>
+             
          </form>
          </div>
          
      </div>
  </div> 
- <!-- ###############스케쥴 편집 모달 끝 ######################## -->                             
+ <!-- ###############스케쥴 편집 모달 끝 ######################## -->
+ <!-- ################## content list modal start####################--> 
+ <div class="modal fade in" id="repositoryList" tabindex="-1" role="dialog" aria-hidden="false"> 
+    <div class="modal-dialog" style="width:500px; margin-top: 10%;">
+        <div class="modal-content"> 
+            <div class="modal-header" style="overflow: hidden;">
+                <h5 class="pull-left">저장소에서 가져오기</h5>
+                <div class="pull-right">
+                    <div class="col-md-4 p-r-20 m-t-5">
+                        <select id="repoType" class="form-control input-sm">
+                            <option value="VOD">VOD</option>
+                            <option value="LIVE">LIVE</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 p-0">                                        
+                        <input type="text" class="main-search" style="border-bottom: 1px solid #fff; width: 100%;" placeholder="검색어를 입력하세요." />                               
+                    </div>
+                </div>
+            </div>                           
+            <div class="modal-body" style="text-align: center;">
+               <div class="col-md-12">
+                   <div class="col-md-4" style="width:26%;">
+                   <!-- TREE START-->
+					<div  id="video" style="position:relative; left:-25px;"></div>
+					<!-- TREE END-->
+          
+                   </div>
+                   
+                   <div class="col-md-8" style="padding:0; left:35px;">
+                       <div class="tile">
+                           <div class="photo-gallery clearfix">
+                               <div class="photo">
+                                   <div class="form_div sm col-md-12" style="margin:0; padding:0;" id="repoListPage">
+                                       <div class="img_box vodChange" style="background: url(img/20180413141747_0.jpg) no-repeat center; background-size: cover;">
+                                        <input class="pull-left m-l-5" type="radio" />
+                                       </div>
+                                       <div class="img_box" style="background: url(img/20180413142808_0.jpg) no-repeat center; background-size: cover;">
+                                        <input class="pull-left m-l-5" type="checkbox" />
+                                       </div>
+                                       
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>                        
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+                <button class="btn btn-sm pull-right" id="selectIdxArr">확인</button>
+            </div>
+        </div>
+    </div>
+</div><!-- //저장소 -->
+            
+  <!-- ################## content list modal end####################-->                             
 <script>
 $(function(){
 	system.nowInfo();
@@ -1191,6 +1187,7 @@ $(function(){
 		};
 	}());
 	$(function() {
+		
 		$("#cateChangeSubmit").click(function() {
 			$.ajax({
 				url : '/cms/update/elemCategory',
@@ -1348,5 +1345,6 @@ $(function(){
 	    if (seconds < 10) {seconds = "0"+seconds;}
 	    return hours+':'+minutes+':'+seconds;
 	}
+	
 </script>
 

@@ -48,11 +48,11 @@ pageEncoding="UTF-8"%>
                           <h5 class="pull-left"><i class="fa fa-bars m-r-10"></i><span id="navibar">메인 페이지</span></h5>
                           <div class="col-md-6 pull-right">
                               <div class="col-md-4 p-r-20 m-t-5">
-                                   <select name="" id="" class="form-control input-sm">
-                                       <option value="media_vod.html">VOD</option>
-                                       <option value="media_live.html">LIVE</option>
-                                       <option value="">PHOTO</option>
-                                       <option value="">FILE</option>
+                                   <select id="selectSort" class="form-control input-sm">
+                                       <option value="vod">VOD</option>
+                                       <option value="photo">PHOTO</option>
+                                       <option value="file">FILE</option>
+                                       <option value="stream">STREAM</option>
                                    </select>
                                </div>
                                <div class="col-md-8 p-0">                                        
@@ -68,15 +68,25 @@ pageEncoding="UTF-8"%>
                           </div>
                       </div>
 
-                      <div class="tile col-md-12 p-5">
+                      <div class="tile col-md-12 p-5" id="addBtns">
                           <div class="col-md-6">
-                              <button class="btn btn-alt col-md-2 m-r-10 m-b-5" onclick="location.href='pages_sub_02.html'">편집</button>                            
+                              <button class="btn btn-alt col-md-2 m-r-10 m-b-5" id="goEdit">편집</button>                            
                           </div>
                           <div class="col-md-6">
                               <button class="btn btn-alt col-md-2 m-b-5 pull-right">추가</button>
                           </div>
                       </div>
-
+                      <div class="tile col-md-12 p-5" id="editBtns" style="display:none;">
+                          <div class="col-md-6" >
+                               <button class="btn btn-alt col-md-2 m-r-10 m-b-5" id="selectAllChk">전체선택</button>
+                               <button class="btn btn-alt col-md-2 m-r-10 m-b-5" id="checkDel">삭제</button>
+                               <button class="btn btn-alt col-md-2 m-b-5" id="checkMove">이동</button>                                        
+                           </div>
+                          <div class="col-md-6">
+                              <button class="btn btn-alt col-md-2 m-b-5 pull-right" id="backAddBtns">완 료</button>
+                          </div>
+                      </div>
+					
                   </div>
 	    		
 	    	</div>
@@ -130,4 +140,38 @@ $('#cmsPageTitle').html('미디어 관리');
 menuJs.makeJsTree();
 arange.naviBar('vod', $("#categoryIdx").val(), $("#categoryName").val());
 arange.list($('#treeIdx').val());
+$('#selectSort').change(function(){
+	$('#sort').val($(this).val());
+	menuJs.makeJsTree();
+	arange.naviBar($(this).val(), $("#categoryIdx").val(), $("#categoryName").val());
+	arange.list($('#treeIdx').val());
+	$('#addBtns').css('display','block');
+	$('#editBtns').css('display','none');
+});
+$('#goEdit').click(function(){
+	if($('#selectSort').val()=="vod"){
+		$('.vodCheck').css('display','block');
+	}else if($('#selectSort').val()=="stream"){
+		$('.selectCheck').css('display','block');
+	}else if($('#selectSort').val()=="photo"){
+		$('.photoCheck').css('display','block');
+	}else if($('#selectSort').val()=="file"){
+		$('.fileCheck').css('display','block');
+	}
+	$('#addBtns').css('display','none');
+	$('#editBtns').css('display','block');
+});
+$('#backAddBtns').click(function(){
+	if($('#selectSort').val()=="vod"){
+		$('.vodCheck').css('display','none');
+	}else if($('#selectSort').val()=="stream"){
+		$('.selectCheck').css('display','none');
+	}else if($('#selectSort').val()=="photo"){
+		$('.photoCheck').css('display','none');
+	}else if($('#selectSort').val()=="file"){
+		$('.fileCheck').css('display','none');
+	}
+	$('#addBtns').css('display','block');
+	$('#editBtns').css('display','none');
+});
 </script>
