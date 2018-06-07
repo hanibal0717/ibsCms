@@ -388,10 +388,10 @@ public class IbsAppController {
 			mainData.put("ret", subData);
 		}
 		else {
-			if(order.equals("username")) {
+			if(order.equals("userinfo")) {
 				try {
-					String userName = ibsAppDAO.getUserName(commandMap);
-					subData.put("user_name", userName);
+					List<HashMap<String, Object>> lists = ibsAppDAO.getUserinfo(commandMap);
+					subData.put("user_info", lists);
 					mainData.put("code", "200");
 					mainData.put("type", "0");
 					mainData.put("msg", "");
