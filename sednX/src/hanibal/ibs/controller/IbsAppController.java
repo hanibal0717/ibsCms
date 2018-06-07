@@ -390,8 +390,8 @@ public class IbsAppController {
 		else {
 			if(order.equals("userinfo")) {
 				try {
-					List<HashMap<String, Object>> lists = ibsAppDAO.getUserinfo(commandMap);
-					subData.put("user_info", lists);
+					HashMap<String, Object> map = ibsAppDAO.getUserinfo(commandMap);
+					subData.put("user_info", map);
 					mainData.put("code", "200");
 					mainData.put("type", "0");
 					mainData.put("msg", "");
