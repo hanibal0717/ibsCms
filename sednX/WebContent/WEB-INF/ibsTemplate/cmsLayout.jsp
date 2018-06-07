@@ -96,8 +96,8 @@
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-flash.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-contrib-hls.js"></script>
 		<!-- new user page -->
-		<script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.bxslider.min.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.blockUI.js"></script>
+		<script src="${pageContext.request.contextPath}/ibsCmsJs/TweenMax.min.js"></script>
 		
 		
 </head>

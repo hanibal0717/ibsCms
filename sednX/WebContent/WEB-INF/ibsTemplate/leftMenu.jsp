@@ -552,10 +552,11 @@
  <div class="modal fade in" id="addNew-event" tabindex="-1" role="dialog" aria-hidden="false"> 
 	<div class="modal-dialog">
          <div class="modal-content mainImgPopup">
-         	<form class="form-validation" role="form" id="liveAddForm">
+         	      
              <div class="modal-body" style="overflow:hidden;">
+              <form class="form-validation">
                  <div class="media-form">
-                 	 <div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;">
+                 	<div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;">
      					<div class="fileupload-preview thumbnail form-control" id="imgName_view" style="padding:0;"><img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플"></div>
       					<div class="pull-right">
           					<span class="btn btn-file btn-alt btn-sm" style="position: absolute; top: 20px; left: 20px;">
@@ -573,19 +574,38 @@
                      <!-- <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a> -->
                      <!-- <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a> -->
                  </div>
-                 <div class="thumnail" style="width:5000px !important;">
-	                   
-                      <div id="scheduleVodList">
-                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                 <div class="slideInner">
+	                  <div class="slide">
+	                  	<ul>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  		<li id="scheduleVodList">
+	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  		</li>
+	                  	</ul>
                       </div>
-                      <div id="scheduleVodList">
-                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-                      </div>
-                      <div id="scheduleVodList">
-                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-                      </div>
-                      <div id="scheduleVodList">
-                          <a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+                      <div>
+                          <a class="prev">prev</a>
+                          <a class="next">next</a>
                       </div>
                   </div>
                   <input type="hidden" id="groupArr" class="input-sm form-control"/>
@@ -600,23 +620,45 @@
                   
 				                 <script>
 				                     $(function () {
-				                    	 $('.thumnail').bxSlider({
-				                    	        mode: 'horizontal',
-				                    	        slideWidth: 125,
-				                    	        pager: false,
-				                    	        captions: true,
-				                    	        minSlides: 4,
-				                    	        maxSlides: 4,     
-				                    	        slideMargin: 10,
-				                    	        controls: true,
-				                    	        moveSlides: 1
-				                    	    });
-				                         $(".thumnail a.add").click(function () {
+				                         $(".slide a.add").click(function () {
 				                             $(".get").css("display","block");
 				                         });
 				                         $("#getForm").click(function () {
 				                             $("#popupGetForm").show();
 				                         }); //저장소
+				                         
+				                         	var current = 0;
+	                                        var max = 0;
+	                                        var container;
+	
+	                                        function init() {
+	                                            container = $(".slide ul");
+	                                            max = container.children().length;
+	                                            events();
+	                                        }
+	
+	                                        function events() {
+	                                            $("a.prev").on("click", prev);
+	                                            $("a.next").on("click", next);
+	                                        }
+	
+	                                        function prev( e ) {
+	                                            current--;
+	                                            if( current < 0 ) current = max-1;
+	                                            animate();
+	                                        }
+	
+	                                        function next( e ) {
+	                                            current++;
+	                                            if( current > max-1 ) current = 0;
+	                                            animate();
+	                                        }
+	
+	                                        function animate() {
+	                                           var moveX = current * 135;
+	                                           TweenMax.to( container, 0.8, { marginLeft:-moveX, ease:Expo.easeOut } );
+	                                        }
+	                                        $(document).ready(init); //slide
 				                     })
 				                 </script>
                  <div class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
@@ -641,14 +683,16 @@
                      <input type="text" class="form-control validate[required,funcCall[uploadFile.checkSchedule]]" id="getEnd"  value="" placeholder="예)2018-01-01 23:12:06:49">
                  </div>
                  <div class="col-md-12 m-b-10"><textarea class="form-control m-b-10 validate[required]" id="desc_text" placeholder="내용"></textarea></div>
-             </div>                     
+             	</form>
+             </div> 
+                                 
              <div class="modal-footer" style="margin-top:0;">
-                 <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
-                 <button class="btn btn-sm" style="display:none">삭제</button>
-                 <button class="btn btn-sm pull-right" id="addEvent">확인</button>
+                 <button type="button" class="btn btn-sm" data-dismiss="modal">취소</button>
+                 <button type="button" class="btn btn-sm" style="display:none">삭제</button>
+                 <input type="button"  class="btn btn-sm pull-right" id="addEvent" value="확인">
              </div>
              
-         </form>
+         
          </div>
          
      </div>

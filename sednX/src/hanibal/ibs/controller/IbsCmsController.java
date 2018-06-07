@@ -624,6 +624,7 @@ public class IbsCmsController {
 	@ResponseBody
 	public String excuteContents(@PathVariable String contents,@PathVariable String order,@RequestParam Map<String, Object> commandMap,Model model,HttpServletRequest req,HttpSession session) throws IOException {
 		int affectcount=0;
+		String msg="success";
 		String reg_id=String.valueOf(session.getAttribute("member_email"));
 		String reg_ip = req.getHeader("X-FORWARDED-FOR");
 		if(reg_ip==null) reg_ip=req.getRemoteAddr();
@@ -722,6 +723,7 @@ public class IbsCmsController {
 				for(int idx : groupArr) {
 					ibsCmsDao.insertScheduleGroup(topIdx,idx);
 				}*/
+				msg=String.valueOf(topIdx);
 				if(String.valueOf(commandMap.get("source_type")).equals("VOD")) {
 					int vodArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("vodArr")));
 					for(int i=0;i<vodArr.length;i++) {
@@ -730,8 +732,7 @@ public class IbsCmsController {
 				}
 			}
 		}
-		String msg="fail";
-		if(affectcount>0) msg="ok"; 
+		
 		return msg;
 	}
 	

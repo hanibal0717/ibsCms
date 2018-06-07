@@ -53,6 +53,7 @@ $(function(){
 		sel = sel[0];
 		if($('#sort').val()!="live"||sel.id!='1'){
 			$("#treeIdx").val(sel.id+","+sel.children_d);
+			
 		}
 	});
 	$('#jstree').on("select_node.jstree", function (e, data) {
@@ -66,6 +67,7 @@ $(function(){
 		all_children.push(sel.id);
 		all_children=all_children.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);//중복제거
 		$("#treeIdx").val(all_children);
+		console.log($("#treeIdx").val());
 		all_parents=sel.parents;
 		all_parents=all_parents.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);//중복제거
 		//#삭제 

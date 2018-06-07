@@ -147,7 +147,7 @@
                     }
                 });
                 
-                $('body').on('click', '#addEvent', function(){
+                $('body').on('click', '#addEvent', function(ev){
                 	
                 	/*if($('#source_type').val()=='VOD'){
                 		var optionCount=$('#vodSource > option').length;
@@ -227,34 +227,42 @@
                     		 dataObject['idx']=$('#idx').val();
                     	 }
                     	 console.log(dataObject);
-                    	 $('#addNew-event').modal('hide');
-
-                    	$.ajax({
-                    	 		url:'/cms/excute/stb-schedule/'+$("#order").val(),
-                    	 		type:'post',
-                    	 		data:dataObject,
-                    	 		async: false,
-                    	 		success : function(result){
-                            		//$('#addNew-event form')[0].reset();
-                                    $('#addNew-event').modal('hide');
-                    	 			//contents.naviBar('stb-schedule','', 'STB-SCHEDULE');
-                    	 			//menuJs.makeJsTree();
-                    	 			//menuJs.vodScheduleJstree();
-                    	 			arange.list($("#categoryIdx").val());
-},
-                    	 		error:exception.ajaxException
-                    	 	});
-                        
-                         /* $('#calendar').fullCalendar('renderEvent',{
-                               title: eventName,
-                               url:'javascript:calClick.viewEvent(2);',
-                               start: $('#getStart').val(),
-                               end:  $('#getEnd').val(),
-                               allDay: false,
-                          },true );*/
-                          
-                          
-                     } 
+                    	 var goExe=true;
+                    	 console.log
+                    	 if(goExe){
+								$.ajax({
+		                    	 		url:'/cms/excute/stb-schedule/'+$("#order").val(),
+		                    	 		type:'post',
+		                    	 		data:dataObject,
+		                    	 		async: true,
+		                    	 		beforeSend:function(request){
+		                    	 			$.blockUI({ message: '<h1> Loading...</h1>' });
+		                    	 		},
+		                    	 		success : function(result){
+		                            		//$('#addNew-event form')[0].reset();
+		                                    $('#addNew-event').modal('hide');
+		                    	 			//contents.naviBar('stb-schedule','', 'STB-SCHEDULE');
+		                    	 			//menuJs.makeJsTree();
+		                    	 			//menuJs.vodScheduleJstree();
+		                    	 			//arange.list($("#categoryIdx").val());
+		                    	 			goExe=false;
+		                                    var insertedEvent={
+		                   	 					 	title: $('#eventName').val(),
+		                                         	url:'javascript:calClick.viewEvent(result);',
+		                                            start: $('#getStart').val(),
+		                                            end:  $('#getEnd').val(),
+		                                            allDay: false	
+		                       	 			};
+		                       	 			$('#calendar').fullCalendar('renderEvent',insertedEvent);
+		                       	 			$.unblockUI();
+										},
+		                    	 		error:exception.ajaxException
+		                    	 	});
+								 ev.preventDefault();
+                    	 }
+						
+                      } 
+                    
                 });
                 
             });    
@@ -268,30 +276,4 @@
                 var overflowRegular, overflowInvisible = false;
                 overflowRegular = $('.overflow').niceScroll();     
             });                    
-           
-            $(function(){
-            	 $("#createEvent").click(function(){
-            		 alert("create event");
-            		/* $('#addNew-event form')[0].reset();
-            		 $("#order").val('insert');
-            		 if($('#order').val()=="update"){
-                     	$("#deleteEvent").css('display','block');
-          	 			$("#addEvent").val("수 정");
-                     }else{
-                     	$("#deleteEvent").css('display','none');
-          	 			$("#addEvent").val("생방송 추가");
-                     }
-            		menuJs.makeSelJstree();
-                 	$('#addNew-event').modal('show');   
-                    $('#source_type').val('LIVE');
-                     var start = new Date();
-                     var end=new Date(Date.parse(start)+60*1000*10);
-                     var hs = common.formatZeroDate(start.getHours(),2);
-                     var ms = common.formatZeroDate(start.getMinutes(),2);
-                     var he = common.formatZeroDate(end.getHours(),2);
-                     var me = common.formatZeroDate(end.getMinutes(),2);
-                     $('#getStart').val($.datepicker.formatDate('yy-mm-dd '+hs+':'+ms, new Date()));
-                     $('#getEnd').val($.datepicker.formatDate('yy-mm-dd '+he+':'+me, new Date()));*/
-                 });
-            });
        </script>

@@ -272,7 +272,6 @@ var arange=(function(){
 		$('#repositoryList').modal();
 	});
 	$('#selectIdxArr').click(function(){
-		
 		if($('#vodArr').val().length==0){
 			$('#vodArr').val($('#tempVodList').val());
 		}else{
