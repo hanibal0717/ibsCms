@@ -334,13 +334,13 @@ public class IbsAppDAO {
 		return channelList;
 	}
 	
-	public List<HashMap<String, Object>> getUserinfo(Map<String, Object> commandMap) throws ParseException {
+	public HashMap<String, Object> getUserinfo(Map<String, Object> commandMap) throws ParseException {
 		// token에 담긴 member_id를 풀어내여 해당 정보를 조회한다
 		JWT signJWTReturn = (SignedJWT)SignedJWT.parse((String)commandMap.get("token"));
 		commandMap.put("member_id", signJWTReturn.getJWTClaimsSet().getClaim("member_id"));
-		List<HashMap<String, Object>> lists = sqlTemplate.selectList("getUserinfo", commandMap);
-		lists.get(0).put("user_profile_img", "/REPOSITORY/PROFILE/" + (String)lists.get(0).get("user_profile_img"));
-		return lists;
+		HashMap<String, Object> map = sqlTemplate.selectOne("getUserinfo", commandMap);
+		map.put("user_profile_img", "/REPOSITORY/PROFILE/" + (String)map.get("user_profile_img"));
+		return map;
 	}
 	
 	public HashMap<String, Object> getUpdateVer() {
