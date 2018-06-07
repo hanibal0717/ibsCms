@@ -379,9 +379,14 @@
 	   		c.del_flag = "N"					
 	</select>
 	
-	<select id="getUserName" resultType="String" parameterType="java.util.Map">
+	<resultMap id="userinfoResult" type="java.util.Map">
+		<result javaType="java.lang.String" column="member_name" property="member_name" />
+		<result javaType="java.lang.String" column="member_profile" property="member_profile" />
+	</resultMap>
+	<select id="getUserinfo" resultMap="userinfoResult" parameterType="java.util.Map">
 		select
-			member_name as user_name
+			member_name as user_name,
+			member_profile as user_profile_img
 		from 
 			tb_account_member
 		where
