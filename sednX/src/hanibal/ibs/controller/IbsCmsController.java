@@ -756,7 +756,7 @@ public class IbsCmsController {
 	
 	/*page View*/
 	@RequestMapping("/sedn/web/{section}")
-	public String webSection(@PathVariable String section,Model model) throws InstanceNotFoundException, AttributeNotFoundException, MalformedObjectNameException, ReflectionException, MBeanException {
+	public String webSection(@PathVariable String section,Model model) throws Exception {
 		String returnPage="";
 		if(section.equals("dashboard")) {
 			returnPage="/ibsCmsViews/WEB_Dashboard.cms";
@@ -767,7 +767,30 @@ public class IbsCmsController {
 		if(section.equals("managerAccount")) returnPage="/ibsCmsViews/WEB_ManagerAccount.cms";
 		if(section.equals("statistics")) returnPage="/ibsCmsViews/WEB_Statistics.cms";
 		if(section.equals("makepage")) returnPage="/ibsCmsViews/WEB_MakePage.cms";
-		if(section.equals("liveManages")) returnPage="/ibsCmsViews/WEB_LiveManages.cms";
+		if(section.equals("liveManages")) {
+			String childIdx=HanibalWebDev.getDefaultLiveIdx();
+			List<HashMap<String,Object>> targetList=ibsCmsDao.getTargetList(childIdx);
+			boolean stbAll=false;
+			boolean internet=false;
+			for(int i=0;i<targetList.size();i++) {
+				if(targetList.get(i).get("group_idx").equals(0)) {
+					internet=true;
+				}
+			}
+			int targetCount=targetList.size();
+			if(internet) {
+				targetCount=targetCount-1;
+			}
+			int totalTargetCount=ibsCmsDao.getTotalTargetCount()-1;
+			if(totalTargetCount==targetCount) {
+				stbAll=true;
+			}
+			model.addAttribute("targetLists",targetList);
+			model.addAttribute("internet",internet);
+			model.addAttribute("stbAll",stbAll);
+			returnPage="/ibsCmsViews/WEB_LiveManages.cms";
+		}
+			
 		if(section.equals("media")) returnPage="/ibsCmsViews/WEB_Media.cms";
 		return returnPage;
 	}

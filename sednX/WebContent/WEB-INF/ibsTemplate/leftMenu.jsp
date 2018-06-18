@@ -557,9 +557,10 @@
               <form class="form-validation">
                  <div class="media-form">
                  	<div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;">
-     					<div class="fileupload-preview thumbnail form-control" id="imgName_view" style="padding:0;"><img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플"></div>
+     					<div class="fileupload-preview thumbnail form-control imgSize" id="imgName_view" style="padding:0;height:323px;">
+     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" class="upImageSize"></div>
       					<div class="pull-right">
-          					<span class="btn btn-file btn-alt btn-sm" style="position: absolute; top: 20px; left: 20px;">
+          					<span class="btn btn-file btn-alt btn-sm blackBtn" style="position: absolute; top: 20px; left: 20px;">
               					<span class="fileupload-new">대표 이미지</span>
               					<span class="fileupload-exists">이미지 바꾸기</span>
               					<input type="file" id="imgName" onchange="uploadFile.scheduleImg(this,'imgName');" />
@@ -576,36 +577,15 @@
                  </div>
                  <div class="slideInner">
 	                  <div class="slide">
-	                  	<ul>
+	                  	<ul id="slideShow">
 	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
-	                  		<li id="scheduleVodList">
-	                  			<a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
+	                  			<a class="add"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
 	                  		</li>
 	                  	</ul>
                       </div>
                       <div>
-                          <a class="prev">prev</a>
-                          <a class="next">next</a>
+                          <a class="prev" onClick='slide.prev();'>prev</a>
+                          <a class="next" onClick='slide.next();'>next</a>
                       </div>
                   </div>
                   <input type="hidden" id="groupArr" class="input-sm form-control"/>
@@ -617,64 +597,20 @@
               	  <input type="hidden" class="form-control" id="live_ch_idx" class="form-control"/>
                   <input type="hidden" class="form-control" id="captionYn" value="N">
                   <input type="hidden" class="form-control" id="order" value="insert">
-                  
-				                 <script>
-				                     $(function () {
-				                         $(".slide a.add").click(function () {
-				                             $(".get").css("display","block");
-				                         });
-				                         $("#getForm").click(function () {
-				                             $("#popupGetForm").show();
-				                         }); //저장소
-				                         
-				                         	var current = 0;
-	                                        var max = 0;
-	                                        var container;
-	
-	                                        function init() {
-	                                            container = $(".slide ul");
-	                                            max = container.children().length;
-	                                            events();
-	                                        }
-	
-	                                        function events() {
-	                                            $("a.prev").on("click", prev);
-	                                            $("a.next").on("click", next);
-	                                        }
-	
-	                                        function prev( e ) {
-	                                            current--;
-	                                            if( current < 0 ) current = max-1;
-	                                            animate();
-	                                        }
-	
-	                                        function next( e ) {
-	                                            current++;
-	                                            if( current > max-1 ) current = 0;
-	                                            animate();
-	                                        }
-	
-	                                        function animate() {
-	                                           var moveX = current * 135;
-	                                           TweenMax.to( container, 0.8, { marginLeft:-moveX, ease:Expo.easeOut } );
-	                                        }
-	                                        $(document).ready(init); //slide
-				                     })
-				                 </script>
-                 <div class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
-                     <div class="btn btn-sm pull-left m-b-5">PC에서 가져오기</div><br>
-                     <div class="btn btn-sm pull-left" id="repositoryAdd">저장소에서 가져오기</div>
+                  <div class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
+                     <div class="btn btn-sm pull-left m-b-5 blackBtn">PC에서 가져오기</div><br>
+                     <div class="btn btn-sm pull-left blackBtn" id="repositoryAdd">저장소에서 가져오기</div>
                  </div>
                  <div class="col-md-9 m-b-10">
                      <input type="text" class="form-control validate[required]" id="eventName" placeholder="제목" value="" placeholder="방송 제목">
                  </div>
                  <div class="col-md-3 m-b-10" id="check">
-                     <label>
-                         <div class="icheckbox_minimal"><div aria-checked="false" aria-disabled="false" style="position: relative;">
-                         <input type="checkbox" />
-                         방송 시작 알림
-                         </div></div>
-                     </label>
+	             	<div class="icheckbox_minimal">
+	             		<div aria-checked="false" aria-disabled="false" style="position: relative;">
+                       		<input type="checkbox" />
+                         		방송 시작 알림
+                     	</div>
+                 	</div>
                  </div>
                  <div class="col-md-6 m-b-10">
                      <input type="text" class="form-control validate[required]" id="getStart" value="" placeholder="예)2018-01-01 23:12:06:49">
@@ -1392,3 +1328,15 @@ $(function(){
 	
 </script>
 
+<script>
+  $(function () {
+      $(".slide a.add").click(function () {
+          $(".get").css("display","block");
+      });
+      $("#getForm").click(function () {
+          $("#popupGetForm").show();
+      }); //저장소
+      
+      	
+  })
+</script>

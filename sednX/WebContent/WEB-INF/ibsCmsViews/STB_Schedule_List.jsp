@@ -15,6 +15,9 @@
     .label-new {background-color: #dc0000;}
      li.round {border-radius: 17px !important; background: rgba(0, 112, 255, 0.13); border: 1px solid rgba(0, 0, 0, 0.31); color: #fff; list-style: none; display: inline-block; padding: 6px 12px; font-size: 14px; line-height: 1.42857143;}
 </style>
+<script>
+console.log("-------------------------------------------------");
+</script>
 <!-- carleder start -->
 <div class="col-md-12 clearfix">
 	<div class="text-center m-t-10 m-b-10">
@@ -148,7 +151,7 @@
                 });
                 
                 $('body').on('click', '#addEvent', function(ev){
-                	
+                	$.blockUI({ message: '<h1> Loading...</h1>' });
                 	/*if($('#source_type').val()=='VOD'){
                 		var optionCount=$('#vodSource > option').length;
                 		if(optionCount==0){
@@ -227,44 +230,33 @@
                     		 dataObject['idx']=$('#idx').val();
                     	 }
                     	 console.log(dataObject);
-                    	 var goExe=true;
-                    	 console.log
-                    	 if(goExe){
-								$.ajax({
-		                    	 		url:'/cms/excute/stb-schedule/'+$("#order").val(),
-		                    	 		type:'post',
-		                    	 		data:dataObject,
-		                    	 		async: true,
-		                    	 		beforeSend:function(request){
-		                    	 			$.blockUI({ message: '<h1> Loading...</h1>' });
-		                    	 		},
-		                    	 		success : function(result){
-		                            		//$('#addNew-event form')[0].reset();
-		                                    $('#addNew-event').modal('hide');
-		                    	 			//contents.naviBar('stb-schedule','', 'STB-SCHEDULE');
-		                    	 			//menuJs.makeJsTree();
-		                    	 			//menuJs.vodScheduleJstree();
-		                    	 			//arange.list($("#categoryIdx").val());
-		                    	 			goExe=false;
-		                                    var insertedEvent={
-		                   	 					 	title: $('#eventName').val(),
-		                                         	url:'javascript:calClick.viewEvent(result);',
-		                                            start: $('#getStart').val(),
-		                                            end:  $('#getEnd').val(),
-		                                            allDay: false	
-		                       	 			};
-		                       	 			$('#calendar').fullCalendar('renderEvent',insertedEvent);
-		                       	 			$.unblockUI();
-										},
-		                    	 		error:exception.ajaxException
-		                    	 	});
-								 ev.preventDefault();
+							$.ajax({
+	                    	 		url:'/cms/excute/stb-schedule/'+$("#order").val(),
+	                    	 		type:'post',
+	                    	 		data:dataObject,
+	                    	 		async:false,
+	                    	 		success : function(result){
+	                            		//$('#addNew-event form')[0].reset();
+	                                    $('#addNew-event').modal('hide');
+	                    	 			//contents.naviBar('stb-schedule','', 'STB-SCHEDULE');
+	                    	 			//menuJs.makeJsTree();
+	                    	 			//menuJs.vodScheduleJstree();
+	                    	 			//arange.list($("#categoryIdx").val());
+	                                    var insertedEvent={
+	                   	 					 	title: $('#eventName').val(),
+	                                         	url:'javascript:calClick.viewEvent(result);',
+	                                            start: $('#getStart').val(),
+	                                            end:  $('#getEnd').val(),
+	                                            allDay: false	
+	                       	 			};
+	                       	 			$('#calendar').fullCalendar('renderEvent',insertedEvent);
+									},
+	                    	 		error:exception.ajaxException
+	                    	 	});
                     	 }
-						
-                      } 
                     
                 });
-                
+                $.unblockUI(); 
             });    
            
             //Calendar views
@@ -277,3 +269,4 @@
                 overflowRegular = $('.overflow').niceScroll();     
             });                    
        </script>
+       

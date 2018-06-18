@@ -816,7 +816,7 @@ public class HanibalWebDev  extends MysqlConnect{
 		JSONObject object = (JSONObject)JSONValue.parse(isr);
 		String dbProps=String.valueOf(object.get("dbProperties"));
 		dbConnect(dbProps);
-		String sql="select idx from tb_board_category where pid="+parent+" order by position asc";
+		String sql="select idx as idx from tb_board_category where pid="+parent+" order by position asc";
 		try {
 			con.setAutoCommit(false);
 			psmt=con.prepareStatement(sql);
@@ -829,7 +829,12 @@ public class HanibalWebDev  extends MysqlConnect{
 		}finally{
 			dbClose();
 		}
-		return childIdx.substring(0,childIdx.length()-1);
+		if(childIdx.length()!=0) {
+			return childIdx.substring(0,childIdx.length()-1);
+		}else {
+			return childIdx;
+		}
+			
 	}
 	public static String getDefaultLiveIdx() throws Exception {
 		String idx="";

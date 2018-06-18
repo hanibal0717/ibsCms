@@ -92,7 +92,6 @@ $(function(){
 		naviString=all_parents.join('<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>');
 		
 		$("#categoryIdx").val(sel.id);
-		console.log($('#sort').val()+"/"+sel.id);
 		if($('#sort').val()!="live"||sel.id!='1'){
 			arange.list($('#treeIdx').val(),sel.original.property);
 			arange.naviBar($('#sort').val(),$('#treeIdx').val(),naviString);

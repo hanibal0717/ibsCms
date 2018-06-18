@@ -128,15 +128,21 @@ public class IbsAppDAO {
 		List<Integer> layoutLists=sqlTemplate.selectList("getChildIdx",category);
 		List<VodListAppDTO> lists=new ArrayList<VodListAppDTO>(); 
 		for(int i=0;i<layoutLists.size();i++) {
+			log.info(layoutLists.get(i));
+		}
+		for(int i=0;i<layoutLists.size();i++) {
 			Map<String,Object> map= new HashMap<String,Object>();
 			String eachFlag="";
+			log.info(layoutLists.get(i));
 			int childIdxArr[]=HanibalWebDev.StringToIntArray(HanibalWebDev.getChildIdx(layoutLists.get(i)));
-			eachFlag="Y";
-			map.put("childIdxArr", childIdxArr);
-			map.put("wl_sort","R");
-			map.put("eachFlag",eachFlag);
-			List<VodListAppDTO> addlists=sqlTemplate.selectList("mainLayoutlist",map);
-			lists.addAll(addlists);
+			if(childIdxArr.length!=0) {
+				eachFlag="Y";
+				map.put("childIdxArr", childIdxArr);
+				map.put("wl_sort","R");
+				map.put("eachFlag",eachFlag);
+				List<VodListAppDTO> addlists=sqlTemplate.selectList("mainLayoutlist",map);
+				lists.addAll(addlists);
+			}
 		}
 		for(int i=0;i<lists.size();i++) {
 			lists.get(i).setMain_thumbnail("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getMain_thumbnail())+lists.get(i).getMain_thumbnail());

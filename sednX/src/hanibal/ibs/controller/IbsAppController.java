@@ -150,6 +150,7 @@ public class IbsAppController {
 					mainData.put("type","1");
 					mainData.put("msg", "앱을 로딩하는데 오류가 있습니다.");
 					mainData.put("ret", subData);
+					System.out.println(e.getMessage());
 				}
 			}
 			else if(order.equals("sublist")) {

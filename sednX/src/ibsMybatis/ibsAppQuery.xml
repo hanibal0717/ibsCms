@@ -38,7 +38,8 @@
 				(a.view_count) as view_count,
 				(select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as main_thumbnail,
 				(a.category_idx) as board_cate_idx,
-                (select category_name from tb_board_category where idx=a.category_idx) as board_cate_name
+                (select category_name from tb_board_category where idx=a.category_idx) as board_cate_name,
+                (a.reg_dt) as vod_regdate
 			from tb_board_repository a  where 1=1 and a.del_flag='N'
             
         <if test='eachFlag!=""'>

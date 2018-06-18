@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.servlet.ModelAndView;
 
 import hanibal.ibs.dao.IbsWebApiDAO;
 import hanibal.ibs.library.HanibalWebDev;
@@ -316,6 +316,37 @@ public class IbsWebApiController {
 		model.addAttribute("sort", order);
 		return "/ibsInclude/advenceTree.inc";
 	}
+	
+	@RequestMapping("/api/advenceTree/json/{order}")
+	public void advenceTreeJson(@PathVariable String order,ModelAndView mav,HttpServletResponse res,HttpServletRequest req) throws Exception {
+		String selected_node_id = "1";
+		String treeMenu="";
+		List<AdvenceTree> lists=webApiDao.getAdvenceTree(order);
+		selected_node_id=lists.get(1).getId();
+		lists.get(0).setParent("#");
+		for(int i=0;i<lists.size();i++) {
+			treeMenu+="{\"id\":\""+lists.get(i).getId()+"\",\"parent\":\""+lists.get(i).getParent()+"\",\"text\":\""+lists.get(i).getText();
+			treeMenu+="\",";
+			treeMenu+= "\"name\":\""+lists.get(i).getName()+"\",\"num\":\""+lists.get(i).getNum()+"\",\"property\":\""+lists.get(i).getProperty()+"\",";
+			if(i==0) {
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/root.png\"";
+			}else if(lists.get(i).getProperty().equals("0")) {
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/menu.png\"";
+			}else{
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/list.png\"";
+			}		
+			treeMenu+= ",\"state\":{\"opened\":true";
+			if(lists.get(i).getId().equals(selected_node_id)) {
+					treeMenu+=",\"selected\":true";	
+			}
+			treeMenu+="}},";
+		}
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("ret", treeMenu);
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(map));
+	}
+	
 	@RequestMapping("/api/selJstree/{order}")
 	public String selJstree(@PathVariable String order,
 			HttpServletRequest req,
@@ -384,8 +415,11 @@ public class IbsWebApiController {
 		String treeMenu="";
 		if(order.equals("stb-schedule")) {
 			boolean interFlag=false;
-			for(int i=0;i<compareArr.length;i++) {
-				if(compareArr[i]==0) interFlag=true; 
+			log.info("@@@@@@@@@@@@"+compareArr.length);
+			if(groupArr.length()!=0) {
+				for(int i=0;i<compareArr.length;i++) {
+					if(compareArr[i]==0) interFlag=true; 
+				}
 			}
 			treeMenu+="{\"id\":\"0\",\"parent\":\"#\",\"text\":\"인터넷 방송\","
 					+ "\"name\":\"인터넷방송\",\"num\":\"0\""
@@ -580,11 +614,11 @@ public class IbsWebApiController {
 		
 	}
 	@RequestMapping("/api/web/scheduleJson")
-	@ResponseBody
-	public String scheduleJson(@RequestParam(required=false) String childIdx) throws JsonGenerationException, JsonMappingException, IOException {
+	public void scheduleJson(@RequestParam(required=false) String childIdx,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
 		List<ScheduleDTO> eventLists=webApiDao.eventList(childIdx);
 		String comma=",";
 		String events="";
+		Map<String,Object> mainData =new HashMap<String,Object>();
 		for(int i=0;i<eventLists.size();i++) {
 			if(i==eventLists.size()-1) comma="";
 			events+="{title:'"+eventLists.get(i).getName()+"',"
@@ -594,7 +628,9 @@ public class IbsWebApiController {
 					+ "allDay:false,"
 					+ "idx :'"+eventLists.get(i).getIdx()+"' }"+comma+"";
 		}
-		return events;
+		mainData.put("eventLists",events);
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
 	}
 	@RequestMapping("/api/categoryNames/{sort}")
 	public void categoryNames(@PathVariable String sort,@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException{
@@ -628,7 +664,34 @@ public class IbsWebApiController {
 			res.getWriter().print(mapper.writeValueAsString(mainData));
 		}
 	}
-	
+	@RequestMapping("/api/targetView")
+	public void targetView(@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		Map<String,Object> subData =new HashMap<String,Object>();
+		List<HashMap<String,Object>> targetList=webApiDao.getTargetView(String.valueOf(commandMap.get("idxArr")));
+		String stbAll="0";
+		String internet="0";
+		for(int i=0;i<targetList.size();i++) {
+			if(targetList.get(i).get("group_idx").equals(0)) {
+				internet="1";
+			}
+		}
+		int targetCount=targetList.size();
+		if(internet.equals("1")) {
+			targetCount=targetCount-1;
+		}
+		int totalTargetCount=webApiDao.getTotalTargetCount()-1;
+		if(totalTargetCount==targetCount) {
+			stbAll="1";
+		}
+		mainData.put("internet",internet);
+		mainData.put("stbAll",stbAll);
+		mainData.put("mainCategory",HanibalWebDev.getCategoryName("live",String.valueOf(commandMap.get("idxArr"))));
+		subData.put("targetList",targetList);
+		mainData.put("list", targetList);
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
  }
 
 

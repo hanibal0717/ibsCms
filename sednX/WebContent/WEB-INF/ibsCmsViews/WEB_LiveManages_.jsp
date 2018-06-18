@@ -71,8 +71,8 @@ pageEncoding="UTF-8"%>
 <script>
 $('#categoryIdx').val('${hn:getDefaultLiveIdx()}');
 $('#categoryName').val('${hn:getDefaultLiveName()}');
-$("#getStart").datetimepicker({format:'Y-m-d H:i',step:30,theme:'dark'});
-$("#getEnd").datetimepicker({format:'Y-m-d H:i',step:30,theme:'dark'});
+$("#getStart").datetimepicker({format:'Y-m-d H:i',step:10,theme:'dark'});
+$("#getEnd").datetimepicker({format:'Y-m-d H:i',step:10,theme:'dark'});
 var option='${hn:getBoardSelect()}';
 $('#optionText').val(option);
 var menuJs = (function() {
@@ -218,13 +218,14 @@ var arange=(function(){
 					var data=JSON.parse(responseData);
 					var retHtml='';
 					for(var i=0;i<data.imgList.length;i++){
-						retHtml+='<div  style="float:left; background: url(${pageContext.request.contextPath}'+data.imgList[i].img_url
-							+') no-repeat center; background-size: cover;">'
-	                        +'<a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>'
-		                    +'</div>';
+		                retHtml+='<li id="scheduleVodList" style="float:left; background: url(${pageContext.request.contextPath}'+data.imgList[i].img_url
+								+') no-repeat center; background-size: cover;">'
+	                  			+'<a class="close" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기" /></a>'
+	                  			+'</li>'
 					}
-					$('.thumnail').empty();
-					$('.thumnail').html(retHtml);
+					$('#slideShow').empty();
+					$('#slideShow').html(retHtml);
+					slide.init();
 					//$('#scheduleVodList').before(retHtml);
 				},
 				error : exception.ajaxException
@@ -291,4 +292,29 @@ var arange=(function(){
 			arange.repolist('');
 		}
 	});
+</script>
+<script>
+var current = 0;
+var max = 0;
+var container;
+var slide={
+	init:function(){
+		container = $(".slide ul");
+        max = container.children().length;
+	},
+	prev:function(e){
+		 current--;
+         if( current < 0 ) current = max-1;
+         slide.animate();
+	},
+	next:function(e){
+		current++;
+        if( current > max-1 ) current = 0;
+        slide.animate();
+	},
+	animate:function(){
+		var moveX = current * 135;
+        TweenMax.to( container, 0.1, { marginLeft:-moveX, ease:Expo.easeOut } );
+	}
+};
 </script>

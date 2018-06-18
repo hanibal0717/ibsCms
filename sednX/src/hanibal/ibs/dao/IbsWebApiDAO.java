@@ -274,6 +274,22 @@ public class IbsWebApiDAO {
 		}
 		return lists;
 	}
+	public List<HashMap<String, Object>> getTargetView(String childIdx) {
+		Map<String,Object> map= new HashMap<String,Object>();
+		String eachFlag="N";
+		if(childIdx.length()!=0) {
+			int childIdxArr[]=HanibalWebDev.StringToIntArray(childIdx);
+			eachFlag="Y";
+			map.put("childIdxArr", childIdxArr);
+		}
+		map.put("eachFlag",eachFlag);
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getTagetList",map);
+		return lists;
+	}
+	public int getTotalTargetCount() {
+		int count=sqlTemplate.selectOne("targetCount");
+		return count;
+	}
 	
 	
 	

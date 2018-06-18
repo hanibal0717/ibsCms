@@ -136,8 +136,7 @@
 		from 
 			tb_stb_schedule
         where 
-        		source_type = 'LIVE' 
-        		and category_idx=#{chIdx} 
+        		category_idx=#{chIdx} 
         		and <![CDATA[!((date(start) < date(now()) and date(end) < date(now())) or (date(start) > date(now()) and date(end) > date(now()))) ]]>
         	order by start;
 	</select>

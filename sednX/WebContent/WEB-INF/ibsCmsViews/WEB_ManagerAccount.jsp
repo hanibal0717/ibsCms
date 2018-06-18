@@ -11,26 +11,6 @@ pageEncoding="UTF-8"%>
 <!--********* permittsion include **************-->
 <!-- Content -->
 <section id="content" class="container">
-    <!-- Messages Drawer 메세지 클릭햇을시 (최신영상이 )%%%대메뉴 공통 부 분-->
-	<div id="messages" class="tile drawer animated">
-		<c:import url = "/inc/incMsg">
-			<c:param name = "q" value = "보라매공원" />
-		</c:import>
-	</div>
-
-	<!-- Notification Drawer -->
-	<div id="notifications" class="tile drawer animated">
-		<c:import url = "/inc/incNoti">
-			<c:param name = "q" value = "보라매공원" />
-		</c:import>
-	</div>
-	<!--메뉴경로... -->
-	<ol class="breadcrumb hidden-xs">
-	    <li><a href="${pageContext.request.contextPath}/sednmanager">Home</a></li>
-	    <li class="active">ACCOUNT MANAGEMENT</li>
-	</ol>
-	<!-- 대메뉴-->
-	<h4 class="page-title">ACCOUNT MANAGEMENT</h4>
 	<!-- Main Widgets -->
    	<div class="block-area">
    		<div class="row">
@@ -180,46 +160,7 @@ $(function(){
 			deleteByIdxArr:deleteByIdxArr
 		}
 	}());
+	$('#cmsPageTitle').html('회원 관리');
 	memberList.sortByAuthrity('');
 </script>
 
-<!-- Older IE Message -->
-<!--[if lt IE 9]>
-    <div class="ie-block">
-        <h1 class="Ops">Ooops!</h1>
-        <p>You are using an outdated version of Internet Explorer, upgrade to any of the following web browser in order to access the maximum functionality of this website. </p>
-        <ul class="browsers">
-            <li>
-                <a href="https://www.google.com/intl/en/chrome/browser/">
-                    <img src="img/browsers/chrome.png" alt="">
-                    <div>Google Chrome</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.mozilla.org/en-US/firefox/new/">
-                    <img src="img/browsers/firefox.png" alt="">
-                    <div>Mozilla Firefox</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.opera.com/computer/windows">
-                    <img src="img/browsers/opera.png" alt="">
-                    <div>Opera</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://safari.en.softonic.com/">
-                    <img src="img/browsers/safari.png" alt="">
-                    <div>Safari</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://windows.microsoft.com/en-us/internet-explorer/downloads/ie-10/worldwide-languages">
-                    <img src="img/browsers/ie.png" alt="">
-                    <div>Internet Explorer(New)</div>
-                </a>
-            </li>
-        </ul>
-        <p>Upgrade your browser for a Safer and Faster web experience. <br/>Thank you for your patience...</p>
-    </div>   
-<![endif]-->
