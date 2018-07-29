@@ -494,13 +494,23 @@ public class IbsCmsController {
 		res.setCharacterEncoding("utf8");
 		if(order.equals("member")) {
 			affectcount=ibsCmsDao.updateMemberAuthority(changeVal,HanibalWebDev.StringToIntArray(checkValArr));
+			if(affectcount==0) {
+				map.put("result", "fail");
+			}else{
+				map.put("result","success");
+			}
 		}else if(order.equals("elemCategory")) {
 			affectcount=ibsCmsDao.updateElemCategory(commandMap);
-		}
-		if(affectcount==0) {
-			map.put("result", "fail");
-		}else{
-			map.put("result","success");
+			if(affectcount==0) {
+				map.put("result", "fail");
+			}else{
+				map.put("result","success");
+				String table=HanibalWebDev.targetTable(String.valueOf(commandMap.get("sort")));
+				String oneDepth=HanibalWebDev.getCategoryName(String.valueOf(commandMap.get("sort")),String.valueOf(HanibalWebDev.getParent(table,String.valueOf(commandMap.get("updateIdx")))));
+				String twoDepth=HanibalWebDev.getCategoryName(String.valueOf(commandMap.get("sort")),String.valueOf(commandMap.get("updateIdx")));
+				map.put("oneDepth",oneDepth);
+				map.put("twoDepth",twoDepth);
+			}
 		}
 		res.getWriter().print(mapper.writeValueAsString(map));
 	}
@@ -524,7 +534,7 @@ public class IbsCmsController {
 			}else{
 				map.put("result", "fail");
 			}
-		}else if(order.equals("vod")||order.equals("live")||order.equals("file")||order.equals("photo")||order.equals("board")||order.equals("stb-controle")) {
+		}else if(order.equals("vod")||order.equals("stream")||order.equals("file")||order.equals("photo")||order.equals("board")||order.equals("stb-controle")) {
 			affectcount=ibsCmsDao.deleteContents(order,HanibalWebDev.StringToIntArray(checkValArr));
 			if(affectcount>0) {
 				map.put("result","success");
@@ -628,7 +638,7 @@ public class IbsCmsController {
 		String reg_id=String.valueOf(session.getAttribute("member_email"));
 		String reg_ip = req.getHeader("X-FORWARDED-FOR");
 		if(reg_ip==null) reg_ip=req.getRemoteAddr();
-		if(contents.equals("live")) {
+		if(contents.equals("stream")) {
 			if(order.equals("update")) {
 				commandMap.put("reg_id", reg_id);
 				commandMap.put("reg_ip", reg_ip);
@@ -665,6 +675,8 @@ public class IbsCmsController {
 				commandMap.put("reg_id", reg_id);
 				commandMap.put("reg_ip", reg_ip);
 				affectcount=ibsCmsDao.insertPhotoContent(commandMap);
+				msg=String.valueOf(HanibalWebDev.getPhotoTop());
+				
 			}
 		}else if(contents.equals("vod")) {
 			if(order.equals("update")) {
@@ -706,10 +718,10 @@ public class IbsCmsController {
 				//vod 삭제 
 				ibsCmsDao.deleteScheduleVod(topIdx);
 				//그룹 VOD 다시 입력 
-				int groupArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("groupArr")));
+				/*int groupArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("groupArr")));
 				for(int idx : groupArr) {
 					ibsCmsDao.insertScheduleGroup(topIdx,idx);
-				}
+				}*/
 				if(String.valueOf(commandMap.get("source_type")).equals("VOD")) {
 					int vodArr[]=HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("vodArr")));
 					for(int i=0;i<vodArr.length;i++) {
@@ -886,5 +898,11 @@ public class IbsCmsController {
 		mainData.put("msg","200");
 		res.setCharacterEncoding("utf8");
 		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	@RequestMapping("/sedn/download/{sort}/{type}/{file}")
+	public void sednFileDownLoad(@PathVariable String sort,@PathVariable String type,@PathVariable String file, HttpServletResponse res, HttpServletRequest req) throws Exception {
+		file=file+"."+type;
+		String path=repositoryPath+"/"+sort.toUpperCase()+HanibalWebDev.getDataPath(file)+file;
+		ibsCmsDao.fileDownLoad(path,res,req);
 	}
 }

@@ -10,7 +10,7 @@
 <form role="form" class="form-validation-1" id="contentsForm">
 
 	<input type="text" id="live_title"
-		class="form-control m-b-10 validate[required,maxSize[10],custom[onlyLetterSp]]"
+		class="form-control m-b-10 validate[required,maxSize[20],custom[onlyLetterSp]]"
 		value="${resultMap.live_title}" placeholder="채널명">
 	<input type="text" id="live_path"
 		class="form-control m-b-10 validate[required,maxSize[100],custom[url]]"

@@ -67,7 +67,8 @@ $(function(){
 		all_children.push(sel.id);
 		all_children=all_children.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);//중복제거
 		$("#treeIdx").val(all_children);
-		console.log($("#treeIdx").val());
+		$('#treeProperty').val(sel.original.property);
+		console.log(sel.original.property);
 		all_parents=sel.parents;
 		all_parents=all_parents.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);//중복제거
 		//#삭제 
@@ -259,6 +260,7 @@ var menuTree=(function(){
 			});
 		 return newID;
  };
+
  return{
   renameGroup:renameGroup,
   createGroup:createGroup,

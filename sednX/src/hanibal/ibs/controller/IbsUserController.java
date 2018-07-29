@@ -2,25 +2,25 @@ package hanibal.ibs.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import hanibal.ibs.dao.IbsUserDAO;
 import hanibal.ibs.library.HanibalWebDev;
+import hanibal.ibs.model.cms.BoardDTO;
+import hanibal.ibs.model.webapi.LayoutDTO;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 @Controller
@@ -32,17 +32,7 @@ public class IbsUserController {
 	String sednIp;
 	String mediaIp;
 	String dbProperties;
-	String returnView;
-	String download;
-	
-	
-	
-	public String getDownload() {
-		return download;
-	}
-	public void setDownload(String download) {
-		this.download = download;
-	}
+
 	public void setLog(Logger log) {
 		this.log = log;
 	}
@@ -60,305 +50,52 @@ public class IbsUserController {
 		this.mediaIp = mediaIp;
 	}
 	
-	public String getDbProperties() {
-		return dbProperties;
-	}
-	public void setDbProperties(String dbProperties) {
-		this.dbProperties = dbProperties;
-	}
-	
-	public void setReturnView(String returnView) {
-		this.returnView = returnView;
-	}
-	
 	//첫 화면 페이지 
 	@RequestMapping("/")
-	public String mainIndex(Model model) throws UnknownHostException {
-		returnView="/ibsUserViews/IbsUserVodView.user";
-		model.addAttribute("permission",repositoryPath);
-		Map<String,Object> param = new HashMap<String,Object>();
-		String vIp = HanibalWebDev.getIp(); 
-		param.put("reg_ip", vIp); 
-		param.put("reg_id", "foryousa@naver.com");
-		param.put("device", "WEB");
-		ibsUserDAO.SednLogInsert(param);
-		return returnView;
-	}
-	
-	
-	//Live 페이지 
-	@RequestMapping("/svc/IbsUserVodView")
-	public String IbsUserVodView(Model model){
-		returnView="/ibsUserViews/IbsUserVodView2.test"; 
-		return returnView;
-	}
-	
-	//Live 페이지 
-		@RequestMapping("/svc/IbsUserLiveView2")
-		public String IbsUserLiveView2(Model model){
-			returnView="/ibsUserViews/IbsUserLiveView2.live"; 
-			return returnView;
-		}
-	
-	//Live 페이지 
-	@RequestMapping("/svc/liveView")
-	public String liveView(Model model){
-		returnView="/ibsUserViews/IbsUserLiveView.live"; 
-		return returnView;
-	}
-	
-	@RequestMapping("/svc/user/{section}")
-	public String webSection(@PathVariable String section,Model model ,@RequestParam String vIndex ) throws UnsupportedEncodingException {
-		String returnPage="";
-		if(section.equals("vodPlay")) {
-			returnPage="/ibsUserViews/IbsUserVodPlay.user";
-			model.addAttribute("IDX", vIndex);
-		}else if( section.equals("vodMenuChild") || section.equals("vodMenuChildNew") || section.equals("vodMenuChildTitle") || section.equals("vodMenuChildFavorite")) {
-			returnPage="/ibsUserViews/IbsUserVodMenuChildView.user";
-			model.addAttribute("IDX", vIndex);
-		}else if(section.equals("vodUserSearch")) {
-			returnPage="/ibsUserViews/IbsUserVodSearchView.user";
-			model.addAttribute("Search", URLDecoder.decode(vIndex,"UTF-8"));
-		}else if(section.equals("liveUserSearch")) {
-			returnView="/ibsUserViews/IbsUserVodSearchView.live"; 
-			model.addAttribute("Search", URLDecoder.decode(vIndex,"UTF-8"));
-		}
-		else if(section.equals("vodMenuParents")) {
-			returnPage="/ibsUserViews/IbsUserVodMenuView.user";
-			model.addAttribute("IDX", vIndex);
-		}else if(section.equals("liveView")) {
-			returnPage="/ibsUserViews/IbsUserLiveViewIdx.live"; 
-			model.addAttribute("IDX", vIndex);
-		}
-		model.addAttribute("Flug", section);
-		return returnPage;
-	}
-	
-	
-	//레이아웃 이미지 가져오기
-	@RequestMapping("/svc/layoutImage")
-	public void layoutImage(ModelMap mav,HttpServletResponse res) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.layoutImage();
+	public String mainIndex() {
 		
-		for(int i = 0 ; i < lists.size(); i ++) {
-				String datePath = ""; 
-				Map<String, Object> map = lists.get(i);
-				datePath ="http://"+sednIp+":8080/" + "/REPOSITORY/CAROUSEL/" + map.get("IMG_NAME");
-				map.put("IMG_NAME", datePath);
+		return "/ibsUserViews/VOD_Layout.usr";
+	}
+	
+	@RequestMapping("/user/subList")
+	public String subList(HttpServletResponse res,@RequestParam Map<String, Object> commandMap,Model model) throws IOException {
+		String searchWord=String.valueOf(commandMap.get("searchWord"));
+		if(searchWord== null) searchWord="";
+		int totalRecordCount = ibsUserDAO.getBoardTotalRecordCount(searchWord,String.valueOf(commandMap.get("idxArr")));
+		int start=0;
+		int end = totalRecordCount;
+		List<BoardDTO> lists=ibsUserDAO.boardList(searchWord,String.valueOf(commandMap.get("idxArr")),start,end);
+		for(int i=0;i<lists.size();i++) {
+			lists.get(i).setVod_repo("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getVod_repo())+lists.get(i).getVod_repo());
 		}
-		
-		mav.put("lists",lists); 
-		mav.put("repositoryPath",repositoryPath);
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	} 
-	
-	//LayoutMenu에 등록 되어있는 vod List 가져오기
-	@RequestMapping("/svc/MainLaoutVodList")
-	public void MainLaoutVodList(ModelMap mav,HttpServletResponse res , @RequestParam Map<String, Object> commandMap) throws IOException{
+		model.addAttribute("lists", lists);
+		model.addAttribute("categoryName",HanibalWebDev.getCategoryName("board",String.valueOf(commandMap.get("idxArr"))));
+		model.addAttribute("categoryIdx",String.valueOf(commandMap.get("idxArr")));
+		model.addAttribute("parentIdx",HanibalWebDev.getParent(HanibalWebDev.targetTable("board"),String.valueOf(commandMap.get("idxArr"))));
+		return "/ibsInclude/userSubList.usr";
+	}
+	@RequestMapping("/user/layout")
+	public void layoutSet(HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws JsonGenerationException, JsonMappingException, IOException {
+		String categoryIdx=String.valueOf(commandMap.get("categoryIdx"));
+		if(categoryIdx== null) categoryIdx="";
+		List<LayoutDTO> lists=ibsUserDAO.getLayoutList(Integer.parseInt(categoryIdx));
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		mainData.put("layout",lists);
 		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.MainLaoutVodList(commandMap);
-		
-		for(int i = 0 ; i < lists.size(); i ++) {
-				String datePath = ""; 
-				Map<String, Object> map = lists.get(i);
-				datePath ="http://"+sednIp+":8080/" + "REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath(String.valueOf(map.get("MAIN_THUMBNAIL").toString())) + map.get("MAIN_THUMBNAIL");
-				map.put("MAIN_THUMBNAIL", datePath);
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	@RequestMapping("/user/style")
+	public String userStyle(@RequestParam Map<String, Object> commandMap,Model model) {
+		String type=String.valueOf(commandMap.get("wl_type"));
+		String searchWord="";
+		int start=0;
+		int end =20;
+		List<BoardDTO> lists=ibsUserDAO.layoutList(searchWord,String.valueOf(commandMap.get("wl_categorys")),String.valueOf(commandMap.get("wl_attribute")),String.valueOf(commandMap.get("wl_sort")),start,end);
+		for(int i=0;i<lists.size();i++) {
+			lists.get(i).setVod_repo("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getVod_repo())+lists.get(i).getVod_repo());
 		}
-		
-		mav.put("lists",lists);  
-		mav.put("repositoryPath",repositoryPath);
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	} 
-	
-	
-	
-	//VOD SEARCH, VIEW, MODAL등 데이터 가져오기
-	@RequestMapping("/svc/MainVodAllList")
-	public void MainVodAllList(ModelMap mav,HttpServletResponse res , @RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.MainVodAllList(commandMap);
-		String vFlug = HanibalWebDev.toString((String) commandMap.get("FLUG"));
-		for(int i = 0 ; i < lists.size(); i ++) {
-			Map<String, Object> map = lists.get(i);
-			if(vFlug.equals("SHOW_VIEW")) {
-				// VOD 주소로 썸네일 10장 주소 만들기  
-				String datePath = ""; 
-				datePath ="http://"+sednIp+":8080/" + "REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath(String.valueOf(map.get("VOD_PATH").toString()));
-				map.put("MAIN_THUMBNAIL", datePath);
-			}else{
-				String datePath = ""; 
-				datePath ="http://"+sednIp+":8080/" + "REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath(String.valueOf(map.get("MAIN_THUMBNAIL").toString())) + map.get("MAIN_THUMBNAIL");
-				map.put("MAIN_THUMBNAIL", datePath);
-				
-			}
-			
-			String datePath2 = ""; 
-			datePath2 ="http://"+mediaIp+"/VOD" + HanibalWebDev.getDataPath(String.valueOf(map.get("VOD_PATH"))) + map.get("VOD_PATH")+"/index.m3u8";
-			// datePath2 ="http://"+sednIp+":8080/" + "REPOSITORY/VOD" + HanibalWebDev.getDataPath(String.valueOf(map.get("VOD_PATH"))) + map.get("VOD_PATH");
-			map.put("VOD_PATH", datePath2);
-
-		}
-		
-		mav.put("lists",lists); 
-		mav.put("repositoryPath",repositoryPath);
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	} 
-	
-	
-	
-	//MenuBar List
-	@RequestMapping("/svc/ShowViewMenuBar")
-	public void ShowViewMenuBar(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.ShowViewMenuBar(commandMap);
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
+		model.addAttribute("lists", lists);
+		model.addAttribute("mainTitle",String.valueOf(commandMap.get("wl_titl")));
+		return "/layout/"+type+".inc";
 	}
-	
-	//LayoutMenu title name
-	@RequestMapping("/svc/LayoutMenuList")
-	public void LayoutMenuList(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.LayoutMenuList(commandMap);
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//Model에 들어갈 이미지 가져오기
-	@RequestMapping("/svc/ModelImageList")
-	public void ModelImageList(ModelMap mav,HttpServletResponse res , @RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.ModelImageList(commandMap);
-		for(int i = 0 ; i < lists.size(); i ++) {
-				String datePath = ""; 
-				Map<String, Object> map = lists.get(i);
-				datePath ="http://"+sednIp+":8080/" + "REPOSITORY/PHOTO" + HanibalWebDev.getDataPath(String.valueOf(map.get("PHOTO_PATH").toString())) + map.get("PHOTO_PATH");
-				map.put("PHOTO_PATH", datePath);
-		
-		}
-		
-		mav.put("lists",lists); 
-		mav.put("repositoryPath",repositoryPath);
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	} 
-	//Model에 들어갈 File가져오기
-	@RequestMapping("/svc/ModelFileViewList")
-	public void ModelFileViewList(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.ModelFileViewList(commandMap);
-		for(int i = 0 ; i < lists.size(); i ++) {
-				String datePath = ""; 
-				Map<String, Object> map = lists.get(i);
-				datePath ="REPOSITORY/FILE" + HanibalWebDev.getDataPath(String.valueOf(map.get("FILE_PATH"))) + map.get("FILE_PATH");
-				map.put("FILE_PATH", datePath);
-		}
-		mav.put("lists",lists); 
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//좋아요, 플레이어시 1씩 증가 시키기
-	@RequestMapping("/svc/VodCountInsert")
-	public void VodCountInsert(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		String vFlug = HanibalWebDev.toString((String) commandMap.get("FLUG"));
-		if(vFlug.equals("FAVORITE")) {
-			ibsUserDAO.VodFavoriteCount(commandMap); 
-		}else {
-			ibsUserDAO.VodViewCountInsert(commandMap); 
-		}	
-
-	}
-	
-	//자식 MenuBar 클릭 시 Title 가져오기 (BOARD > INFO 용산)
-	@RequestMapping("/svc/MenuChildTitle")
-	public void MenuChildTitle(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.MenuChildTitle(commandMap);
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	//Search시 keyword가져오기
-	@RequestMapping("/svc/MainVodKeyWord")
-	public void MainVodKeyWord(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.MainVodKeyWord(commandMap); 
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//파일 다운로드 
-	@RequestMapping("/svc/FileDownlod")
-    public void downLoad(@RequestParam String path,HttpServletResponse res,HttpServletRequest req) throws Exception{
-        String path2= download + HanibalWebDev.toString(path); 
-        ibsUserDAO.fileDownLoad(path2,res,req);
-
-    }
-	
-	//ChannelData가져오기
-	@RequestMapping("/svc/ChannelData")
-	public void ChannelData(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.ChannelData(commandMap); 
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//ChannelData가져오기
-	@RequestMapping("/svc/Channel")
-	public void Channel(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.Channel(commandMap); 
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//ChannelData가져오기
-	@RequestMapping("/svc/CalendarDate")
-	public void CalendarDate(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.CalendarDate(commandMap); 
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//ChannelData가져오기
-	@RequestMapping("/svc/BroadcastingTime")
-	public void BroadcastingTime(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.BroadcastingTime(commandMap); 
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	//RePlayClok가져오기
-	@RequestMapping("/svc/RePlayClok")
-	public void RePlayClok(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.RePlayClok(commandMap); 
-		mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
-	
-	
-	
-	//	Live Vod가져오기
-	@RequestMapping("/svc/VodChannel")
-	public void VodChannel(ModelMap mav,HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws IOException{
-		res.setCharacterEncoding("utf8");
-		List<Map<String,Object>> lists = ibsUserDAO.VodChannel(commandMap); 
-		for(int i = 0 ; i < lists.size(); i ++) {
-			Map<String, Object> map = lists.get(i);
-			String datePath = ""; 
-			datePath ="http://"+mediaIp+"/VOD" + HanibalWebDev.getDataPath(String.valueOf(map.get("VOD_PATH"))) + map.get("VOD_PATH")+"/index.m3u8";
-			//datePath ="http://"+sednIp+":8080/" + "REPOSITORY/VOD" + HanibalWebDev.getDataPath(String.valueOf(map.get("VOD_PATH"))) + map.get("VOD_PATH");
-			map.put("VOD_PATH", datePath);
-			String datePath2 = ""; 
-			datePath ="http://"+sednIp+":8080/" + "REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath(String.valueOf(map.get("MAIN_THUMBNAIL").toString())) + map.get("MAIN_THUMBNAIL");
-			map.put("MAIN_THUMBNAIL", datePath2);
-		}
-			mav.put("lists",lists);  
-		res.getWriter().print(mapper.writeValueAsString(mav));
-	}
-	
- }
+}

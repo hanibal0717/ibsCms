@@ -2,13 +2,15 @@ package hanibal.ibs.library;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.channels.FileChannel;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -178,6 +180,16 @@ public class HanibalWebDev  extends MysqlConnect{
 			}
 		}
 		return convertInt;
+	}
+	public static String[] StringToStringArray(String checkValArr) {
+		String[] array=checkValArr.split(",");
+		String[] convertString=new String[array.length];
+		if(checkValArr.length()>0) {
+			for(int i=0;i<array.length;i++) {
+				convertString[i]=String.valueOf(array[i]);
+			}
+		}
+		return convertString;
 	}
 	public static String targetTable(String sort) {
 		String tableName="";
@@ -766,6 +778,29 @@ public class HanibalWebDev  extends MysqlConnect{
 		}
 		return topIdx;
 	}
+	public static int getPhotoTop() throws IOException {
+		int topIdx=0;
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="select idx from tb_photo_repository order by idx desc limit 1;";
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				topIdx=Integer.parseInt(rs.getString(1));
+			}
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return topIdx;
+	}
 	
 	public static String getBoardSelect()  throws Exception{
 		String selectTag="";
@@ -889,7 +924,7 @@ public class HanibalWebDev  extends MysqlConnect{
 		JSONObject object = (JSONObject)JSONValue.parse(isr);
 		String dbProps=String.valueOf(object.get("dbProperties"));
 		dbConnect(dbProps);
-		String sql="select idx from tb_content_category  where idx in (select * from (select idx from tb_content_category where pid=1 order by position desc limit 0,1 ) as tmpTable)";
+		String sql="select idx from  tb_content_category where pid not in(1,0) order  by pid desc,position desc limit 1";
 		try {
 			con.setAutoCommit(false);
 			psmt=con.prepareStatement(sql);
@@ -911,7 +946,7 @@ public class HanibalWebDev  extends MysqlConnect{
 		JSONObject object = (JSONObject)JSONValue.parse(isr);
 		String dbProps=String.valueOf(object.get("dbProperties"));
 		dbConnect(dbProps);
-		String sql="select category_name from tb_content_category  where idx in (select * from (select idx from tb_content_category where pid=1 order by position desc limit 0,1 ) as tmpTable)";
+		String sql="select category_name from  tb_content_category where pid not in(1,0) order  by pid desc,position desc limit 1;";
 		try {
 			con.setAutoCommit(false);
 			psmt=con.prepareStatement(sql);
@@ -928,6 +963,29 @@ public class HanibalWebDev  extends MysqlConnect{
 		return name;
 	}
 	
+	public static String getDefaultContentsParentName() throws Exception {
+		String name="";
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="select category_name from tb_content_category  where idx in (select * from (select idx from tb_content_category where pid  order by position desc limit 0,1 ) as tmpTable);";
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()){
+				name=rs.getString(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return name;
+	}
 	
 	public static String getFileVolume(long volume) {
 		String CalcuSize=null;
@@ -959,6 +1017,44 @@ public class HanibalWebDev  extends MysqlConnect{
 
 	    }
 	    return CalcuSize;
+	}
+	public static String getPhotoPath(String photoIdx) throws  IOException {
+		String result="";
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String sql="select photo_path from tb_photo_repository where idx="+photoIdx;
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()){
+				result+=getDataPath(rs.getString(1))+rs.getString(1);
+			}
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
+		return result;
+	}
+	public static void fileRenameMoveTo(String thisPath,String targetPath) throws IOException {
+		FileInputStream inputStream = new FileInputStream(thisPath);        
+		FileOutputStream outputStream = new FileOutputStream(targetPath);
+		  
+		FileChannel fcin =  inputStream.getChannel();
+		FileChannel fcout = outputStream.getChannel();
+		long size = fcin.size();
+		fcin.transferTo(0, size, fcout);
+		  
+		fcout.close();
+		fcin.close();
+		  
+		outputStream.close();
+		inputStream.close();
 	}
 	/*****sung a*****/
 	public static String toString(String text) {

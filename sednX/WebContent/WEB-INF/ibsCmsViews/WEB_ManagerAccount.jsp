@@ -61,6 +61,9 @@ pageEncoding="UTF-8"%>
 <script>
 /*EVENT JS*/	
 $(function(){
+	$('#cmsPageTitle').html('계정 관리');
+	$('.menuLi').removeClass('active');
+	$('#memberMenuLi').addClass('active');
 		$("#mainSearch").keydown(function(key){
 			if(key.keyCode==13){
 				if($("#mainSearch").val().length==0){
@@ -160,7 +163,6 @@ $(function(){
 			deleteByIdxArr:deleteByIdxArr
 		}
 	}());
-	$('#cmsPageTitle').html('회원 관리');
 	memberList.sortByAuthrity('');
 </script>
 

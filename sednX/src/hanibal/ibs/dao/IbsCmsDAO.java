@@ -1,14 +1,22 @@
 package hanibal.ibs.dao;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
@@ -392,6 +400,15 @@ public class IbsCmsDAO {
 	}
 	public int updateVodContent(Map<String, Object> commandMap) {
 		int affectcount=sqlTemplate.update("updateVodContent",commandMap);
+		String thumbArr[]=HanibalWebDev.StringToStringArray(String.valueOf(commandMap.get("thumnailList")));
+		String delVod=String.valueOf(commandMap.get("vod_path"));
+		sqlTemplate.delete("deleteThumb",delVod);
+		for(int i=0;i<thumbArr.length;i++) {
+			Map<String,Object> dataMap =new HashMap<String,Object>();
+			dataMap.put("vod_file",commandMap.get("vod_path"));
+			dataMap.put("vod_thumbnail",thumbArr[i]);
+			sqlTemplate.insert("insertThumnail",dataMap);
+		}
 		return affectcount;
 	}
 	public int updateBoardContent(Map<String, Object> commandMap) {
@@ -418,6 +435,13 @@ public class IbsCmsDAO {
 	}
 	public int insertVodContent(Map<String, Object> commandMap) {
 		int affectcount=sqlTemplate.insert("insertVodContent",commandMap);
+		String thumbArr[]=HanibalWebDev.StringToStringArray(String.valueOf(commandMap.get("thumnailList")));
+		for(int i=0;i<thumbArr.length;i++) {
+			Map<String,Object> dataMap =new HashMap<String,Object>();
+			dataMap.put("vod_file",commandMap.get("vod_path"));
+			dataMap.put("vod_thumbnail",thumbArr[i]);
+			sqlTemplate.insert("insertThumnail",dataMap);
+		}
 		return affectcount;
 	}
 	public int insertPhotoContent(Map<String, Object> commandMap) {
@@ -538,6 +562,25 @@ public class IbsCmsDAO {
 	public int getTotalTargetCount() {
 		int count=sqlTemplate.selectOne("targetCount");
 		return count;
+	}
+	public void fileDownLoad(String path, HttpServletResponse res, HttpServletRequest req) throws Exception {
+		File f= new File(path);
+		res.setContentType("application/x-msdownload");
+		res.setContentLength((int)f.length());
+		boolean flag=req.getHeader("user-agent").toUpperCase().indexOf("MSIE")!=-1;
+		if(flag) res.setHeader("Content-Disposition","attachment;filename="+URLEncoder.encode(f.getName(),"utf-8"));
+		else res.setHeader("Content-Disposition","attachment;filename="+new String(f.getName().getBytes("UTF-8"),"8859_1"));
+		BufferedInputStream bis=new BufferedInputStream(new FileInputStream(f));
+		BufferedOutputStream bos=new BufferedOutputStream(res.getOutputStream());
+		int data=0;
+		byte[] buffer=new byte[1024];
+		while((data=bis.read(buffer,0,1024))!=-1) {
+			bos.write(buffer,0,data);
+			bos.flush();
+		}
+		bos.close();
+		bis.close();
+		
 	}
 	
 	

@@ -2,6 +2,7 @@ package hanibal.ibs.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -172,7 +173,6 @@ public class IbsWebApiController {
 		if(totalRate==100) {
 			String runtime=HanibalWebDev.getMediaRuntime(repositoryPath+"SH/get_duration.sh",encodingPath+file);
 			String[] hhmmss=HanibalWebDev.getSliceTimeArr(runtime);
-			
 			for(int i=0;i<hhmmss.length;i++) {
 				HanibalWebDev.getThumbnail(repositoryPath+"SH/get_thumbnail.sh",encodingPath+fileName+".mp4",hhmmss[i],thumbnailPath+fileName+"_"+i+".jpg");
 				if(i==0) {
@@ -187,7 +187,7 @@ public class IbsWebApiController {
 			map.put("url","http://"+mediaIp+"/VOD"+datePath+fileName+".mp4"+"/index.m3u8");
 			map.put("vod_play_time", runtime);
 			map.put("main_thumbnail",main_thumbnail);
-			map.put("main_thumbnail_url",thumbnailPath+main_thumbnail);
+			map.put("main_thumbnail_url",datePath+main_thumbnail);
 			map.put("file_size",file_size);
 			map.put("datePath",datePath);
 			map.put("file",fileName+".mp4");
@@ -277,18 +277,14 @@ public class IbsWebApiController {
 		model.addAttribute("sort", order);
 		return "/ibsInclude/jsTree.inc";
 	}
-	@RequestMapping("/api/advenceTree/{order}")
-	public String advenceTree(@PathVariable String order,Model model,HttpServletRequest req) throws Exception {
-		String selected_node_id = "1";
+	@RequestMapping("/api/advenceTree/{order}/{idx}")
+	public String advenceTree(@PathVariable String order,@PathVariable String idx,Model model,HttpServletRequest req) throws Exception {
+		String selected_node_id =idx;
 		
 		String treeMenu="";
 		List<AdvenceTree> lists=webApiDao.getAdvenceTree(order);
 		if(order.equals("live")) {
 			selected_node_id=lists.get(1).getId();
-		}else if(order.equals("board")){
-			selected_node_id="1";
-		}else {
-			selected_node_id=HanibalWebDev.getDefaultContentsIdx();
 		}
 		log.info("-------"+order+"--------->"+selected_node_id);
 		lists.get(0).setParent("#");
@@ -346,7 +342,36 @@ public class IbsWebApiController {
 		res.setCharacterEncoding("utf8");
 		res.getWriter().print(mapper.writeValueAsString(map));
 	}
-	
+	@RequestMapping("/api/selJstreeAdvence/{order}")
+	public String selJstreeAdvence(@PathVariable String order,
+			HttpServletRequest req,
+			Model model) throws JsonGenerationException, JsonMappingException, IOException {
+		String selected_node_id = "1";
+		String treeMenu="";
+		List<AdvenceTree> lists=webApiDao.getAdvenceTree(order);
+		selected_node_id=lists.get(1).getId();
+		lists.get(0).setParent("#");
+		for(int i=0;i<lists.size();i++) {
+			treeMenu+="{\"id\":\""+lists.get(i).getId()+"\",\"parent\":\""+lists.get(i).getParent()+"\",\"text\":\""+lists.get(i).getText();
+			treeMenu+="\",";
+			treeMenu+= "\"name\":\""+lists.get(i).getName()+"\",\"num\":\""+lists.get(i).getNum()+"\",\"property\":\""+lists.get(i).getProperty()+"\",";
+			if(i==0) {
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/root.png\"";
+			}else if(lists.get(i).getProperty().equals("0")) {
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/menu.png\"";
+			}else{
+				treeMenu+="\"icon\":\""+req.getContextPath()+"/ibsImg/list.png\"";
+			}		
+			treeMenu+= ",\"state\":{\"opened\":true";
+			if(lists.get(i).getId().equals(selected_node_id)) {
+					treeMenu+=",\"selected\":true";	
+			}
+			treeMenu+="}},";
+		}
+		model.addAttribute("treeMenu", treeMenu);
+		model.addAttribute("sort", order);
+		return "/ibsInclude/selJsTreeAdvence.inc";
+	}
 	@RequestMapping("/api/selJstree/{order}")
 	public String selJstree(@PathVariable String order,
 			HttpServletRequest req,
@@ -545,6 +570,7 @@ public class IbsWebApiController {
 			List<VodDTO> lists=webApiDao.getVodSmList(commandMap);
 			for(int i=0;i<lists.size();i++) {
 				lists.get(i).setMain_thumbnail("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getMain_thumbnail())+lists.get(i).getMain_thumbnail());
+				
 			}
 			for(int i=0;i<lists.size();i++) {
 				lists.get(i).setVod_path("http://"+mediaIp+"/"+contents.toUpperCase()+HanibalWebDev.getDataPath(lists.get(i).getVod_path())+lists.get(i).getVod_path()+"/index.m3u8");
@@ -557,7 +583,7 @@ public class IbsWebApiController {
 				lists.get(i).setMain_thumbnail("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getMain_thumbnail())+lists.get(i).getMain_thumbnail());
 			}
 			for(int i=0;i<lists.size();i++) {
-				lists.get(i).setVod_path("http://"+mediaIp+"/"+contents.toUpperCase()+HanibalWebDev.getDataPath(lists.get(i).getVod_path())+lists.get(i).getVod_path()+"/index.m3u8");
+				lists.get(i).setVod_path("http://"+mediaIp+"/VOD"+HanibalWebDev.getDataPath(lists.get(i).getVod_path())+lists.get(i).getVod_path()+"/index.m3u8");
 			}
 			mav.put("lists",lists);
 		}
@@ -590,6 +616,23 @@ public class IbsWebApiController {
 		map.put("result", "success");
 		res.getWriter().print(mapper.writeValueAsString(map));
 	}
+	
+	@RequestMapping("/api/web/scheduleDownLoadToAllSTB")
+	public  void scheduleDownLoadToAllSTB(HttpServletResponse res,@RequestParam Map<String, Object> commandMap) throws JsonGenerationException, JsonMappingException, IOException, InterruptedException {
+		String command = "schedule_download";
+		//모든 셋탑 리스트 담기 
+		List<String> stbList=webApiDao.getAllSTBList();
+		for(int i=0;i<stbList.size();i++) {
+			String stb=stbList.get(i).replaceAll(":", "");
+			HanibalWebDev.sendCommandToSTB(command,stb);
+			log.info("-------------------------------->"+stb);
+			Thread.sleep(1000);
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("result", "success");
+		res.getWriter().print(mapper.writeValueAsString(map));
+	}
+	
 	@RequestMapping("/api/web/stb-schedule/update/{idx}")
 	public void schduleElem(@PathVariable String idx,Model model,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
 		//기본정보
@@ -664,6 +707,34 @@ public class IbsWebApiController {
 			res.getWriter().print(mapper.writeValueAsString(mainData));
 		}
 	}
+	@RequestMapping("/api/photoFactory")
+	public void photoFactory(@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		String eachFlag="";
+		if(String.valueOf(commandMap.get("idxArr")).length()!=0) {
+			eachFlag="Y";
+			commandMap.put("eachFlag",eachFlag);
+			commandMap.put("idxArr", HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("idxArr"))));
+			List<HashMap<String,Object>> imgList=webApiDao.getPhotoList(commandMap);
+			Map<String,Object> mainData =new HashMap<String,Object>();
+			mainData.put("imgList",imgList);
+			res.setCharacterEncoding("utf8");
+			res.getWriter().print(mapper.writeValueAsString(mainData));
+		}
+	}
+	@RequestMapping("/api/fileFactory")
+	public void fileFactory(@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		String eachFlag="";
+		if(String.valueOf(commandMap.get("fileArr")).length()!=0) {
+			eachFlag="Y";
+			commandMap.put("eachFlag",eachFlag);
+			commandMap.put("fileArr", HanibalWebDev.StringToIntArray(String.valueOf(commandMap.get("fileArr"))));
+			List<HashMap<String,Object>> fileList=webApiDao.getFileList(commandMap);
+			Map<String,Object> mainData =new HashMap<String,Object>();
+			mainData.put("fileList",fileList);
+			res.setCharacterEncoding("utf8");
+			res.getWriter().print(mapper.writeValueAsString(mainData));
+		}
+	}
 	@RequestMapping("/api/targetView")
 	public void targetView(@RequestParam(required=false) Map<String, Object> commandMap,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
 		Map<String,Object> mainData =new HashMap<String,Object>();
@@ -691,6 +762,106 @@ public class IbsWebApiController {
 		mainData.put("list", targetList);
 		res.setCharacterEncoding("utf8");
 		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	
+	@RequestMapping("/vod/thumb/update")
+	public void thumbNailUpdata(HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		List<String> vodList=webApiDao.getVodOldList();
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		Map<String,Object> subData =new HashMap<String,Object>();
+		for(int i=0;i<vodList.size();i++) {
+			subData.clear();
+			for(int j=0;j<10;j++) {
+				webApiDao.insertThumbnail(vodList.get(i),vodList.get(i).substring(0,vodList.get(i).lastIndexOf("."))+"_"+(j)+".jpg");
+			}
+		}
+		
+		mainData.put("result","success");
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	@RequestMapping("/api/photoAddToThumnail")
+	public void photoAddToThumnail(HttpServletResponse res,@RequestParam(required=false) Map<String, Object> commandMap) throws IOException {
+		if(String.valueOf(commandMap.get("photoIdx")).length()!=0) {
+			//파일명 알아내기 
+			String photoArrString[]=String.valueOf(commandMap.get("photoIdx")).split(",");
+			SimpleDateFormat newName=new SimpleDateFormat("yyyyMMddHHmmss");
+			Date nowDate=new Date();
+			ArrayList<HashMap<String, String>> ArrList = new ArrayList<HashMap<String, String>>();
+			
+			for(int i=0;i<photoArrString.length;i++) {
+				String thisPath=repositoryPath+"PHOTO"+HanibalWebDev.getPhotoPath(photoArrString[i]);
+				String fileExe=thisPath.substring(thisPath.lastIndexOf(".")+1,thisPath.length());
+				HanibalWebDev.fileRenameMoveTo(thisPath,repositoryPath+"THUMBNAIL"+HanibalWebDev.getDataPath(String.valueOf(commandMap.get("orginName")).split("_")[0])+String.valueOf(commandMap.get("orginName")).split("_")[0]+"_"+newName.format(nowDate)+"_"+photoArrString[i]+"."+fileExe);
+				String urlFilePath="/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(String.valueOf(commandMap.get("orginName")).split("_")[0])+String.valueOf(commandMap.get("orginName")).split("_")[0]+"_"+newName.format(nowDate)+"_"+photoArrString[i]+"."+fileExe;
+				HashMap<String, String> elem= new HashMap<String, String>();
+				elem.put("idx",photoArrString[i]);
+				elem.put("url",urlFilePath);
+				ArrList.add(elem);
+			}
+			res.setCharacterEncoding("utf8");
+			res.getWriter().print(mapper.writeValueAsString(ArrList));
+		}
+	}
+	@RequestMapping("/api/media/{sort}/{idx}")
+	public void getMediaInfo(@PathVariable String sort,@PathVariable String idx,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		Map<String,Object> mainData =new HashMap<String,Object>();
+		if(sort.equals("vod")) {
+			Map<String,Object> info=webApiDao.mediaInfo(idx);
+			List<String> thumbList=webApiDao.thumbList(String.valueOf(info.get("vod_path")));
+			List<String> thumbPathList=new ArrayList<String>();
+			for(int i=0;i<thumbList.size();i++) {
+				thumbPathList.add(i,"/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(String.valueOf(thumbList.get(i)))+String.valueOf(thumbList.get(i)));
+			}
+			info.put("vodFile",String.valueOf(info.get("vod_path")));
+			info.put("vod_path","http://"+mediaIp+"/VOD"+HanibalWebDev.getDataPath(String.valueOf(info.get("vod_path")))+String.valueOf(info.get("vod_path"))+"/index.m3u8");
+			info.put("thumnail_path","/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(String.valueOf(info.get("main_thumbnail")))+String.valueOf(info.get("main_thumbnail")));
+			mainData.put("info",info);
+			mainData.put("thumb",thumbList);
+			mainData.put("thumbPath",thumbPathList);
+		}else if(sort.equals("photo")) {
+			Map<String,Object> info=webApiDao.photoInfo(idx);
+			info.put("photoFile",String.valueOf(info.get("photo_path")));
+			info.put("photo_path","/REPOSITORY/PHOTO"+HanibalWebDev.getDataPath(String.valueOf(info.get("photo_path")))+String.valueOf(info.get("photo_path")));
+			mainData.put("info",info);
+		}else if(sort.equals("file")) {
+			Map<String,Object> info=webApiDao.fileInfo(idx);
+			info.put("fileFile",String.valueOf(info.get("file_path")));
+			info.put("file_path","/REPOSITORY/FILE"+HanibalWebDev.getDataPath(String.valueOf(info.get("file_path")))+String.valueOf(info.get("file_path")));
+			mainData.put("info",info);
+		}else if(sort.equals("stream")) {
+			Map<String,Object> info=webApiDao.streamInfo(idx);
+			mainData.put("info",info);
+		}else if(sort.equals("board")) {
+			Map<String,Object> info=webApiDao.boardInfo(idx);
+			mainData.put("info",info);
+			//vod 관련
+			Map<String,Object> vodRelative=webApiDao.vodRelative(String.valueOf(info.get("vod_repo")));
+			vodRelative.put("vodFile",String.valueOf(vodRelative.get("vod_path")));
+			vodRelative.put("vod_path","http://"+mediaIp+"/VOD"+HanibalWebDev.getDataPath(String.valueOf(vodRelative.get("vod_path")))+String.valueOf(vodRelative.get("vod_path"))+"/index.m3u8");
+			vodRelative.put("board_thumnail_path","/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(String.valueOf(vodRelative.get("main_thumbnail")))+String.valueOf(vodRelative.get("main_thumbnail")));
+			mainData.put("vodRelative",vodRelative);
+			//photo 관련
+			
+			//다운로드 관련 
+		}
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(mainData));
+	}
+	@RequestMapping("/api/menu/{section}")
+	public void ibsmenu(@PathVariable String section,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		if(section.equals("vod")) {
+			Map<String,Object> mainData =new HashMap<String,Object>();
+			List<HashMap<String,Object>> mainDepth=webApiDao.getVodMainDepth(1);
+			
+			for(int i=0;i<mainDepth.size();i++) {
+				List<HashMap<String,Object>> subDepth=webApiDao.getVodMainDepth(Integer.parseInt(String.valueOf(mainDepth.get(i).get("menu_idx"))));
+				mainDepth.get(i).put("subDepth",subDepth);
+			}
+			mainData.put("mainDepth", mainDepth);
+			res.setCharacterEncoding("utf8");
+			res.getWriter().print(mapper.writeValueAsString(mainData));
+		}
 	}
  }
 

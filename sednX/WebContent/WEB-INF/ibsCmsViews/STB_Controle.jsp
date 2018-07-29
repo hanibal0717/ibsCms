@@ -201,6 +201,8 @@ pageEncoding="UTF-8"%>
 		contents.naviBar('stb-controle', '', 'OTT CONTROLE');
 		menuJs.makeJsTree();
 		$('#cmsPageTitle').html('OTT 관리');
+		$('.menuLi').removeClass('active');
+		$('#ottMenuLi').addClass('active');
 		contents.list('');
 		$("#mainSearch").keydown(function(key) {
 			if (key.keyCode == 13) {

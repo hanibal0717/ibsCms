@@ -64,11 +64,11 @@ var layout={
 	</c:when>
 	<c:otherwise>
 		<c:forEach items="${lists}" var="list" varStatus="status">
-  				<script>  				
+  				<script>
+  				$('#totalCount').val(Number($('#totalCount').val())+1);
   				layout.add('${list.wl_category}','${status.count}','E','${list.idx}');
   				</script>
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
-
-  
+<input type="text" class="form-control" id="totalCount"> 

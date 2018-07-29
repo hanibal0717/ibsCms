@@ -60,6 +60,7 @@
         <url-pattern>*.txt</url-pattern>
         <url-pattern>*.rar</url-pattern>
         <url-pattern>*.apk</url-pattern>
+        <url-pattern>*.otf</url-pattern>
     </servlet-mapping>
     
     <listener> 

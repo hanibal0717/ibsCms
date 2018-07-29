@@ -48,7 +48,6 @@
     <script src="${pageContext.request.contextPath}/ibsCmsJs/bootstrap.min.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.easing.1.3.js"></script> <!-- jQuery Easing - Requirred for Lightbox + Pie Charts-->
     
-    <script type="text/javascript" src="${pageContext.request.contextPath}/ibsCmsJs/jwplayer.js"></script>
 	<script src="${pageContext.request.contextPath}/ibsCmsJs/jstree.js"></script>
 		
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/ibsCmsJs/datetimepicker/jquery.datetimepicker.css">
@@ -95,6 +94,9 @@
         <script src="${pageContext.request.contextPath}/ibsCmsJs/video.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-flash.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-contrib-hls.js"></script>
+		<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-playlists.js"></script>
+		
+		
 		<!-- new user page -->
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.blockUI.js"></script>
 		<script src="${pageContext.request.contextPath}/ibsCmsJs/TweenMax.min.js"></script>

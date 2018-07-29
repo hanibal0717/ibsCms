@@ -424,7 +424,7 @@
 			    (a.board_title) as board_title,
 			    (a.board_content) as board_content,
 			    (a.board_keyword) as board_keyword,
-			    (a.reg_dt) as reg_dt,
+			    (date_format(a.reg_dt,'%Y .%m. %d')) as reg_dt,
 			    (a.reg_id) as reg_id,
 			    (a.reg_ip) as reg_ip,
 			    (a.del_flag) as del_flag,
@@ -683,7 +683,7 @@
 		
 		<select id="ScheduleBasic" parameterType="int" resultType="java.util.Map">
 			select 
-				idx,name,start,end,source_type,live_ch_idx,live_stream_url,caption,caption_size,caption_speed,caption_text_color,caption_bg_color,image_path,color,desc_text
+				idx,name,start,end,source_type,live_ch_idx,live_stream_url,caption,caption_size,caption_speed,caption_text_color,caption_bg_color,image_path,color,desc_text,forceLive
 			from
 				tb_stb_schedule where idx=#{idx}
 		</select>
@@ -691,7 +691,7 @@
 		<select id="getVodContents" parameterType="int" resultType="java.util.Map">
 			select
 				(a.idx) as idx,
-				(select category_name from tb_vod_category where idx=a.category_idx) as category_idx,
+				(select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 				(a.vod_path) as vod_path,
 				(a.vod_title) as vod_title,
 				(a.vod_content) as vod_content,
@@ -723,7 +723,7 @@
 		<select id="getBoardContents" parameterType="int" resultType="java.util.Map">
 			select
 				(a.idx) as idx,
-			    (select category_name from tb_board_category where idx=a.category_idx) as category_idx,
+			    (select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 			    (a.vod_repo) as vod_repo,
 			    (a.photo_repo) as photo_repo,
 			    (a.file_repo) as file_repo,
@@ -939,7 +939,8 @@
 				image_path,
 				color,
 				desc_text,
-				category_idx
+				category_idx,
+				forceLive
 				)
 				values
 				(
@@ -962,7 +963,8 @@
 				#{image_path},
 				#{color},
 				#{desc_text},
-				#{category_idx}
+				#{category_idx},
+				#{forceLive}
 				)
 		</insert>
 		<insert id="insertScheduleGroup" parameterType="java.util.Map">
@@ -1017,7 +1019,7 @@
 		<select id="getLiveSm" parameterType="java.util.Map" resultType="hanibal.ibs.model.cms.LiveDTO">
 			select
 				(a.idx) as idx,
-				(select category_name from tb_live_category where idx=a.category_idx) as category_idx,
+				(select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 				(a.live_path) as live_path,
 				(a.live_title) as live_title,
 				date_format(a.reg_dt,'%Y년 %m월 %d일 %H시 %s초') as reg_dt,
@@ -1030,7 +1032,7 @@
 			from tb_live_repository a  where 1=1 
 		  <if test='searchWord!=""'>
 		  and (live_title like concat('%',#{searchWord},'%')
-		  or  (select category_name from tb_live_category where idx=a.category_idx) like concat('%',#{searchWord},'%') 
+		  or  (select category_name from tb_live_content where idx=a.category_idx) like concat('%',#{searchWord},'%') 
 		  or live_path like concat('%',#{searchWord},'%')) 
 		  </if>
 		  <if test='searchWord==""'>
@@ -1043,7 +1045,7 @@
 		<select id="getFileSm" parameterType="java.util.Map" resultType="hanibal.ibs.model.cms.FileDTO">
 			select
 				(a.idx) as idx,
-				(select category_name from tb_file_category where idx=a.category_idx) as category_idx,
+				(select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 				(a.file_path) as file_path,
 				(a.file_title) as file_title,
 				(a.file_keyword) as file_keyword,
@@ -1074,7 +1076,7 @@
 		<select id="getPhotoSm" parameterType="java.util.Map" resultType="hanibal.ibs.model.cms.PhotoDTO">
 			select
 				(a.idx) as idx,
-				(select category_name from tb_photo_category where idx=a.category_idx) as category_idx,
+				(select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 				(a.photo_path) as photo_path,
 				(a.photo_title) as photo_title,
 				(a.photo_content) as photo_content,
@@ -1105,7 +1107,7 @@
 		<select id="getVodSm" parameterType="java.util.Map" resultType="hanibal.ibs.model.cms.VodDTO">
 			select
 				(a.idx) as idx,
-				(select category_name from tb_vod_category where idx=a.category_idx) as category_idx,
+				(select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 				(a.vod_path) as vod_path,
 				(a.vod_title) as vod_title,
 				(a.vod_content) as vod_content,
@@ -1139,7 +1141,7 @@
 		  	</if>
 		  	and del_flag='N'
 		  	<if test='eachFlag!=""'>
-	  			and category_idx in
+	  			and a.idx in
 	  			<foreach collection="childIdxArr" item="type" index="index"  open="(" close=")" separator=",">
          			#{type}
       			</foreach>
@@ -1150,7 +1152,7 @@
 		<select id="getVodIdxList" parameterType="java.util.Map" resultType="hanibal.ibs.model.cms.VodDTO">
 			select
 				(a.idx) as idx,
-				(select category_name from tb_vod_category where idx=a.category_idx) as category_idx,
+				(select category_name from tb_content_category where idx=a.category_idx) as category_idx,
 				(a.vod_path) as vod_path,
 				(a.vod_title) as vod_title,
 				(a.vod_content) as vod_content,
@@ -1314,7 +1316,122 @@
       			</foreach>
       		</if>
 		</select>
-
+		
+		<resultMap id="photoResult" type="java.util.HashMap">
+			<result javaType="java.lang.String" column="img_idx" property="img_idx"/>
+			<result javaType="java.lang.String" column="img_url" property="img_url"/>
+		</resultMap>
+		<select id="getPhotoList" resultMap="photoResult" parameterType="java.util.Map">
+			select idx as img_idx,photo_path as img_url from tb_photo_repository 
+			where 1=1
+			<if test='eachFlag!=""'>
+	  			and idx in
+	  			<foreach collection="idxArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+      		</if>
+		</select>
+		
+		<resultMap id="fileResult" type="java.util.HashMap">
+			<result javaType="java.lang.String" column="file_idx" property="file_idx"/>
+			<result javaType="java.lang.String" column="file_url" property="file_url"/>
+		</resultMap>
+		<select id="getFileList" resultMap="fileResult" parameterType="java.util.Map">
+			select idx as file_idx,file_path as file_url from tb_file_repository 
+			where 1=1
+			<if test='eachFlag!=""'>
+	  			and idx in
+	  			<foreach collection="fileArr" item="type" index="index"  open="(" close=")" separator=",">
+         			#{type}
+      			</foreach>
+      		</if>
+		</select>
+		
+		
+		
+		<select id="vodOldList" resultType="String">
+			SELECT vod_path FROM ibsdata.tb_vod_repository where del_flag='N';
+		</select>
+		
+		<insert id="insertThumnail" parameterType="java.util.Map">
+			insert into tb_thumbnail_repository(vod_file,vod_thumbnail)
+			values (#{vod_file},#{vod_thumbnail})
+		</insert>
+		<select id="vodMediaInfo" resultType="java.util.Map" parameterType="int">
+			select
+				(a.idx) as idx,
+				(select idx from tb_content_category where idx=a.category_idx) as category_idx,
+				(a.vod_path) as vod_path,
+				(a.vod_title) as vod_title,
+				(a.vod_content) as vod_content,
+				(a.vod_keyword) as vod_keyword,
+				(a.vod_play_time) as vod_play_time,
+				(a.main_thumbnail) as main_thumbnail,
+				date_format(a.reg_dt,'%Y .%m. %d') as reg_dt,
+				(a.reg_id) as reg_id,
+				(a.reg_ip) as reg_ip,
+				(a.del_flag) as del_flag,
+				(a.trans_option) as trans_option,
+				(a.edit_dt) as edit_dt,
+				(a.favorite_count) as favorite_count,
+				(a.view_count) as view_count,
+				(b.trans_status) as trans_status,
+				(b.trans_rate) as trans_rate,
+				date_format(b.trans_start_dt,'%Y년 %m월 %d일 %H시 %s초') as trans_start_dt,
+				date_format(b.trans_end_dt,'%Y년 %m월 %d일 %H시 %s초') as trans_end_dt,
+				(b.resolution) as resolution,
+				(b.audio_codec) as audio_codec,
+				(b.video_codec) as video_codec,
+				(b.bitrate) as bitrate,
+				(b.file_size) as file_size
+			from tb_vod_repository a 
+      		left join tb_vod_box b on a.idx=b.repoIdx where 1=1 and a.idx=#{idx};
+		</select> 
+		
+		<select id="thumbnailList" resultType="String" parameterType="String">
+			select vod_thumbnail from ibsdata.tb_thumbnail_repository where vod_file=#{vodFile};
+		</select>
+		
+		<delete id="deleteThumb" parameterType="String">
+			delete from tb_thumbnail_repository where vod_file=#{delVod}
+		</delete>
+		
+		<select id="photoMediaInfo" resultType="java.util.Map" parameterType="int">
+			select idx,category_idx,photo_path,photo_path,photo_title,photo_content,photo_keyword,
+				date_format(reg_dt,'%Y .%m. %d') as reg_dt,reg_id,reg_ip,favorite_count,view_count,resolution,file_size 
+		    from tb_photo_repository where idx=#{idx};
+		</select>
+		
+		<select id="fileMediaInfo" resultType="java.util.Map" parameterType="int">
+			select idx,category_idx,file_path,file_title,file_keyword,
+				date_format(reg_dt,'%Y .%m. %d') as reg_dt,reg_id,reg_ip,favorite_count,view_count,down_count,resolution,file_size 
+			from tb_file_repository where idx=#{idx};
+		</select>
+		
+		<select id="streamMediaInfo" resultType="java.util.Map" parameterType="int">
+			select idx,category_idx,live_path,live_title,
+				date_format(reg_dt,'%Y .%m. %d') as reg_dt,reg_id,reg_ip,favorite_count,view_count 
+			from tb_live_repository where idx=#{idx};
+		</select>
+		
+		<select id="boardMediaInfo" resultType="java.util.Map" parameterType="int">
+			select idx,category_idx,vod_repo,photo_repo,file_repo,board_title,board_content,board_keyword,
+				date_format(reg_dt,'%Y .%m. %d') as reg_dt,reg_id,reg_ip,edit_dt,favorite_count,view_count  
+			from tb_board_repository 
+			where idx=#{idx};
+		</select>
+		
+		<select id="getAllSTBList" resultType="String">
+			SELECT mac FROM ibsdata.tb_stb where del_flag='N' order by idx desc;
+		</select>
+		
+		<resultMap id="vodMenuResult" type="java.util.HashMap">
+			<result javaType="java.lang.String" column="menu_idx" property="menu_idx"/>
+			<result javaType="java.lang.String" column="menu_name" property="menu_name"/>
+		</resultMap>
+		<select id="getVodMainMenu" resultMap="vodMenuResult" parameterType="int">
+			select (idx) as menu_idx,(category_name) as menu_name from tb_board_category where pid=#{idx} order by position asc;
+		</select>
 </mapper>
 
 

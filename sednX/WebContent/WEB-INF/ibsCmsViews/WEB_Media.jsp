@@ -56,7 +56,7 @@ pageEncoding="UTF-8"%>
                                    </select>
                                </div>
                                <div class="col-md-8 p-0">                                        
-                                   <input type="text" class="main-search" style="border-bottom: 1px solid #fff; width: 100%;" placeholder="검색어를 입력하세요." />                               
+                                   <input type="text" class="main-search" id="contents-search" style="border-bottom: 1px solid #fff; width: 100%;" placeholder="검색어를 입력하세요." />                               
                                </div>
                            </div>
                       </div>
@@ -73,7 +73,7 @@ pageEncoding="UTF-8"%>
                               <button class="btn btn-alt col-md-2 m-r-10 m-b-5" id="goEdit">편집</button>                            
                           </div>
                           <div class="col-md-6">
-                              <button class="btn btn-alt col-md-2 m-b-5 pull-right">추가</button>
+                              <button class="btn btn-alt col-md-2 m-b-5 pull-right" id="media-add">추가</button>
                           </div>
                       </div>
                       <div class="tile col-md-12 p-5" id="editBtns" style="display:none;">
@@ -93,18 +93,26 @@ pageEncoding="UTF-8"%>
 	    </div>
 	</div>
 </section>
-<input id="sort" type="hidden" value="vod">
-<input type="hidden" id="categoryIdx" value="" />
-<input type="hidden" id="categoryName" value="" />
-<input id="treeIdx" type="hidden">
+<input type="hidden" class="form-control" id="vodOrder" value="insert">
+<input type="hidden" class="form-control" id="photoOrder" value="insert">
+<input type="hidden" class="form-control" id="fileOrder" value="insert">
+<input type="hidden" class="form-control" id="streamOrder" value="insert">
+<input type="hidden" class="form-control" id="sort" value="vod">
+<input type="hidden" class="form-control" id="categoryIdx" />
+<input type="hidden" class="form-control" id="categoryName"/>
+<input type="hidden" class="form-control" id="treeIdx" >
+<input type="hidden" class="form-control" id="treeProperty" value="1">
+<input id="repoOrder" type="hidden" class="form-control"/>
+<input id="requestRepo" type="hidden" class="form-control" value="media">
+
 <script>
 $('#categoryIdx').val('${hn:getDefaultContentsIdx()}');
-$('#categoryName').val('${hn:getDefaultContentsName()}');
+$('#categoryName').val('${hn:getDefaultContentsParentName()}<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>${hn:getDefaultContentsName()}');
 var menuJs={
-		makeJsTree:function(){
+		makeJsTree:function(idx){
 			$.ajax({
 				url : "${pageContext.request.contextPath}/api/advenceTree/"
-						+ $("#sort").val(),
+						+ $("#sort").val()+"/"+idx,
 				async : false,
 				success : function(data) {
 					$("#menuTree").empty();
@@ -112,41 +120,83 @@ var menuJs={
 				},
 				error : exception.ajaxException
 			});
-		}
-};
-var arange={
-		naviBar:function(){
-			$("#sort").val(arguments[0]);
-			$("#navibar").html(arguments[2]);
 		},
-		list:function(idx,property){
-			arange.contentsView(idx);
-		},
-		contentsView:function(idx){
-			$("#contentView").empty();
+		vodScheduleJstree : function() {
 			$.ajax({
-				url : "${pageContext.request.contextPath}/cms/list/"
-					+ $("#sort").val() + "?childIdx="+idx,
-				success : function(data){
-					$('#contentView').html(data);
+				url : "${pageContext.request.contextPath}/api/vodSchedule/"+$('#repoOrder').val(),
+				async : false,
+				success : function(data) {
+					$("#video").empty();
+					$("#video").html(data);
+				},
+				error : exception.ajaxException
+			});
+		},
+		makeSelJstree : function() {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/api/selJstreeAdvence/"
+						+ $("#sort").val(),
+				async : true,
+				success : function(data) {
+					$("#modalTree").empty();
+					$("#modalTree").html(data);
+					$("#changeCateModel").modal();
 				},
 				error : exception.ajaxException
 			});
 		}
 };
-</script>
-<script>
+var arange={
+	naviBar:function(){
+		$("#sort").val(arguments[0]);
+		$("#navibar").html(arguments[2]);
+	},
+	contentsView :function(idx){
+		$("#contentView").empty();
+		$('#addBtns').css('display','block');
+		$('#editBtns').css('display','none');
+		$.ajax({
+			url : "${pageContext.request.contextPath}/cms/list/"+ $("#sort").val() + "?childIdx="+idx+"&searchWord="+$('#contents-search').val(),
+			success : function(data){
+				$('#contentView').html(data);
+			},
+			error : exception.ajaxException
+		});
+	},
+	selectSource: function(){
+		$('#thumnailSource').css('display','block');
+	},
+	removeThumbLi:function(imgId,exe){
+		$('#thumbLi_'+imgId).remove();
+		//배열삭제 
+		var thumbArr=$('#thumnailList').val().split(',')
+		var retArr=common.removeElementToArray(thumbArr,imgId+'.'+exe);
+		$('#thumnailList').val(retArr);
+	},
+	makeMainThumb : function(mainThumb,exe){
+		$("#main_thumbnail").val(mainThumb+"."+exe);
+		$(".thum").removeClass('boxLine');
+		$("#thumbLi_"+mainThumb).addClass('boxLine');
+	},
+	list : function(idx,property){
+		arange.contentsView(idx);
+	}
+	
+};
 $('#cmsPageTitle').html('미디어 관리');
-menuJs.makeJsTree();
+$('.menuLi').removeClass('active');
+$('#contentsMenuLi').addClass('active');
+menuJs.makeJsTree($('#categoryIdx').val());
 arange.naviBar('vod', $("#categoryIdx").val(), $("#categoryName").val());
-arange.list($('#treeIdx').val());
+arange.contentsView($("#categoryIdx").val());
 $('#selectSort').change(function(){
 	$('#sort').val($(this).val());
-	menuJs.makeJsTree();
-	arange.naviBar($(this).val(), $("#categoryIdx").val(), $("#categoryName").val());
-	arange.list($('#treeIdx').val());
+	menuJs.makeJsTree($('#categoryIdx').val());
+	$('#contents-search').val('');
+	arange.contentsView($('#treeIdx').val());
 	$('#addBtns').css('display','block');
 	$('#editBtns').css('display','none');
+	
 });
 $('#goEdit').click(function(){
 	if($('#selectSort').val()=="vod"){
@@ -174,4 +224,128 @@ $('#backAddBtns').click(function(){
 	$('#addBtns').css('display','block');
 	$('#editBtns').css('display','none');
 });
+$('#contents-search').keyup(function(key){
+	arange.contentsView($('#categoryIdx').val());
+});
+$('#media-add').click(function(){
+	if($('#sort').val()=='vod'&&$('#treeProperty').val()!=0){
+		$('#mediaDel').css('display','none');
+		$('#vodMediaView').css('display','none');
+		$('#vodMediaEdit').css('display','block');
+		$('#thumnailSource').css('display','none');
+		common.vodDefault();
+		$('#letsEditPlay').css('display','none');
+		$('#vodPreview').html('<img src="/img/live.jpg" alt="샘플" id="mediaDefaultImg">');
+		$('#vodOrder').val('insert');
+		$('#vodSlideShow').empty();
+		$('#vodSlideShow').css('margin-left','');
+		$('#vodSlideShow').append('<li><a class="add" onclick="common.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+		slide.init();
+		$('#vodViewModal').modal();
+	}else if($('#sort').val()=='photo'&&$('#treeProperty').val()!=0){
+		$('#photoDel').css('display','none');
+		$('#photoMediaView').css('display','none');
+		$('#photoMediaEdit').css('display','block');
+		$('#photoOrder').val('insert');
+		common.photoDefault();
+		$('#photoViewModal').modal();
+	}else if($('#sort').val()=='file'&&$('#treeProperty').val()!=0){
+		$('#fileDel').css('display','none');
+		$('#fileMediaView').css('display','none');
+		$('#fileMediaEdit').css('display','block');
+		$('#fileOrder').val('insert');
+		common.fileDefault();
+		$('#fileViewModal').modal();
+	}else if($('#sort').val()=='stream'&&$('#treeProperty').val()!=0){
+		$('#streamDel').css('display','none');
+		$('#streamMediaView').css('display','none');
+		$('#streamMediaEdit').css('display','block');
+		$('#streamOrder').val('insert');
+		common.streamDefault();
+		$('#streamViewModal').modal();
+	}else{
+		exception.contentsAddException();
+	}
+	
+});
+$('#thumRepositoryAdd').click(function(){
+	menuJs.vodScheduleJstree();
+	//arange.repolist('');
+	$('#repositoryList').modal();
+});
+$('#vodViewEdit').click(function(){
+	common.delCashPlayer('vodPlayer');
+	$('#mediaDel').css('display','block');
+	$('#vodMediaView').css('display','none');
+	$('#vodMediaEdit').css('display','block');
+});
+$('#photoViewEdit').click(function(){
+	$('#photoDel').css('display','block');
+	$('#photoMediaView').css('display','none');
+	$('#photoMediaEdit').css('display','block');
+});
+$('#fileViewEdit').click(function(){
+	$('#fileDel').css('display','block');
+	$('#fileMediaView').css('display','none');
+	$('#fileMediaEdit').css('display','block');
+});
+$('#streamViewEdit').click(function(){
+	common.delCashPlayer('vodPlayer');
+	$('#streamMediaView').css('display','none');
+	$('#streamMediaEdit').css('display','block');
+});
+$('#checkMove').click(function(){
+	var checkValArr = $("#selectedIdxs").val();
+	if (checkValArr.length == 0) {
+		exception.checkboxException();
+	} else {
+		menuJs.makeSelJstree();
+	}
+});
+$('#checkDel').click(function(){
+	var checkValArr=$("#selectedIdxs").val();
+	if(checkValArr.length==0){
+		exception.checkboxException();
+	}else{
+		$("#confirmText").text("선택 파일을 삭제하시겠습니까?.");
+		$("#confirmModal").modal();
+		exception.delConfirm(function(confirm){
+			if(confirm){
+				common.deleteByIdxArr(checkValArr);
+				if($('#selectSort').val()=="vod"){
+					$('.vodCheck').css('display','none');
+				}else if($('#selectSort').val()=="stream"){
+					$('.selectCheck').css('display','none');
+				}else if($('#selectSort').val()=="photo"){
+					$('.photoCheck').css('display','none');
+				}else if($('#selectSort').val()=="file"){
+					$('.fileCheck').css('display','none');
+				}
+				$('#addBtns').css('display','block');
+				$('#editBtns').css('display','none');
+			}
+		});
+	}
+});
+var arr=[];
+$('#selectAllChk').click(function(){
+	var chkbox=$("."+$('#sort').val()+"Check");
+	if($("#allcheck").val().length==0){
+		$("#allcheck").val("checked");
+		chkbox.prop("checked",true);
+		arr=[];
+		for(i=0;i<chkbox.length;i++){
+			arr.push(chkbox[i].value);
+		}
+		$("#selectedIdxs").val(arr);
+	}else{
+		arr=[];
+		$("#allcheck").val('');
+		chkbox.prop("checked",false);
+		$("#selectedIdxs").val('');
+	}
+});
+
 </script>
+
+

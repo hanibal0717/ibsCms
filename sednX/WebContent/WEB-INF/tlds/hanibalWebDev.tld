@@ -122,6 +122,14 @@
 	  			java.lang.String getDefaultContentsName()
 	  		</function-signature>
 	  </function>
+	  
+	  <function>
+	  		<name>getDefaultContentsParentName</name>
+	  		<function-class>hanibal.ibs.library.HanibalWebDev</function-class>
+	  		<function-signature>
+	  			java.lang.String getDefaultContentsParentName()
+	  		</function-signature>
+	  </function>
 </taglib>
 
 

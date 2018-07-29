@@ -134,8 +134,6 @@
 		<property name="repositoryPath" value="${Path.REPOSITORY}"></property>
 		<property name="sednIp" value="${Server.SEDN}"></property>
 		<property name="mediaIp" value="${Server.MEDIA}"></property>
-		<property name="dbProperties" value="${Path.DBproperties}"></property>
-		<property name="download" value="${Path.Download}"></property>
 	</bean>
 	
 	<!-- conference DAO & CONTROLLER [2018.03.29 KHS]--> 

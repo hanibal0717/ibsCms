@@ -176,8 +176,12 @@ public class IbsWebApiDAO {
 	            br = new BufferedReader(new FileReader(inFile));
 	            String line;
 	            while ((line = br.readLine()) != null) {
-	                log.info(line);
+	            	log.info(line);
 	                rate=line;
+	                if(rate.length()==0||rate.isEmpty()) {
+	                	rate="0.0";
+	                	log.info("==========================");
+	                }
 	            }
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
@@ -274,6 +278,20 @@ public class IbsWebApiDAO {
 		}
 		return lists;
 	}
+	public List<HashMap<String, Object>> getPhotoList(Map<String, Object> commandMap) {
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getPhotoList",commandMap);
+		for(int i=0;i<lists.size();i++) {
+			lists.get(i).put("img_url","/REPOSITORY/PHOTO"+HanibalWebDev.getDataPath(String.valueOf(lists.get(i).get("img_url")))+String.valueOf(lists.get(i).get("img_url")));
+		}
+		return lists;
+	}
+	
+	public List<HashMap<String, Object>> getFileList(Map<String, Object> commandMap) {
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getFileList",commandMap);
+		return lists;
+	}
+	
+	
 	public List<HashMap<String, Object>> getTargetView(String childIdx) {
 		Map<String,Object> map= new HashMap<String,Object>();
 		String eachFlag="N";
@@ -290,7 +308,57 @@ public class IbsWebApiDAO {
 		int count=sqlTemplate.selectOne("targetCount");
 		return count;
 	}
+	public List<String> getVodOldList() {
+		List<String> lists=sqlTemplate.selectList("vodOldList");
+		
+		return lists;
+	}
+	public void insertThumbnail(String vodFile, String thumbnail) {
+		Map<String,Object> dataMap =new HashMap<String,Object>();
+		dataMap.put("vod_file",vodFile);
+		dataMap.put("vod_thumbnail",thumbnail);
+		sqlTemplate.insert("insertThumnail",dataMap);
+	}
+	public Map<String, Object> mediaInfo(String idx) {
+		Map<String, Object> info=sqlTemplate.selectOne("vodMediaInfo",idx);
+		return info;
+	}
+	public List<String> thumbList(String vodFile) {
+		List<String> thumbList=sqlTemplate.selectList("thumbnailList",vodFile);
+		return thumbList;
+	}
+	public Map<String, Object> photoInfo(String idx) {
+		Map<String, Object> info=sqlTemplate.selectOne("photoMediaInfo",idx);
+		return info;
+	}
+	public Map<String, Object> fileInfo(String idx) {
+		Map<String, Object> info=sqlTemplate.selectOne("fileMediaInfo",idx);
+		return info;
+	}
 	
+	public Map<String, Object> streamInfo(String idx) {
+		Map<String, Object> info=sqlTemplate.selectOne("streamMediaInfo",idx);
+		return info;
+	}
+	public Map<String, Object> boardInfo(String idx) {
+		Map<String, Object> info=sqlTemplate.selectOne("boardMediaInfo",idx);
+		return info;
+	}
+	public Map<String, Object> vodRelative(String idx) {
+		Map<String, Object> info=sqlTemplate.selectOne("vodMediaInfo",idx);
+		return info;
+	}
+	public List<String> getAllSTBList() {
+		List<String> list=sqlTemplate.selectList("getAllSTBList");
+		return list;
+	}
+	public List<HashMap<String, Object>> getVodMainDepth(int idx) {
+		List<HashMap<String, Object>> lists=sqlTemplate.selectList("getVodMainMenu",idx);
+		return lists;
+	}
+	
+
+
 	
 	
 }

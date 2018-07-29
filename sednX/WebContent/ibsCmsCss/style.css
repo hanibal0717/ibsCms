@@ -1984,7 +1984,8 @@ a.list-group-item.active > .badge,
         -o-transition: all 230ms;
     }
     
-    .side-menu > li:hover .menu-item {
+    .side-menu > li:hover .menu-item,
+    .side-menu > li.active .menu-item{
         left: 45px;
         opacity: 1;
         z-index: 20;
@@ -2274,7 +2275,8 @@ a.list-group-item.active > .badge,
     font-size:24px;
 }
 
-.list-unstyled.side-menu li:hover a.sa-side span.icon{
+.list-unstyled.side-menu li:hover a.sa-side span.icon,
+.list-unstyled.side-menu li.active a.sa-side span.icon{
     opacity: 1;    
 }
 
@@ -2311,10 +2313,10 @@ a.list-group-item.active > .badge,
 
 .mainImgPopup { font-family: 'Noto Sans KR', sans-serif;}
 .media-form {position: relative;}
-.media-form .video {position: relative; height: 320px; max-height: 320px;}
-.video img {width: 100%;height: 320px;}
-.play {position: absolute;left: 50%;top: 50%;margin: -40px 0 0 -40px;}
-.info {position: absolute;left: 30px;bottom: 20px;}
+.media-form .video {position: relative; height: 320px; max-height: 320px; z-index:9999999999;}
+.video img {width: 100%;height: 320px;z-index:5555555555;}
+.play {position: absolute;left: 50%;top: 50%;margin: -40px 0 0 -40px; z-index:9999999999;}
+.info {position: absolute;left: 30px;bottom: 20px;z-index:9999999999;}
 .infoForm {display: none;position: absolute;left: 55px;bottom: 20px;background: #2a2a2a;border-radius: 8px !important;height: 25px;line-height: 13px;font-size: 12px;box-shadow: 0px 1px 3px black;}
 .infoForm ul {padding: 6px 10px;overflow: hidden;margin: 0;}
 .infoForm ul li {list-style: none;float: left;padding: 0 10px;}
@@ -2324,7 +2326,7 @@ a.list-group-item.active > .badge,
 .data {font-size: 15px;color: #333;overflow: hidden;padding-top: 2px;}
 .data p {float: left;}
 .data .down {position: relative;margin: 0 15px;top: -2px;float: left;}
-.hits {float: left;background: url(img/icon_hits.png) no-repeat left center;padding-left: 27px;}
+.hits {float: left;background: url(../ibsImg/icon_hits.png) no-repeat left center;padding-left: 27px;}
 .downForm {display: none;position: absolute;margin-top: 35px;margin-left: 160px;background: #545454; padding: 6px 6px 10px 10px;box-shadow: 1px 1px 3px black;}
 .downForm > a {position: absolute;right: 5px;top: 5px;line-height: 8px;}
 .downForm ul {list-style: none;color: #fff;padding: 0;margin: 15px 0 0;}
@@ -2348,4 +2350,7 @@ a.list-group-item.active > .badge,
 .imgSize img{width:100%;object-fit: cover;}
 .blackBtn {background: rgba(0,0,0,0.8) !important; color: #fff;}
 .blackBtn:hover{background: rgba(0,0,0,0.8) !important; color: #fff;}
- 
+.allClick {position: absolute; width:100%; height: 100%; top:0; left:0;}
+
+ .vjs-tech {z-index:1;}
+ .vjs-control-bar{z-index:2;}

@@ -15,6 +15,9 @@
 .form_div.sm {height: 350px;}
 .form_div.sm .img_box {width: calc(50% - 10px); height: 105px;}
 </style>
+<style>
+.boxLine {border: 2px solid #FFF701 !important;box-sizing: border-box;} 
+</style>
 <!-- Sidebar -->
 <aside id="sidebar">
 	<!-- Sidbar Widgets -->
@@ -124,7 +127,7 @@
 			href="${pageContext.request.contextPath}/sedn/web/dashboard"> <span
 				class="icon">&#61753;</span> <span class="menu-item">DASH BOARD</span>
 		</a></li> -->
-		<li><a class="sa-side"
+		<li class="menuLi" id="contentsMenuLi"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/media"> <span
 				class="icon">&#61696;</span> <span class="menu-item">CONTENTS</span>
 		</a></li>
@@ -136,11 +139,11 @@
 			href="${pageContext.request.contextPath}/sedn/web/communicate"> <span
 				class="icon">&#61875;</span> <span class="menu-item">CATEGORY</span>
 		</a></li> -->
-		<li><a class="sa-side"
+		<li class="menuLi" id="pageMenuLi"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/makepage"> <span
-				class="icon">&#61875;</span> <span class="menu-item">MAKE PAGE</span>
+				class="icon">&#61875;</span> <span class="menu-item">PAGE</span>
 		</a></li>
-		<li><a class="sa-side"
+		<li class="menuLi" id="liveMenuLi"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/liveManages"> <span
 				class="icon">&#61824;</span> <span class="menu-item">LIVE</span>
 		</a></li>
@@ -164,17 +167,17 @@
 				<li><a href="${pageContext.request.contextPath}/sedn/stb/ui">셋탑박스
 						설정</a></li>
 			</ul></li>-->
-		<li><a class="sa-side"
+		<li class="menuLi" id="memberMenuLi"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/managerAccount">
-				<span class="icon">&#61887;</span> <span class="menu-item">ACCOUNT MANAGEMENT</span>
+				<span class="icon">&#61887;</span> <span class="menu-item">ACCOUNT</span>
 		</a></li>
 		<!-- <li><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/web/statistics"> <span
 				class="icon">&#61721;</span> <span class="menu-item">CONTENTS ANALIZER</span>
 		</a></li> -->
-		<li><a class="sa-side"
+		<li class="menuLi" id="ottMenuLi"><a class="sa-side"
 			href="${pageContext.request.contextPath}/sedn/stb/controle"> <span
-				class="icon">&#61931;</span> <span class="menu-item">OTT MANAGEMENT</span>
+				class="icon">&#61931;</span> <span class="menu-item">OTT</span>
 		</a></li>
 		<!-- <li><a class="sa-side"
 			href="#"> <span
@@ -391,174 +394,435 @@
         </div>
     </div>
 </div>
- <!-- ################# ADD LIVE TARGET MODAL START################### -->   
- <!-- ###############영상 보기 모달 시작 ######################### -->
+ <!-- ################# ADD LIVE TARGET MODAL END ################### -->   
+ 
+ <!-- ############### 메디아 모달 시작 ######################### -->
  <div class="modal fade in" id="vodViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
-	<div class="modal-dialog">
+ <div class="allClick" onClick="common.vodDefault();" data-dismiss="modal"></div>
+	<div class="modal-dialog"  id="vodMediaView">
           <div class="modal-content mainImgPopup">
               <div class="media-form">
-                  <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
-                  <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
-                  <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
-                  <div class="infoForm" style="display: none;">
+                  <div class="video" style="cursor:pointer;" id="vodViewArea"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플" id="vodViewMainThumb"></div>
+                  <a class="play" style="cursor:pointer;" id="letsPlay"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                  <a class="info" id="etcInfo" style="cursor:pointer;"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                  <div class="infoForm" id="etcInfoView" style="display:none;z-index: 9999999999;">
                       <ul>
-                          <li>해상도 : 1808 x 920</li>
-                          <li>재생시간 : 01:00:24</li>
-                          <li>용량 : 3.7GB</li>
+                          <li>해상도 : <span id="vodViewResolution">1808 x 920</span></li>
+                          <li>재생시간 : <span id="vodViewRuntime">01:00:24</span></li>
+                          <li>용량 : <span id="vodViewFilesize">3.7GB</span></li>
                       </ul>
                   </div>
               </div>
               <div class="contents">
-                  <p class="title">레디 플레이어 원</p>
+                  <p class="title" id="vodViewTitle"></p>
                   <div class="data">
-                      <p>등록일 : 2018.04.10</p>
-                      <a class="down" href="#"><img src="${pageContext.request.contextPath}/ibsImg/btn_download.png" alt="다운로드"></a>
-                      <div class="downForm">
+                      <p>등록일 :<span id="vodViewDate"> 2018.04.10</span></p>
+                      <a class="down" id="vodViewDownload" href="#"><img src="${pageContext.request.contextPath}/ibsImg/btn_download.png" alt="다운로드"></a>
+                     <!-- <div class="downForm">
                           <div class="triangle"></div>
                           <a href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"></a>
                           <ul>
                               <li>· <a href="#">Sednmanager.ppt (2MB)</a></li>
                           </ul>
-                      </div>
-                      <p class="hits">580</p>
+                      </div> --> 
+                      <p class="hits" id="vodViewCount"></p>
                   </div>
-                  <p class="text">
-                      2045년, 암울한 현실과 달리 가상현실 오아시스(OASIS)에서는  누구든 원하는 캐릭터로 어디든지 갈 수 있고, 뭐든지 할 수 있고 상상하는 모든 게 가능하다.<br>웨이드 와츠(타이 쉐리던) 역시 유일한 낙은 대부분의 사람들이 하루를 보내는 오아시스에 접속하는 것이다. 어느 날 오아시스의 창시자인 괴짜 천재 제임스 할리데이(마크 라이런스)는 자신이 가상현실 속에 숨겨둔 3개의 미션에서 우승하는 사람에게 오아시스의 소유권과 막대한 유산을 상속한다는 유언을 남기고, 그가 사랑했던 80년대 대중문화 속에 힌트가 있음을 알린다.<br>제임스 할리데이를 선망했던 소년 ‘웨이드 와츠’가 첫 번째 수수께끼를 푸는 데 성공하자 이를 저지하기 위해 현실에서 살인도 마다하지 않는 ‘IOI’라는 거대 기업이 뛰어든다. 
-                  </p>
+                  <p class="text" id="vodViewText"></p>
               </div>
               <div class="modal-footer">
-                  <button class="btn btn-sm cancel">취소</button>
-                  <button class="btn btn-sm">삭제</button>
-                  <button class="btn btn-sm pull-right" id="popupSub">편집</button>
+                  <button class="btn btn-sm cancel"  data-dismiss="modal">닫기</button>
+                  <button class="btn btn-sm pull-right" id="vodViewEdit">편집</button>
               </div>
           </div>
-          <!-- 수정  -->
-         <!--  <div class="modal-content">
-                <div class="modal-header" style="overflow: hidden;">
-                    <h4 class="pull-left">VOD 수정</h4>
-                    <button class="btn btn-sm pull-right m-t-10">불러오기</button>
-                </div>
-                <div class="modal-body">
-                    <div class="media-form">
-                        <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
-                        <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
-                        <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
-                    </div>
-                    <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-810px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
-                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
-                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
-                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                        <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"><a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가"></a></div>
-                    <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
-                    <input type="text" class="form-control m-b-10" placeholder="제목">
-                    <textarea class="form-control m-b-10" placeholder="내용"></textarea>
-                    <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-sm cancel">취소</button>
-                    <button class="btn btn-sm">확인</button>
-                </div>
-            </div> -->
-                        
-      </div>
- </div>                  
- <!-- ###############영상 보기 모달  끝 ######################### --> 
- <!-- ###############영상 추가 모달 시작 ######################### -->
- <div class="modal fade in" id="vodEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
- 	<div class="modal-content">
-        <div class="modal-header" style="overflow: hidden;">
-            <h4 class="pull-left">VOD 수정</h4>
-            <button class="btn btn-sm pull-right m-t-10">불러오기</button>
-        </div>
-        <div class="modal-body">
-            <div class="media-form">
-                <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
-                <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
-                <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
-            </div>
-            <div class="bx-wrapper" style="max-width: 530px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 100px;"><div class="thumnail" style="width: 6215%; position: relative; transition-duration: 0s; transform: translate3d(-810px, 0px, 0px);"><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"><a class="add" href="#"><img src="img/img_add.png" alt="추가"></a></div>
-                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
-                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="true"></div>
-                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"></div>
-                <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" aria-hidden="false"><a class="add" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가"></a></div>
-            <div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div><div style="float: left; list-style: none; position: relative; width: 125px; margin-right: 10px;" class="bx-clone" aria-hidden="true"></div></div></div><div class="bx-controls bx-has-controls-direction"><div></div><div class="bx-controls-direction"><div></div><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div></div></div>
-            <input type="text" class="form-control m-b-10" placeholder="제목">
-            <textarea class="form-control m-b-10" placeholder="내용"></textarea>
-            <input type="text" class="form-control m-b-10" placeholder="키워드 및 태그">
-        </div>
+	  </div>
+	  <!-- 수정 -->
+	  <form role="form" class="form-validation-2" id="vodForm">
+	  <div class="modal-dialog" id="vodMediaEdit">
+	  	<div class="modal-content">
+       		
+	        <div class="modal-body">
+	            <div class="media-form">
+	            	<div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;" id="vodUploadFeild">
+	     					<div class="fileupload-preview thumbnail form-control imgSize" id="vodPreview" style="padding:0;height:323px;">
+	     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="mediaDefaultImg"></div>
+	      					<div class="pull-right">
+	          					<span class="btn btn-file btn-alt btn-sm blackBtn" style="position: absolute; top: 20px; left: 20px;">
+	              					<span class="fileupload-new">영상 업로드</span>
+	              					<span class="fileupload-exists">영상 바꾸기</span>
+	              					<input type="file" class="fileUpload" id="vodSection"/>
+	              				</span>
+	          				</div>
+	          				<a class="play" style="cursor:pointer;" id="letsEditPlay"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+	          				<input type="text" id="vod_path" class="validate[required,funcCall[uploadFile.checkVodExist]]" style="opacity: 0;width:1px;height:1px;"> 
+	  					</div> 
+	            </div>
+			    
+	            <div class="bx-wrapper" style="margin:0px;">
+	            	<div class="slideInner">
+	                  <div class="slide">
+	                  	<ul id="vodSlideShow">
+	                  		<!-- 초기화를 위해 비워둠 -->
+	                  	</ul>
+	                  	
+                      </div>
+                      <input type="text" class="validate[required]" id="thumnailList" style="opacity: 0;width:1px;height:1px;">
+                      <input type="file" id="fromPCPhotoForm" style="display:none">
+                      <div>
+                          <a class="prev" onClick='slide.prev();'>prev</a>
+                          <a class="next" onClick='slide.next();'>next</a>
+                      </div>
+                  </div>
+	            </div>
+	            <div class="get" id="thumnailSource" style="position: absolute; top: 280px; right: 35px; display: none;">
+                     <div class="btn btn-sm pull-left m-b-5 blackBtn" id="photoFromPc">PC에서 가져오기</div><br>
+                     <div class="btn btn-sm pull-left blackBtn" onclick="common.selectRepoSource('photo');">저장소에서 가져오기</div>
+                 </div>
+	            <input type="text" id="vod_title" class="form-control m-b-10 validate[required,maxSize[20]]" placeholder="제목">
+	            <textarea id="vod_content" class="form-control m-b-10 validate[required]" placeholder="내용"></textarea>
+	            <input type="hidden" class="form-control" id="vodIdx" />
+				<input type="hidden" class="form-control" id="keyword" value="동영상"/>
+				<input type="hidden" class="form-control" id="file_size"/>
+				<input type="hidden" class="form-control" id="vod_play_time"/>
+				<input type="hidden" class="form-control" id="main_thumbnail"/>
+				<!-- 플레이어 히든  -->
+				<input type="hidden" class="form-control" id="play_url"/>
+				<input type="hidden" class="form-control" id="play_thum"/>
+	        </div>
         <div class="modal-footer">
-            <button class="btn btn-sm cancel">취소</button>
-            <button class="btn btn-sm">확인</button>
+            <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+            <button class="btn btn-sm" id="mediaConfirm">확인</button>
+            <div class="pull-right">
+            	<button class="btn btn-sm" id="mediaDel">삭제</button>
+            </div>
+         </div>
+    </div>
+	  </div>
+	
+	</form> 
+ </div> 
+
+ <!-- ############### 포토 편집 모달 시작 ######################### -->
+ <div class="modal fade in" id="photoViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ <div class="allClick"  data-dismiss="modal"></div>
+	<div class="modal-dialog"  id="photoMediaView">
+          <div class="modal-content mainImgPopup">
+              <div class="media-form">
+              	 <div class="video" style="cursor:pointer;" id="photoViewArea"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플" id="photoViewMainThumb"></div>
+                 <a class="info" id="photoEtcInfo" style="cursor:pointer;"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                 <div class="infoForm" id="photoEtcInfoView" style="display:none;z-index: 9999999999;">
+                      <ul>
+                          <li>해상도 : <span id="photoViewResolution">1808 x 920</span></li>
+                          <li>용량 : <span id="photoViewFilesize">3.7GB</span></li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="contents">
+                  <p class="title" id="photoViewTitle"></p>
+                  <div class="data">
+                      <p>등록일 :<span id="photoViewDate"> 2018.04.10</span></p>
+                      <a class="down" id="photoViewDownload" href="#"><img src="${pageContext.request.contextPath}/ibsImg/btn_download.png" alt="다운로드"></a>
+                      <p class="hits" id="photoViewCount"></p>
+                  </div>
+                  <p class="text" id="photoViewText"></p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-sm cancel"  data-dismiss="modal">닫기</button>
+                  <button class="btn btn-sm pull-right" id="photoViewEdit">편집</button>
+              </div>
+          </div>
+	  </div>
+	  <!-- 수정 -->
+	  <form role="form" class="form-validation-3" id="photoForm">
+	  <div class="modal-dialog" id="photoMediaEdit">
+	  	<div class="modal-content">
+       		
+	        <div class="modal-body">
+	            <div class="media-form">
+	            	<div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;" id="photoUploadFeild">
+	     					<div class="fileupload-preview thumbnail form-control imgSize" id="photoPreview" style="padding:0;height:323px;">
+	     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="photoDefaultImg"></div>
+	      					<div class="pull-right">
+	          					<span class="btn btn-file btn-alt btn-sm blackBtn" style="position: absolute; top: 20px; left: 20px;">
+	              					<span class="fileupload-new">포토 업로드</span>
+	              					<span class="fileupload-exists">포토 바꾸기</span>
+	              					<input type="file" class="fileUpload" id="photoSection"/>
+	              				</span>
+	          				</div>
+	          				<input type="text" id="photo_path" class="validate[required,funcCall[uploadFile.checkPhotoExist]]" style="opacity: 0;width:1px;height:1px;"> 
+	  					</div> 
+	            </div>
+	            <input type="text" id="photo_title" class="form-control m-b-10 validate[required,maxSize[20]]" placeholder="제목">
+	            <textarea id="photo_content" class="form-control m-b-10 validate[required]" placeholder="내용"></textarea>
+	            <input type="hidden" class="form-control" id="photoIdx" />
+				<input type="hidden" class="form-control" id="photoKeyword" value="동영상"/>
+				<input type="hidden" class="form-control" id="photo_size"/>
+	        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+            <button class="btn btn-sm" id="photoConfirm">확인</button>
+            <div class="pull-right">
+            	<div class="pull-right"><button class="btn btn-sm" id="photoDel">삭제</button></div>
+            </div>
         </div>
     </div>
- </div>   
- <!-- ###############영상 편집 모달 끝 ######################## -->
- <!-- ###############라이브 편집 모달 시작 ######################### -->
- <div class="modal fade in" id="liveEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
- 라이브편집 
- </div>  
- <!-- ###############라이브 편집 모달 끝 ######################## -->
- <!-- ###############게시물 보기 모달 시작 ######################### -->
- <div class="modal fade in" id="scheduleViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
- 게시물보기 
- </div>  
- <!-- ###############게시물 보기 모달  끝 ######################### --> 
- <!-- ###############게시물 추가 모달 시작 ######################### -->
- <div class="modal fade in" id="scheduleEditModal" tabindex="-1" role="dialog" aria-hidden="false"> 
- 게시물편집 
+	  </div>
+	
+	</form> 
  </div> 
- <!-- ###############게시물 편집 모달 끝 ######################## -->  
- <!-- ###############스케쥴 보기 모달 시작 ######################### -->
- <div class="modal fade in" id="scheduleViewModal" tabindex="-1" role="dialog" aria-hidden="false">
- 	<div class="modal-dialog">
-        <div class="modal-content mainImgPopup">
-            <div class="media-form">
-                <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플"></div>
-                <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
-                <!-- <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a> -->
-                <div class="infoForm">
-                    <ul>
-                        <li>해상도 : 1808 x 920</li>
-                        <li>재생시간 : 01:00:24</li>
-                        <li>용량 : 3.7GB</li>
-                    </ul>
+ <!--############### 포토 편집 모달 끝  ###############--> 
+ 
+ <!-- ############### 파일 편집 모달 시작 ######################### -->
+ <div class="modal fade in" id="fileViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ <div class="allClick" onClick="common.fileDefault();" data-dismiss="modal"></div>
+	<div class="modal-dialog"  id="fileMediaView">
+          <div class="modal-content mainImgPopup">
+              <div class="media-form">
+                  <div class="video" style="cursor:pointer;" id="fileViewArea"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플" id="fileViewMainThumb"></div>
+				  <a class="info" id="fileEtcInfo" style="cursor:pointer;"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                 <div class="infoForm" id="fileEtcInfoView" style="display:none;z-index: 9999999999;">
+                      <ul>
+                          <li>파일형태 : <span id="fileViewResolution">1808 x 920</span></li>
+                          <li>용량 : <span id="fileViewFilesize">3.7GB</span></li>
+                      </ul>
+                  </div>              	
+              </div>
+              <div class="contents">
+                  <p class="title" id="fileViewTitle"></p>
+                  <div class="data">
+                      <p>등록일 :<span id="fileViewDate"> 2018.04.10</span></p>
+                      <a class="down" id="fileViewDownload" href="#"><img src="${pageContext.request.contextPath}/ibsImg/btn_download.png" alt="다운로드"></a>
+                      <p class="hits" id="fileViewCount"></p>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-sm cancel"  data-dismiss="modal">닫기</button>
+                  <button class="btn btn-sm pull-right" id="fileViewEdit">편집</button>
+              </div>
+          </div>
+	  </div>
+	  <!-- 수정 -->
+	  <form role="form" class="form-validation-4" id="fileForm">
+	  <div class="modal-dialog" id="fileMediaEdit">
+	  	<div class="modal-content">
+       		
+	        <div class="modal-body">
+	            <div class="media-form">
+	            	<div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;" id="fileUploadFeild">
+	     					<div class="fileupload-preview thumbnail form-control imgSize" id="filePreview" style="padding:0;height:323px;">
+	     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="fileDefaultImg"></div>
+	      					<div class="pull-right">
+	          					<span class="btn btn-file btn-alt btn-sm blackBtn" style="position: absolute; top: 20px; left: 20px;">
+	              					<span class="fileupload-new">파일 업로드</span>
+	              					<span class="fileupload-exists">파일바꾸기</span>
+	              					<input type="file" class="fileUpload" id="fileSection"/>
+	              				</span>
+	          				</div>
+	          				<input type="text" id="file_path" class="validate[required,funcCall[uploadFile.checkFileExist]]" style="opacity: 0;width:1px;height:1px;"> 
+	  					</div> 
+	            </div>
+	            <input type="text" id="file_title" class="form-control m-b-10 validate[required]" placeholder="파일설명">
+	            <input type="hidden" class="form-control" id="fileIdx" />
+				<input type="hidden" class="form-control" id="fileKeyword" value="동영상"/>
+				<input type="hidden" class="form-control" id="uploadFile_size"/>
+				<input type="hidden" id="file_ext" value=""/>
+	        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+            <button class="btn btn-sm" id="fileConfirm">확인</button>
+            <div class="pull-right">
+            	<button class="btn btn-sm" id="fileDel">삭제</button>
+            </div>
+        </div>
+    </div>
+	  </div>
+	
+	</form> 
+ </div> 
+ <!--############### 파일 편집 모달 끝  ###############--> 
+
+<!-- ###############스트림 편집 모달 시작 ######################### -->
+<div class="modal fade in" id="streamViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ <div class="allClick" onClick="common.delCashPlayer('vodPlayer');" data-dismiss="modal"></div>
+	<div class="modal-dialog"  id="streamMediaView">
+          <div class="modal-content mainImgPopup">
+              <div class="media-form">
+                  <div class="video" style="cursor:pointer;" id="streamViewArea"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플" id="streamViewMainThumb"></div>
+              </div>
+              <div class="contents">
+                  <p class="title" id="streamViewTitle"></p>
+                  <div class="data">
+                     <p>등록일 :<span id="streamViewDate">2018.04.10</span>&nbsp;&nbsp;</p>
+                     <p class="hits"> <span id="streamViewCount"></span></p>
+                  </div>
+                  <p class="text" id="streamViewAddress"></p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-sm cancel"  data-dismiss="modal">닫기</button>
+                  <button class="btn btn-sm pull-right" id="streamViewEdit">편집</button>
+              </div>
+          </div>
+	  </div>
+	  <!-- 수정 -->
+	  <form role="form" class="form-validation-5" id="streamForm">
+		<div class="modal-dialog" style="width:500px; margin-top: 100px;" id="streamMediaEdit">
+            <div class="modal-content">                            
+                <div class="modal-body" style="text-align: center;">
+                    <p class="p-10">LIVE 정보를 입력하세요.</p>
+                    <input type="text" id="streamTitle" class="form-control m-b-10 validate[required,maxSize[10],custom[onlyLetterSp]]" placeholder="채널명" />
+                    <input type="text" id="streamAddress" class="form-control validate[required,maxSize[100],custom[url]]" placeholder="주소" />
+                    <input type="hidden" class="form-control" id="streamIdx" />
                 </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+            		<button class="btn btn-sm" id="streamConfirm">확인</button>
+            		<div class="pull-right">
+            			<button class="btn btn-sm" id="streamDel">삭제</button>
+            		</div>
+                </div>
+            </div>
+        </div>
+	  </form> 
+ </div> 
+<!-- ###############스트림 편집  모달 끝 ######################### --> 
+ 
+ <!-- ###############게시물 편 모달 시작 ######################### -->
+ <div class="modal fade in" id="boardViewModal" tabindex="-1" role="dialog" aria-hidden="false"> 
+ <div class="allClick" onClick="common.boardDefault();" data-dismiss="modal"></div>
+	<div class="modal-dialog"  id="boardMediaView">
+          <div class="modal-content mainImgPopup">
+              <div class="media-form">
+                  <div class="video" style="cursor:pointer;" id="boardViewArea"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" alt="샘플" id="boardViewMainThumb"></div>
+                  <a class="play" style="cursor:pointer;" id="boardLetsPlay"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+                  <a class="info" id="boardEtcInfo" style="cursor:pointer;"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a>
+                  <div class="infoForm" id="boardEtcInfoView" style="display:none;z-index: 9999999999;">
+                      <ul>
+                          <li>해상도 : <span id="boardViewResolution">1808 x 920</span></li>
+                          <li>재생시간 : <span id="boardViewRuntime">01:00:24</span></li>
+                          <li>용량 : <span id="boardViewFilesize">3.7GB</span></li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="contents">
+                  <p class="title" id="boardViewTitle"></p>
+                  <div class="data">
+                      <p>등록일 :<span id="boardViewDate"> 2018.04.10</span></p>
+                      <a class="down" id="boardViewDownload"><img src="${pageContext.request.contextPath}/ibsImg/btn_download.png" alt="다운로드"></a>
+                     <div class="downForm" id="downloadList">
+                          <div class="triangle"></div>
+                          <a href=""><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"></a>
+                          <ul id="downloadUl">
+                          </ul>
+                      </div> 
+                      <p class="hits" id="boardViewCount">aaa</p>
+                  </div>
+                  <div id="photoList"></div>
+                  <p class="text" id="boardViewText"></p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-sm cancel"  data-dismiss="modal">닫기</button>
+                  <button class="btn btn-sm pull-right" id="boardViewEdit">편집</button>
+              </div>
+          </div>
+	  </div>
+	  <!-- 수정 -->
+	  <form role="form" class="form-validation-6" id="boardForm">
+	  <div class="modal-dialog" id="boardMediaEdit">
+	  	<div class="modal-content">
+       		
+	        <div class="modal-body">
+	            <div class="media-form">
+	            	<div style="height:323px;" id="boardUploadFeild">
+	     					<div id="boardPreview" style="padding:0;height:323px;">
+	     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="boardDefaultImg"></div>
+	      					<div class="pull-right" onclick="common.selectRepoSource('vod');">
+	          					<span class="btn btn-file btn-alt btn-sm blackBtn" style="position: absolute; top: 20px; left: 20px;" >
+	              					<span >영상 가져오기</span>
+	              				</span>
+	          				</div>
+	          				<a class="play" style="cursor:pointer;" id="boardLetsEditPlay"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a>
+	          				
+	  				</div> 
+	            	<input type="text" id="vodRepo"  class="validate[required]" style="opacity: 0;width:1px;height:1px;"/>
+	            </div>
+			    
+	            <div class="bx-wrapper" style="margin:0px;">
+	            	<div class="slideInner">
+	                  <div class="slide">
+	                  	<ul id="boardSlideShow">
+	                  		<!-- 초기화를 위해 비워둠 -->
+	                  		<li><a class="add" onclick="arange.selectRepoSource('photo');"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>
+	                  	</ul>
+	                  	
+                      </div>
+                      <div>
+                          <a class="prev" onClick='slide.prev();'>prev</a>
+                          <a class="next" onClick='slide.next();'>next</a>
+                      </div>
+                  </div>
+	            </div>
+	            
+	            <input type="text" id="board_title" class="form-control m-b-10 validate[required,maxSize[100]]" placeholder="제목">
+	            <textarea id="board_content" class="form-control m-b-10 validate[required]" placeholder="내용"></textarea>
+	            <div id="saveFileList"></div>
+	            <input type="hidden" class="form-control" id="boardIdx" />
+				<input type="hidden" class="form-control" id="boardKeyword" value="동영상"/>
+				<input type="hidden" class="form-control" id="boardFile_size"/>
+				<input type="hidden" class="form-control" id="photoRepo"/>
+				<input type="hidden" class="form-control" id="fileRepo"/>
+				<!-- 플레이어 히든  -->
+				<input type="hidden" class="form-control" id="boardPlay_url"/>
+				<input type="hidden" class="form-control" id="boardPlay_thum"/>
+	        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
+            <button class="btn btn-sm" id="boardConfirm">확인</button>
+            <div class="pull-right">
+            	 <button class="btn btn-sm" id="boardDel">삭제</button>
+            </div>
+        </div>
+    </div>
+	  </div>
+	</form> 
+ </div> 
+ <!-- ###############게시물 편집 모달  끝 ######################### --> 
+
+ <!-- ###############스케쥴 모달 시작 ######################### -->
+ <div class="modal fade in" id="addNew-event" tabindex="-1" role="dialog" aria-hidden="false"> 
+ 	<div class="allClick" onClick="arange.delJsPlayer();" data-dismiss="modal"></div>
+ 	<div class="modal-dialog" id="scheduleView" style="display:none;">
+        <div class="modal-content mainImgPopup" id="thumbnailView">
+            <div class="media-form" id="defaultPlayer">
+                <div class="video"><img src="${pageContext.request.contextPath}/ibsImg/img_video.png" id="liveViewImg" alt="샘플"></div>
+                <a class="play" ><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" id="playArrow" alt="재생"></a>
+            </div>
+            <div class="media-form video" id="liveJsPlayer" style="display:none;height:320px;">
+                
             </div>
             <div class="contents">
                
-                <p class="title">VOD 방송 #1</p>
+                <p class="title" id="scheduleTitle">VOD 방송 #1</p>
                 <div class="data">
-                    <p class="bell"><i class="fa fa-bell"></i> 2018.4.10 13:30~15:00</p>
+                    <p class="bell"><i class="fa fa-bell"></i> <span id="scheduleTime">2018.4.10 13:30~15:00</span></p>
                 </div>
-                <p class="text">
-                    2045년, 암울한 현실과 달리 가상현실 오아시스(OASIS)에서는  누구든 원하는 캐릭터로 어디든지 갈 수 있고, 뭐든지 할 수 있고 상상하는 모든 게 가능하다.<br>웨이드 와츠(타이 쉐리던) 역시 유일한 낙은 대부분의 사람들이 하루를 보내는 오아시스에 접속하는 것이다. 어느 날 오아시스의 창시자인 괴짜 천재 제임스 할리데이(마크 라이런스)는 자신이 가상현실 속에 숨겨둔 3개의 미션에서 우승하는 사람에게 오아시스의 소유권과 막대한 유산을 상속한다는 유언을 남기고, 그가 사랑했던 80년대 대중문화 속에 힌트가 있음을 알린다.<br>제임스 할리데이를 선망했던 소년 ‘웨이드 와츠’가 첫 번째 수수께끼를 푸는 데 성공하자 이를 저지하기 위해 현실에서 살인도 마다하지 않는 ‘IOI’라는 거대 기업이 뛰어든다. 
-                </p>
+                <p class="text" id="liveDesc"></p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm cancel">취소</button>
-                <button class="btn btn-sm">삭제</button>
-                <button class="btn btn-sm pull-right" id="popupSub">편집</button>
+                <button class="btn btn-sm cancel" onClick="arange.delJsPlayer();"  data-dismiss="modal">취소</button>
+                <button class="btn btn-sm pull-right" id="scheduleEditCancel">편집</button>
             </div>
         </div>
     </div> 
- 	
- </div>  
- <!-- ###############스케쥴 보기 모달  끝 ######################### --> 
- <!-- ###############스케쥴 추가 모달 시작 ######################### -->
- <div class="modal fade in" id="addNew-event" tabindex="-1" role="dialog" aria-hidden="false"> 
-	<div class="modal-dialog">
+	 	
+
+	<div class="modal-dialog" id="scheduleEdit">
          <div class="modal-content mainImgPopup">
-         	      
+         	     
              <div class="modal-body" style="overflow:hidden;">
               <form class="form-validation">
                  <div class="media-form">
                  	<div class="fileupload fileupload-new" data-provides="fileupload" style="height:323px;">
      					<div class="fileupload-preview thumbnail form-control imgSize" id="imgName_view" style="padding:0;height:323px;">
-     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" class="upImageSize"></div>
+     					<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="liveDefaultImg" class="upImageSize"></div>
       					<div class="pull-right">
           					<span class="btn btn-file btn-alt btn-sm blackBtn" style="position: absolute; top: 20px; left: 20px;">
               					<span class="fileupload-new">대표 이미지</span>
@@ -568,19 +832,11 @@
           				</div>
           				<input type="text" id="image_path" class="validate[required]" style="opacity: 0;width:1px;height:1px;"> 
   					</div> 
-  					
-                 <!--  -->
-                 	<!--  <button class="btn btn-sm" style="position:  absolute; z-index: 1; top: 10px; left: 10px;">대표이미지</button>   -->
-                     <!-- <div class="video"><img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플"></div> -->
-                     <!-- <a class="play" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_play.png" alt="재생"></a> -->
-                     <!-- <a class="info" href="#"><img src="${pageContext.request.contextPath}/ibsImg/img_info.png" alt="정보"></a> -->
                  </div>
                  <div class="slideInner">
 	                  <div class="slide">
 	                  	<ul id="slideShow">
-	                  		<li id="scheduleVodList">
-	                  			<a class="add"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가" /></a>
-	                  		</li>
+	                  		<!-- 초기화를 위해 비워둠 -->
 	                  	</ul>
                       </div>
                       <div>
@@ -588,26 +844,23 @@
                           <a class="next" onClick='slide.next();'>next</a>
                       </div>
                   </div>
-                  <input type="hidden" id="groupArr" class="input-sm form-control"/>
                   <input type="hidden" class="form-control" id="live_stream_url"/>
+                  <input type="hidden" class="form-control" id="tmpStreamName"/>
                   <input type="hidden" class="form-control" id="color" value="#9FD5EF">
                   <input type="hidden" id="vodArr" class="form-control"/>
+                  <input type="hidden" id="groupArr" class="form-control"/>
                   <input type="hidden" class="form-control" id="idx"/>
                   <input type="hidden" class="form-control" id="source_type"  value="VOD"/>
               	  <input type="hidden" class="form-control" id="live_ch_idx" class="form-control"/>
                   <input type="hidden" class="form-control" id="captionYn" value="N">
                   <input type="hidden" class="form-control" id="order" value="insert">
-                  <div class="get" style="position: absolute; top: 280px; right: 35px; display: none;">
-                     <div class="btn btn-sm pull-left m-b-5 blackBtn">PC에서 가져오기</div><br>
-                     <div class="btn btn-sm pull-left blackBtn" id="repositoryAdd">저장소에서 가져오기</div>
-                 </div>
                  <div class="col-md-9 m-b-10">
                      <input type="text" class="form-control validate[required]" id="eventName" placeholder="제목" value="" placeholder="방송 제목">
                  </div>
                  <div class="col-md-3 m-b-10" id="check">
 	             	<div class="icheckbox_minimal">
 	             		<div aria-checked="false" aria-disabled="false" style="position: relative;">
-                       		<input type="checkbox" />
+                       		<input type="checkbox" id="forceLive"/>
                          		방송 시작 알림
                      	</div>
                  	</div>
@@ -624,7 +877,7 @@
                                  
              <div class="modal-footer" style="margin-top:0;">
                  <button type="button" class="btn btn-sm" data-dismiss="modal">취소</button>
-                 <button type="button" class="btn btn-sm" style="display:none">삭제</button>
+                 <button type="button" class="btn btn-sm" id="scheduleDel">삭제</button>
                  <input type="button"  class="btn btn-sm pull-right" id="addEvent" value="확인">
              </div>
              
@@ -643,12 +896,12 @@
                 <div class="pull-right">
                     <div class="col-md-4 p-r-20 m-t-5">
                         <select id="repoType" class="form-control input-sm">
-                            <option value="VOD">VOD</option>
-                            <option value="LIVE">LIVE</option>
+                           
                         </select>
                     </div>
                     <div class="col-md-8 p-0">                                        
-                        <input type="text" class="main-search" style="border-bottom: 1px solid #fff; width: 100%;" placeholder="검색어를 입력하세요." />                               
+                        <input type="text" class="main-search" id="schedule-contents-search" style="border-bottom: 1px solid #fff; width: 100%;" placeholder="검색어를 입력하세요." />                               
+                    	<input type="hidden" class="form-control" id="searchIdx"   >
                     </div>
                 </div>
             </div>                           
@@ -658,21 +911,14 @@
                    <!-- TREE START-->
 					<div  id="video" style="position:relative; left:-25px;"></div>
 					<!-- TREE END-->
-          
-                   </div>
+          		</div>
                    
                    <div class="col-md-8" style="padding:0; left:35px;">
                        <div class="tile">
                            <div class="photo-gallery clearfix">
                                <div class="photo">
                                    <div class="form_div sm col-md-12" style="margin:0; padding:0;" id="repoListPage">
-                                       <div class="img_box vodChange" style="background: url(img/20180413141747_0.jpg) no-repeat center; background-size: cover;">
-                                        <input class="pull-left m-l-5" type="radio" />
-                                       </div>
-                                       <div class="img_box" style="background: url(img/20180413142808_0.jpg) no-repeat center; background-size: cover;">
-                                        <input class="pull-left m-l-5" type="checkbox" />
-                                       </div>
-                                       
+                                   <!-- 리스트 뿌려지는곳  -->    
                                    </div>
                                </div>
                            </div>
@@ -688,7 +934,34 @@
     </div>
 </div><!-- //저장소 -->
             
-  <!-- ################## content list modal end####################-->                             
+  <!-- ################## content list modal end####################-->   
+  <!-- --업로드 프로그래스 바 시작  -->
+<div class="modal fade in" id="progressLayout" tabindex="-1" role="dialog" aria-hidden="false"> 
+     <div class="modal-dialog" style="width:500px; margin-top: 10%;">
+         <div class="modal-content">
+         	<div class="modal-header">동영상 업로드 </div> 
+             <div class="modal-body" style="text-align: center;">
+             	
+                 <p style="left: 50%;" id="encodginText" style="display:none;">파일 업로드 중 입니다.</p>
+                 <!-- <div class="progress progress-small">
+                     <a href="#" class="tooltips progress-bar progress-bar-info" style="width: 78%;"></a>
+                 </div> -->
+                 <div class="progress progress-small active" id="progressBarLayout" style="display:none;" >
+			         <div class="progress-bar"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar">
+			             <span class="sr-only" id="barText">45% Complete</span>
+			         </div>
+			    </div>
+				<div class="progress progress-smalls active  progress-alt" id="encodingBarLayout" style="display:none;">
+			        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="encodingBar"></div>
+			    </div>
+             </div>
+             <div class="modal-footer" style="text-align: center;">
+                 <button class="btn btn-sm cancel">취소</button>
+             </div>
+         </div>
+     </div>
+ </div>
+<!-- 업로드 프로그래스 바 끝 -->                          
 <script>
 $(function(){
 	system.nowInfo();
@@ -897,6 +1170,10 @@ $(function(){
 			$("#warnText").text("게시판 메뉴에서는 하위메뉴를 만들 수 없습니다.");
 			$("#msgModal").modal();
 		};
+		var contentsAddException = function() {
+			$("#warnText").text("하위 메뉴가 있는 메뉴에는 컨텐츠를 추가 할 수 없습니다.");
+			$("#msgModal").modal();
+		};
 		return {
 			ajaxException : ajaxException,
 			loginException : loginException,
@@ -917,7 +1194,8 @@ $(function(){
 			keywordException : keywordException,
 			fileUpdateException :fileUpdateException,
 			liveException : liveException,
-			menuMakeException :menuMakeException
+			menuMakeException :menuMakeException,
+			contentsAddException : contentsAddException
 		};
 	}());
 	/***file upload JS***/
@@ -1054,48 +1332,65 @@ $(function(){
 				return options.allrules.validate2fields.alertSchedule;
 			}
 		};
+		/**인코팅이 100% 될때까지 호출실제 동작하는 함수 */
 		var mediaEncoding=function(file){
+			var trans_rate=0;
 			$.ajax({
 				url : "${pageContext.request.contextPath}/api/web/mediaEncodingRate?file="
 						+ file,
 				success : function(responseData) {
 					var data = JSON.parse(responseData);
+					var trans_rate=0;
+					console.log(data.rate);
 					trans_rate =data.rate;
 					if(trans_rate<100){
-						console.log(trans_rate);
-						$("#encodingBar").css('width',trans_rate+'%');
-						if(trans_rate>0){
-							$("#encodginText").text(trans_rate+'% 완료');
-						}
-						mediaEncoding(data.file);
+						setTimeout(function(){
+							$("#encodingBar").css('width',trans_rate+'%');
+							if(trans_rate>0){
+								$("#encodginText").text('인코딩 '+trans_rate+'% 완료');
+							}
+							mediaEncoding(data.file);
+						},500);
 					}else{
 						$("#encodingBarLayout").css('display','none');
+						$("#encodingBar").css('width',0+'%');
 						$("#vod_path").val(data.file);
 						//runtime&thubnail
 						$("#vod_play_time").val(data.vod_play_time);
 						$("#main_thumbnail").val(data.main_thumbnail);
 						$("#file_size").val(data.file_size);
 						//올린 영상 보여주기.
-						modalLayer.vodPlayer(data.url);
+						modalLayer.vodPlayer(data.url,"${pageContext.request.contextPath}/REPOSITORY/THUMBNAIL"+data.main_thumbnail_url,"vodPreview");
 						//썸네일 보여주기
 						var fileHead=data.file.split('.');
-						$("#thumbnailList").empty();
-						var imgDiv="";
+						//슬라이드 셋팅
+						$("#vodSlideShow").empty();
+						var retHtml="";
+						var thumbnailArr=[];
 						for(var i=0;i<10;i++){
-							imgDiv+='<div class="col-xs-3 thumb"><img src="${pageContext.request.contextPath}/REPOSITORY/THUMBNAIL'+data.datePath+fileHead[0]+'_'+i+'.jpg" ></div>'
+							$("#vodSlideShow").css("display","none");
+							retHtml="";
+							thumbnailArr.push(fileHead[0]+'_'+i+".jpg");
+							var backgroundUrl="${pageContext.request.contextPath}/REPOSITORY/THUMBNAIL/"+data.datePath+fileHead[0]+'_'+i+".jpg";
+							var fileIdx=fileHead[0]+'_'+i+'.jpg';
+							retHtml+='<li class="thum" style="float:left;background: url('+backgroundUrl
+							+') no-repeat center; background-size: cover;" id="thumbLi_'+fileIdx.split('.')[0]+'" onClick="arange.makeMainThumb(\''+fileIdx.split('.')[0]+'\',\''+fileIdx.split('.')[1]+'\')">'
+                  			+'<a class="close" onClick="arange.removeThumbLi(\''+fileIdx.split('.')[0]+'\',\''+fileIdx.split('.')[1]+'\');"><img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"/></a>'
+                  			+'</li>'
+							$("#vodSlideShow").append(retHtml);
 							if(i==0){
-								$("#main_thumbnail").val(fileHead[0]+'_'+i+'.jpg');
-								$(".thumb").addClass('boxLine');
+								$('.thum').addClass('boxLine');
 							}
-							
 						}
+						$('#progressLayout').modal('hide');
 						setTimeout(function(){
-							$("#thumbnailList").html(imgDiv);
-						},5000);
-						
+							$("#thumnailList").val(thumbnailArr);
+							$("#vodSlideShow").css("display","block");
+						},10000);
+						$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="arange.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+						slide.init();
 					}
-				},
-				error : exception.ajaxException
+				}
 			});
 		};
 		return {
@@ -1143,20 +1438,18 @@ $(function(){
 				delete videojs.getPlayers()[eval("'" + playerCash + "'")];
 			}
 		};
-		var vodPlayer=function(url,thumbnail){
-			if (videojs.getPlayers()['my-player_modal']) {
-				delete videojs.getPlayers()['my-player_modal'];
-			}
-			var html = '<video id="my-player_modal" class="video-js"  controls preload="auto"  poster="${pageContext.request.contextPath}'+thumbnail+'"  data-setup="{}" style="width: 100% !important; height: 100% !important;">';
+		var vodPlayer=function(url,thumbnail,target){
+			common.delCashPlayer('vodPlayer');
+			var html = '<video id="vodPlayer" class="video-js"  controls preload="auto"  poster="'+thumbnail+'"  data-setup="{}" style="width: 100% !important; height: 100% !important;">';
 			html += '<source  src="'+url+'"  type="application/x-mpegURL"></source>';
 			html += '</video>';
-			$("#preview").html(html);
+			$("#"+target).empty();
+			$("#"+target).html(html);
 			var options = {};
-			var player = videojs('my-player_modal', options,
+			var player = videojs('vodPlayer', options,
 				function onPlayerReady() {
-					//this.play();
+					this.play();
 					this.on('ended', function() {
-						videojs.log('vod end');
 					});
 				});
 		};
@@ -1169,21 +1462,42 @@ $(function(){
 	$(function() {
 		
 		$("#cateChangeSubmit").click(function() {
-			$.ajax({
-				url : '/cms/update/elemCategory',
-				type : 'post',
-				data : {
-					"updateIdx" : $("#categoryIdx").val(),
-					"selectedIdx" : $("#selectedIdx").val(),
-					"sort" : $("#sort").val()
-				},
-				async : false,
-				success : function(result) {
-					contents.selectArrange($("#categoryIdx").val());
-					$("#changeCateModel").modal('hide');
-				},
-				error : exception.ajaxException
-			});
+			if($('#changeCateProperty').val()!='0'){
+				var targetIdx=$("#changeCateIdx").val();
+				var selectIdx=$("#selectedIdxs").val();
+				$.ajax({
+					url : '/cms/update/elemCategory',
+					type : 'post',
+					data : {
+						"updateIdx" : targetIdx,
+						"selectedIdx" : selectIdx,
+						"sort" : $("#sort").val()
+					},
+					async : false,
+					success : function(result) {
+						arange.contentsView(targetIdx);
+						menuJs.makeJsTree(targetIdx);
+						var data=JSON.parse(result);
+						$('#navibar').html(data.oneDepth+'<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>'+data.twoDepth);
+						$("#changeCateModel").modal('hide');
+						if($('#selectSort').val()=="vod"){
+							$('.vodCheck').css('display','none');
+						}else if($('#selectSort').val()=="stream"){
+							$('.selectCheck').css('display','none');
+						}else if($('#selectSort').val()=="photo"){
+							$('.photoCheck').css('display','none');
+						}else if($('#selectSort').val()=="file"){
+							$('.fileCheck').css('display','none');
+						}
+						$('#addBtns').css('display','block');
+						$('#editBtns').css('display','none');
+					},
+					error : exception.ajaxException
+				});
+			}else{
+				exception.contentsAddException();
+			}
+			
 		});
 
 		$("#cateChangeBtn").click(function() {
@@ -1296,15 +1610,210 @@ $(function(){
 		        }
 		    });
 		    return result;
-		}
+		};
+		var removeElementToArray=function(array,element){
+			var elementIndex=$.inArray(element.toString(),array);
+			if(elementIndex>=0){
+				array.splice(elementIndex,1);
+			}
+			return array;
+		};
+		var setHourSecond=function(intDate){
+			var StringDate=new Date(intDate);
+            var hh = formatZeroDate(StringDate.getHours(),2);
+            var mm = formatZeroDate(StringDate.getMinutes(),2);
+            return $.datepicker.formatDate(hh+':'+mm,StringDate);
+		};
+		var setScheduleDate=function(start,end){
+			var viewDate=setDate(start)+" ~ "+ setHourSecond(end);
+			return viewDate;
+		};
+		var delCashPlayer=function(playerName){
+			//var playerCash = playerName;
+			if (videojs.getPlayers()[playerName]) {
+				var myPlayer = videojs(playerName);
+				myPlayer.dispose();
+				delete videojs.getPlayers()[playerName];
+			}
+		};
+		var vodDefault=function(){
+			common.delCashPlayer('vodPlayer');
+			$('#vodViewArea').empty();
+			$('#vodPreview').empty();
+			$('#vodViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="vodViewMainThumb">');
+			$('#vodPreview').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="vodDefaultImg">');
+			$('#letsPlay').css('display','block');
+			$('#letsEditPlay').css('display','block');
+			$('#vodForm')[0].reset();
+			$('#vodSlideShow').empty();
+			
+		};
+		var photoDefault=function(){
+			$('#photoViewArea').empty();
+			$('#photoPreview').empty();
+			$('#photoViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="photoViewMainThumb">');
+			$('#photoPreview').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="photoDefaultImg">');
+			$('#photoForm')[0].reset();
+		};
+		var fileDefault=function(){
+			$('#fileViewArea').empty();
+			$('#filePreview').empty();
+			$('#fileViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="fileViewMainThumb">');
+			$('#filePreview').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="fileDefaultImg">');
+			$('#fileForm')[0].reset();
+		};
+		var streamDefault=function(){
+			common.delCashPlayer('vodPlayer');
+			$('#streamViewArea').empty();
+			$('#streamPreview').empty();
+			$('#streamViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="streamViewMainThumb">');
+			$('#streamPreview').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="streamDefaultImg">');
+			$('#streamForm')[0].reset();
+		};
+		var boardDefault=function(){
+			common.delCashPlayer('vodPlayer');
+			$('#boardViewArea').empty();
+			$('#boardPreview').empty();
+			$('#boardViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="boardViewMainThumb">');
+			$('#boardPreview').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="boardDefaultImg">');
+			$('#boardLetsPlay').css('display','block');
+			$('#boardLetsEditPlay').css('display','block');
+			$('#boardSlideShow').empty();
+			$('#boardForm')[0].reset();
+		};
+		var repolist=function(childIdx) {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/cms/list/"
+						+ $("#repoOrder").val() + "?childIdx=" + childIdx+"&searchWord="+$('#schedule-contents-search').val(),
+				success : function(data) {
+					$("#repoListPage").empty();
+					$("#repoListPage").html(data);
+				},
+				error : exception.ajaxException
+			});
+		};
+		var number_to_human_size = function(x) {
+			var s = [ 'bytes', 'kB', 'MB', 'GB', 'TB', 'PB' ];
+			var e = Math.floor(Math.log(x) / Math.log(1024));
+			var se = (x / Math.pow(1024, e)).toFixed(2) + " " + s[e];
+			return se.replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+		};
+		var deleteByIdxArr=function(idxArr){
+			if (idxArr.length == 0)
+				return false;
+			$.ajax({
+				url : "${pageContext.request.contextPath}/cms/delete/"
+						+ $("#sort").val() + "?checkValArr="
+						+ idxArr,
+				async : false,
+				success : function(responseData) {
+					var data = JSON.parse(responseData);
+					if (data.result == "success") {
+						$("#successText").text("컨텐츠 삭제에 성공했습니다.");
+						$("#sucessModal").modal();
+						var array = idxArr.split(',');
+						for (i = 0; i < array.length; i++) {
+							$('#layer_'+array[i]).fadeOut('slow');
+						}
+						menuJs.makeJsTree();
+						/*if(array.length>1){
+							$(".checkElem").prop("checked", false);
+						}*/
+					}
+				},
+				error : exception.ajaxException
+			});
+		};
+		var selectRepoSource=function(sort){
+			$('#requestRepo').val(sort);
+			var html="";
+			if($('#requestRepo').val()=="schedule"){
+		  		 html+='<option value="VOD">VOD</option>';
+	            html+='<option value="LIVE">LIVE</option>';
+	            $('#repoType').empty();
+	            $('#repoType').html(html);
+		  	}else if($('#requestRepo').val()=="media"){
+		  		html+='<option value="PHOTO">PHOTO</option>';
+		  		$('#repoType').empty();
+		  		$('#repoType').html(html);
+		  		$('#repoOrder').val('photo');
+		  	}else if($('#requestRepo').val()=="photo"){
+		  		html+='<option value="PHOTO">PHOTO</option>';
+		  		$('#repoType').empty();
+		  		$('#repoType').html(html);
+		  		$('#repoOrder').val('photo');
+		  	}else if($('#requestRepo').val()=="file"){
+		  		html+='<option value="FILE">FILE</option>';
+		  		$('#repoType').empty();
+		  		$('#repoType').html(html);
+		  		$('#repoOrder').val('file');
+		  	}else if($('#requestRepo').val()=="vod"){
+		  		html+='<option value="VOD">VOD</option>';
+		  		$('#repoType').empty();
+		  		$('#repoType').html(html);
+		  		$('#repoOrder').val('vod');
+		  	}
+			
+			menuJs.vodScheduleJstree();
+			common.repolist('');
+			$('#repositoryList').modal();
+		};
+		var settopCmd=function(){
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : '/api/web/scheduleDownLoadToAllSTB',
+				type : 'post',
+				success : function(result) {
+					console.log('schedule send to OTT');
+				},
+				error : exception.ajaxException
+			});
+		};
 		return{
 			formatZeroDate:formatZeroDate,
 			isNotEmpty:isNotEmpty,
 			runtimeToSecond:runtimeToSecond,
 			setDate:setDate,
-			removeOverlap
+			removeOverlap : removeOverlap,
+			removeElementToArray :removeElementToArray,
+			setScheduleDate : setScheduleDate,
+			setHourSecond : setHourSecond,
+			delCashPlayer : delCashPlayer,
+			vodDefault : vodDefault,
+			photoDefault : photoDefault,
+			fileDefault : fileDefault,
+			streamDefault : streamDefault,
+			boardDefault : boardDefault,
+			repolist : repolist,
+			number_to_human_size : number_to_human_size,
+			deleteByIdxArr : deleteByIdxArr,
+			selectRepoSource : selectRepoSource,
+			settopCmd : settopCmd
 		};
 	}());
+	var current = 0;
+	var max = 0;
+	var container;
+	var slide={
+		init:function(){
+			container = $(".slide ul");
+	        max = container.children().length;
+		},
+		prev:function(e){
+			 current--;
+	         if( current < 0 ) current = max-1;
+	         slide.animate();
+		},
+		next:function(e){
+			current++;
+	        if( current > max-1 ) current = 0;
+	        slide.animate();
+		},
+		animate:function(){
+			var moveX = current * 135;
+	        TweenMax.to( container, 0.1, { marginLeft:-moveX, ease:Expo.easeOut } );
+		}
+	};
 	$(function(){
 		$(".sourceTab").click(function(){
 			$('#source_type').val($(this).attr('value'));
@@ -1336,7 +1845,480 @@ $(function(){
       $("#getForm").click(function () {
           $("#popupGetForm").show();
       }); //저장소
-      
-      	
-  })
+      $('.repositoryAdd').click(function(){
+    	  	var html=""; 
+    		//선택박스 셋팅 
+    	  	if($('#requestRepo').val()=="schedule"){
+    	  		 html+='<option value="VOD">VOD</option>';
+                 html+='<option value="LIVE">LIVE</option>';
+                 $('#repoType').empty();
+                 $('#repoType').html(html);
+    	  	}else if($('#requestRepo').val()=="media"){
+    	  		html+='<option value="PHOTO">PHOTO</option>';
+    	  		$('#repoType').empty();
+    	  		$('#repoType').html(html);
+    	  		$('#repoOrder').val('photo');
+    	  	}else if($('#requestRepo').val()=="photo"){
+    	  		html+='<option value="PHOTO">PHOTO</option>';
+    	  		$('#repoType').empty();
+    	  		$('#repoType').html(html);
+    	  		$('#repoOrder').val('photo');
+    	  	}else if($('#requestRepo').val()=="file"){
+    	  		html+='<option value="FILE">FILE</option>';
+    	  		$('#repoType').empty();
+    	  		$('#repoType').html(html);
+    	  		$('#repoOrder').val('file');
+    	  	}else if($('#requestRepo').val()=="vod"){
+    	  		html+='<option value="VOD">VOD</option>';
+    	  		$('#repoType').empty();
+    	  		$('#repoType').html(html);
+    	  		$('#repoOrder').val('vod');
+    	  	}
+    	  	menuJs.vodScheduleJstree();
+    		common.repolist('');
+    		$('#repositoryList').modal();
+    });
+     $('#repoType').change(function(){
+   		if($(this).val()=="VOD"){
+   			$('#repoOrder').val('vod');
+   			menuJs.vodScheduleJstree();
+   		}else{
+   			$('#repoOrder').val('stream');
+   			menuJs.vodScheduleJstree();
+   		}
+   		$('#schedule-contents-search').val('');
+   		common.repolist('');
+   		
+   	}); 
+     $('#selectIdxArr').click(function(){
+    	 //저장소 불러오기 라이브 일경우  
+		if($('#requestRepo').val()=="schedule"){	
+		   	 if($('#repoOrder').val()=="vod"){
+		   			$("#source_type").val("VOD");
+		   			$('#live_stream_url').val('');
+		   			$('#live_ch_idx').val('');
+		   			if($('#vodArr').val().length==0){
+		   				if($('#tempVodList').val()!="") $('#vodArr').val($('#tempVodList').val());
+		   			}else{
+		   				if($('#tempVodList').val()!="") $('#vodArr').val($('#vodArr').val()+","+$('#tempVodList').val());
+		   			}
+		   			$("#slideShow").empty();
+		   			if($('#tempVodList').val()!="") {
+		   				var imgToArray=$('#vodArr').val().split(',');
+		   				$.each(imgToArray,function(index,value){
+		   					arange.vodImgFactory(value);
+		   				});
+		   			}
+		   		}else{
+		   			$("#slideShow").empty();
+		   			$("#vodArr").val('');
+		   			$("#source_type").val("LIVE");
+		   			var retHtml='<li style="float:left; background: url(${pageContext.request.contextPath}/img/live.jpg'
+		   			+') no-repeat center; background-size: cover;padding-top:70px;">'+$('#tmpStreamName').val()+'</li>'
+		   			$("#slideShow").html(retHtml);	
+		   		}
+		   		$('#slideShow').append('<li>'
+          			+'<a class="add" onclick="common.selectRepoSource(\'schedule\');"><img src="${pageContext.request.contextPath}/ibsImg/img_add.png" alt="추가"   style="cursor:pointer;"/></a>'
+              		+'</li>');
+		   		slide.init();
+		   		$('#repositoryList').modal('hide');
+		}else if($('#requestRepo').val()=="media"){
+			//저장소 미디어일 경우 사진 추가 라이브 일경우 
+			if($('#tempPhotoList').val()!=""){
+				//이미지 옮겨놓는다. 
+				$.ajax({
+					url : "${pageContext.request.contextPath}/api/photoAddToThumnail",
+					cache : false,
+					type : 'get',
+					data : {"photoIdx":$('#tempPhotoList').val(),"orginName":$('#main_thumbnail').val()},
+					async : false,
+					success : function(responseData){
+						var data = JSON.parse(responseData);
+						var retHtml="";
+						var thumbnailArr=$('#thumnailList').val().split(',');
+						$.each(data,function(i,value){
+							var fullPath=value.url;
+							var dbFileName=fullPath.substring(fullPath.lastIndexOf("/")+1,fullPath.length);
+							thumbnailArr.push(dbFileName);
+							retHtml+='<li class="thum" style="float:left;background: url(${pageContext.request.contextPath}'+value.url+') no-repeat center; background-size: cover;" id="thumbLi_'+dbFileName.split('.')[0]+'" onClick="arange.makeMainThumb(\''+dbFileName.split('.')[0]+'\',\''+dbFileName.split('.')[1]+'\')">'
+							+'<a class="close" onclick="arange.removeThumbLi(\''+dbFileName.split('.')[0]+'\',\''+dbFileName.split('.')[1]+'\');">'
+							+'<img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"></a></li>';
+						});
+						$('#addLi').remove();
+						setTimeout(function(){
+							$('#vodSlideShow').append(retHtml);
+							$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="common.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+						},10000);
+						$('#thumnailList').val(thumbnailArr);
+						$('#repositoryList').modal('hide');
+					},
+					error : exception.ajaxException
+				});
+			} 
+		//보드의 포토일 경우 
+		}else if($('#requestRepo').val()=="photo"){
+			if($('#tempPhotoList').val()!=""){
+				var totalPhoto="";
+				if($('#photoRepo').val().length!=0){
+					totalPhoto=$('#photoRepo').val()+","+$('#tempPhotoList').val();
+				}else{
+					totalPhoto=$('#tempPhotoList').val();
+				}
+				var totalPhotoArr=totalPhoto.split(',');
+				$('#boardSlideShow').empty();
+				$('#photoList').empty();
+				$.each(totalPhotoArr,function(index,value){
+ 					arange.photoFactory(value);
+ 					slide.init();
+ 				});
+				$('#boardSlideShow').append('<li ><a class="add" onclick="common.selectRepoSource(\'photo\');"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+				$('#photoRepo').val(totalPhotoArr);
+				$('#repositoryList').modal('hide');
+			}
+		}else if($('#requestRepo').val()=="file"){
+			if($('#tempFileList').val()!=""){
+				var totalFile="";
+				if($('#fileRepo').val().length!=0){
+					totalFile=$('#fileRepo').val()+","+$('#tempFileList').val();
+				}else{
+					totalFile=$('#tempFileList').val();
+				}
+				
+				var totalFileArr=totalFile.split(',');
+				$('#saveFileList').empty();
+				$.each(totalFileArr,function(index,value){
+					console.log(value);
+ 					arange.fileFactory(value);
+ 				});
+				$('#saveFileList').append('&nbsp;&nbsp;&nbsp;&nbsp;<div class="btn btn-sm" onclick="common.selectRepoSource(\'file\');">파일추가</div>');
+				$('#fileRepo').val(totalFileArr);
+				$('#repositoryList').modal('hide');
+			}
+		}else if($('#requestRepo').val()=="vod"){
+			if($('#tempVodList').val()!=""){
+				$('#vodRepo').val($('#tempVodList').val());
+				$('#repositoryList').modal('hide');
+			}
+		}  		
+	});
+	$('#mediaConfirm').click(function(ev){
+		 var eventForm =  $(this).closest('.modal').find('.form-validation-2');
+	      eventForm.validationEngine('validate');
+	     if (!(eventForm).find('.formErrorContent')[0]) {
+		      $.ajax({
+				url : '/cms/excute/'+$("#sort").val()+'/'+$("#vodOrder").val(),
+				cache : false,
+				type : 'post',
+				data :{
+					"vod_title" :$("#vod_title").val(),
+					"vod_content":$("#vod_content").val(),
+					"vod_path" : $("#vod_path").val(),
+					"vod_keyword" : $("#keyword").val(),
+					"vod_play_time" : $("#vod_play_time").val(),
+					"main_thumbnail":$("#main_thumbnail").val(),
+					"file_size" : $("#file_size").val(),
+					"idx": $("#vodIdx").val(),
+					"category_idx":$("#categoryIdx").val(),
+					"thumnailList" : $("#thumnailList").val()
+					},
+				async : false,
+				success : function(result) {
+					if($("#vodOrder").val()=="insert"){
+						menuJs.makeJsTree($('#categoryIdx').val());
+					}
+					arange.contentsView($("#categoryIdx").val());
+					common.delCashPlayer('vodPlayer');
+					$("#vodViewModal").modal('hide');
+				},
+				error : exception.ajaxException
+			});
+		  }
+	     ev.preventDefault();
+		});
+	});
+  $("#photoConfirm").click(function(ev){
+	  var eventForm =  $(this).closest('.modal').find('.form-validation-3');
+      eventForm.validationEngine('validate');
+	     if (!(eventForm).find('.formErrorContent')[0]) {
+			$.ajax({
+				url : '/cms/excute/'+$("#sort").val()+'/'+$("#photoOrder").val(),
+				cache : false,
+				type : 'post',
+				data :{"photo_title" :$("#photo_title").val(),"photo_content":$("#photo_content").val(),"photo_path" : $("#photo_path").val(),"photo_keyword" : $("#keyword").val(),"file_size" : $("#photo_size").val(),"idx": $("#photoIdx").val(),"category_idx":$("#categoryIdx").val()},
+				async : false,
+				success : function(result) {
+					if($("#photoOrder").val()=="insert"){
+						menuJs.makeJsTree($('#categoryIdx').val());
+					}
+					arange.contentsView($("#categoryIdx").val());
+					$("#photoViewModal").modal('hide');
+				},
+				error : exception.ajaxException
+			});
+	     }
+		ev.preventDefault();
+	});
+  $("#fileConfirm").click(function(ev){
+	  var eventForm =  $(this).closest('.modal').find('.form-validation-4');
+      eventForm.validationEngine('validate');
+      if (!(eventForm).find('.formErrorContent')[0]) {
+		  $.ajax({
+				url : '/cms/excute/'+$("#sort").val()+'/'+$("#fileOrder").val(),
+				cache : false,
+				type : 'post',
+				data :{"file_title" :$("#file_title").val(),"file_path" : $("#file_path").val(),"file_keyword" : $("#fileKeyword").val(),"file_size" : $("#uploadFile_size").val(),"resolution":$("#file_ext").val(),"idx": $("#fileIdx").val(),"category_idx":$("#categoryIdx").val()},
+				async : false,
+				success : function(result) {
+					if($("#fileOrder").val()=="insert"){
+						menuJs.makeJsTree($('#categoryIdx').val());
+					}
+					arange.contentsView($("#categoryIdx").val());
+					$("#fileViewModal").modal('hide');
+				},
+				error : exception.ajaxException
+			});
+  		}
+		ev.preventDefault();
+  });
+  $("#streamConfirm").click(function(ev){
+	  var eventForm =  $(this).closest('.modal').find('.form-validation-5');
+      eventForm.validationEngine('validate');
+      if (!(eventForm).find('.formErrorContent')[0]) {
+    	  $.ajax({
+    			url : '/cms/excute/'+$("#sort").val()+'/'+$("#streamOrder").val(),
+    			cache : false,
+    			type : 'post',
+    			data :{"live_title" :$("#streamTitle").val(),"live_path" : $("#streamAddress").val(),"idx": $("#streamIdx").val(),"category_idx":$("#categoryIdx").val()},
+    			async : false,
+    			success : function(result) {
+    				if($("#streamOrder").val()=="insert"){
+    					menuJs.makeJsTree($('#categoryIdx').val());
+    				}
+    				arange.contentsView($("#categoryIdx").val());
+    				$("#streamViewModal").modal('hide');
+    			},
+    			error : exception.ajaxException
+    		});
+      }
+      ev.preventDefault();
+  });
+  $("#boardConfirm").click(function(ev){
+	  var eventForm =  $(this).closest('.modal').find('.form-validation-6');
+      eventForm.validationEngine('validate');
+      if (!(eventForm).find('.formErrorContent')[0]) {
+    	  $.ajax({
+    		  	url : '/cms/excute/'+$("#sort").val()+'/'+$("#boardOrder").val(),
+    			data :{
+    				"vod_repo":$("#vodRepo").val(),
+    				"photo_repo":$("#photoRepo").val(),
+    				"file_repo":$("#fileRepo").val(),
+    				"live_repo":"",
+    				"board_title" :$("#board_title").val(),
+    				"board_content":$("#board_content").val(),
+    				"board_keyword" : $("#boardKeyword").val(),
+    				"idx": $("#boardIdx").val(),
+    				"category_idx":$("#categoryIdx").val()
+    				},
+    			cache : false,
+    			type : 'post',
+    			async : false,
+    			success : function(result) {
+    				if($("#boardOrder").val()=="insert"){
+    					menuJs.makeJsTree($('#categoryIdx').val());
+    				}
+    				common.delCashPlayer('vodPlayer');
+    				arange.contentsView($("#categoryIdx").val());
+    				$("#boardViewModal").modal('hide');
+    				common.settopCmd();
+    			},
+    			error : exception.ajaxException
+    		});
+      }
+      ev.preventDefault();
+  });
+  $("#mediaDel").click(function(){
+		var idx=$('#vodIdx').val();
+		$("#confirmText").text("선택한 동영상을 삭제하시겠습니까?.");
+		$("#confirmModal").modal('show');
+		exception.delConfirm(function(confirm) {
+			if (confirm) {
+				common.deleteByIdxArr(idx);
+				$('#vodViewModal').modal('hide');
+			}
+		});
+		return false;
+	});
+  $("#photoDel").click(function(){
+		var idx=$('#photoIdx').val();
+		$("#confirmText").text("선택한 사진을 삭제하시겠습니까?.");
+		$("#confirmModal").modal('show');
+		exception.delConfirm(function(confirm) {
+			if (confirm) {
+				common.deleteByIdxArr(idx);
+				$('#photoViewModal').modal('hide');
+			}
+		});
+		return false;
+	});
+  $("#fileDel").click(function(){
+		var idx=$('#fileIdx').val();
+		$("#confirmText").text("선택한 파일을 삭제하시겠습니까?.");
+		$("#confirmModal").modal('show');
+		exception.delConfirm(function(confirm) {
+			if (confirm) {
+				common.deleteByIdxArr(idx);
+				$('#fileViewModal').modal('hide');
+			}
+		});
+		return false;
+	});
+  $("#streamDel").click(function(){
+		var idx=$('#streamIdx').val();
+		$("#confirmText").text("선택한 파일을 삭제하시겠습니까?.");
+		$("#confirmModal").modal('show');
+		exception.delConfirm(function(confirm) {
+			if (confirm) {
+				common.deleteByIdxArr(idx);
+				$('#streamViewModal').modal('hide');
+			}
+		});
+		return false;
+	});
+  $("#boardDel").click(function(){
+		var idx=$('#boardIdx').val();
+		$("#confirmText").text("선택한 파일을 삭제하시겠습니까?.");
+		$("#confirmModal").modal('show');
+		exception.delConfirm(function(confirm) {
+			if (confirm) {
+				common.deleteByIdxArr(idx);
+				$('#boardViewModal').modal('hide');
+			}
+		});
+		return false;
+	});
+  $('#etcInfo').click(function(){
+		$('#etcInfoView').toggle();
+		//$('#etcInfoView').css('display','block');
+	});
+  $('#photoEtcInfo').click(function(){
+		$('#photoEtcInfoView').toggle();
+  });
+  $('#fileEtcInfo').click(function(){
+		$('#fileEtcInfoView').toggle();
+  });
+  $('#boardEtcInfo').click(function(){
+		$('#boardEtcInfoView').toggle();
+  });
+  $('.cancel').click(function(){
+	  common.delCashPlayer('vodPlayer');
+  });
+  $('#boardViewDownload').click(function(){
+	  $("#downloadList").toggle();
+  });
+  $('#schedule-contents-search').keyup(function(key){
+		//alert($('#repoOrder').val()+"/"+$(this).val());
+		common.repolist($('#searchIdx').val());
+	});
+  $('#boardViewEdit').click(function(){
+		$('#boardMediaView').css('display','none');
+		$('#boardMediaEdit').css('display','block');
+	});
+  $('#photoFromPc').click(function(){
+	  $("#fromPCPhotoForm").click();
+  });
+  $("#fromPCPhotoForm").change(function(){
+	  var file=this.files;
+		if (file[0].size > 5048 * 1024) {
+			jQuery('#fromPCPhotoForm').validationEngine('showPrompt', '5MB 이하 파일만 업로드 하세요.', 'pass')
+			return;
+		}
+		var file_size=file[0].size;
+		var localPath = $(this).val();
+		var ext = localPath.split('.').pop().toLowerCase();
+		if ($.inArray(ext, [ 'jpg','jpeg','png','gif']) == -1) {
+			jQuery('#fromPCPhotoForm').validationEngine('showPrompt', 'jpg,jpeg,png,gif 파일만 업로드 가능합니다.', 'pass')
+			return;
+		}
+		var formData = new FormData();
+		formData.append("uploadFile", file[0]);
+		//파일 업로드
+		$.ajax({
+			xhr: function() {
+			    	var xhr = new window.XMLHttpRequest();
+					xhr.upload.addEventListener("progress", function(evt) {
+			      	if (evt.lengthComputable) {
+			        	var percentComplete = evt.loaded / evt.total;
+			        	percentComplete = parseInt(percentComplete * 100);
+			        	$("#progressBar").css("width",percentComplete+"%");
+			        	$("#barText").text(percentComplete+"% Complete");
+						if (percentComplete === 100) {
+							$("#progressBarLayout").css('display','none');
+			        	}
+					}
+			 }, false);
+				return xhr;
+			},
+			url : '${pageContext.request.contextPath}/SEQ/UPLOAD/PHOTO',
+			processData : false,
+			contentType : false,
+			data : formData,
+			type : 'POST',
+			beforeSend : function() {
+				$('#progressLayout').modal();
+				$("#progressBarLayout").css('display','block');
+			},
+			success : function(responseData) {
+				var data=JSON.parse(responseData);
+				var uploadFile=data.fileName;
+				//photo repository save
+				$.ajax({
+					url : '/cms/excute/photo/insert',
+					cache : false,
+					type : 'post',
+					data :{"photo_title" :"PC 업로드","photo_content":"PC 업로드","photo_path" :uploadFile,"photo_keyword" : "photo","file_size" : file_size,"idx": '',"category_idx":$("#categoryIdx").val()},
+					async : false,
+					success : function(result) {
+						var insertIdx=result;
+						$.ajax({
+							url : "${pageContext.request.contextPath}/api/photoAddToThumnail",
+							cache : false,
+							type : 'get',
+							data : {"photoIdx":insertIdx,"orginName":$('#main_thumbnail').val()},
+							async : false,
+							success : function(responseData){
+								var data = JSON.parse(responseData);
+								var retHtml="";
+								var thumbnailArr=$('#thumnailList').val().split(',');
+								$.each(data,function(i,value){
+									var fullPath=value.url;
+									var dbFileName=fullPath.substring(fullPath.lastIndexOf("/")+1,fullPath.length);
+									thumbnailArr.push(dbFileName);
+									retHtml+='<li class="thum" style="float:left;background: url(${pageContext.request.contextPath}'+value.url+') no-repeat center; background-size: cover;" id="thumbLi_'+dbFileName.split('.')[0]+'" onClick="arange.makeMainThumb(\''+dbFileName.split('.')[0]+'\',\''+dbFileName.split('.')[1]+'\')">'
+									+'<a class="close" onclick="arange.removeThumbLi(\''+dbFileName.split('.')[0]+'\',\''+dbFileName.split('.')[1]+'\');">'
+									+'<img src="${pageContext.request.contextPath}/ibsImg/img_close_sm.png" alt="닫기"></a></li>';
+								});
+								$('#addLi').remove();
+								setTimeout(function(){
+									$('#vodSlideShow').append(retHtml);
+									$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="common.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+								},10000);
+								$('#thumnailList').val(thumbnailArr);
+							},
+							error : exception.ajaxException
+						});
+						$("#photoViewModal").modal('hide');
+					},
+					error : exception.ajaxException
+				});
+				$('#progressLayout').modal('hide');
+			},
+			complete : function() {
+				console.log('complete');
+			},
+			error : function() {
+				exception.fileUpdateException();
+			}
+		});
+  });
 </script>
+

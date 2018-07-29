@@ -21,58 +21,21 @@
 	
 	<!-- User view -->
 	<definition name="UserLayout" template="/WEB-INF/ibsTemplate/userLayout.jsp">
-		<put-attribute name="top" value="/WEB-INF/ibsTemplate/topUserMenu.jsp"></put-attribute>
+		<put-attribute name="top" value="/WEB-INF/ibsTemplate/userTopMenu.jsp"></put-attribute>
 		<put-attribute name="body" value=""></put-attribute>
 	</definition>
 
-	<definition name="*.user" extends="UserLayout">
+	<definition name="*.usr" extends="UserLayout">
 		<put-attribute name="body" value="/WEB-INF/{1}.jsp"></put-attribute>
 	</definition>
-	<definition name="*/*.user" extends="UserLayout">
+	<definition name="*/*.usr" extends="UserLayout">
 		<put-attribute name="body" value="/WEB-INF/{1}/{2}.jsp"></put-attribute>
 	</definition>
-	<definition name="*/*/*.user" extends="UserLayout">
+	<definition name="*/*/*.usr" extends="UserLayout">
 		<put-attribute name="body" value="/WEB-INF/{1}/{2}/{3}.jsp"></put-attribute>
 	</definition>
 	
 
-	<!-- Live view -->
-	<definition name="LiveLayout" template="/WEB-INF/ibsTemplate/userLayout.jsp">
-		<put-attribute name="top" value="/WEB-INF/ibsTemplate/topUserLiveMenu.jsp"></put-attribute>
-		<put-attribute name="body" value=""></put-attribute>
-	</definition>
-	<definition name="*.live" extends="LiveLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}.jsp"></put-attribute>
-	</definition>
-	<definition name="*/*.live" extends="LiveLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}/{2}.jsp"></put-attribute>
-	</definition>
-	<definition name="*/*/*.live" extends="LiveLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}/{2}/{3}.jsp"></put-attribute>
-	</definition>
-	
-	
-		<!-- Live view -->
-	<definition name="testLayout" template="/WEB-INF/ibsTemplate/userLayout1.jsp">
-		<put-attribute name="body" value=""></put-attribute>
-	</definition>
-	<definition name="*.test" extends="testLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}.jsp"></put-attribute>
-	</definition>
-	<definition name="*/*.test" extends="testLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}/{2}.jsp"></put-attribute>
-	</definition>
-	<definition name="*/*/*.test" extends="testLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}/{2}/{3}.jsp"></put-attribute>
-	</definition>
-	
-	
-	
-	
-	<definition name="uccView" extends="UserLayout">
-		<put-attribute name="top" value="/WEB-INF/ibsTemplate/topUserUcceMenu.jsp"></put-attribute>
-		<put-attribute name="body" value="/WEB-INF/ibsUserViews/IbsUserUccView.jsp"></put-attribute>
-	</definition>
 	
 	<!-- inc view -->
 	<definition name="viewLayout" template="/WEB-INF/ibsTemplate/viewLayout.jsp">
@@ -88,22 +51,5 @@
 	<definition name="*/*/*.inc" extends="viewLayout">
 		<put-attribute name="body" value="/WEB-INF/{1}/{2}/{3}.jsp"></put-attribute>
 	</definition>
-	
-	<!-- 사용자 미적용 -->
-	<definition name="clientLayout" template="/WEB-INF/ibsTemplate/clientLayout.jsp">
-		<put-attribute name="body" value=""></put-attribute>
-	</definition>
-	
-	<definition name="*.ibs" extends="clientLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}.jsp"></put-attribute>
-	</definition>
-	<definition name="*/*.ibs" extends="clientLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}/{2}.jsp"></put-attribute>
-	</definition>
-	<definition name="*/*/*.ibs" extends="clientLayout">
-		<put-attribute name="body" value="/WEB-INF/{1}/{2}/{3}.jsp"></put-attribute>
-	</definition>
-
-
 </tiles-definitions>
 
