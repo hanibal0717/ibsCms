@@ -235,7 +235,7 @@ public class IbsAppDAO {
 		commandMap.put("member_id",signeJWTReturn.getJWTClaimsSet().getClaim("member_id"));
 		sqlTemplate.update("deleteFavorite",commandMap);
 	}
-
+	//다운로드 
 	public void fileDownLoad(String path, HttpServletResponse res, HttpServletRequest req) throws Exception {
 		File f= new File(path);
 		res.setContentType("application/x-msdownload");

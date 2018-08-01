@@ -306,7 +306,7 @@
 			a.image_path as ch_thumbnail
 		from
 			tb_stb_schedule a
-		left join
+		left join 
 			tb_live_category b on a.category_idx = b.idx
 		where
 			a. category_idx in
