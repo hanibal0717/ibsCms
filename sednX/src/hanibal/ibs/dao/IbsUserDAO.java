@@ -79,6 +79,16 @@ public class IbsUserDAO {
 		List<BoardDTO> lists=sqlTemplate.selectList("userLayoutList", map);
 		return lists;
 	}
+	public void layoutDeleteAll(String categoryIdx) {
+		int category=Integer.parseInt(categoryIdx);
+		sqlTemplate.delete("layoutDeleteAll",category);
+		
+	}
+	public void layoutInsert(Map<String, Object> commandMap) {
+		log.info("=================="+String.valueOf(commandMap.get("reg_ip")));
+		sqlTemplate.insert("layoutInsert",commandMap);
+		
+	}
 
 	
 }

@@ -64,7 +64,7 @@
 <!-- 팝업창 -->
 		<div id="popup">
 			<div class="popup_container">
-				<h3>상세정보<span class="close" id="modalClose"><a href="#"><img src="${pageContext.request.contextPath}/img/img_popup_close.png" alt="닫기" /></a></span></h3>
+				<h3>상세정보<span class="close" id="modalClose"><a><img src="${pageContext.request.contextPath}/img/img_popup_close.png" alt="닫기" /></a></span></h3>
 
 				<div class="media-form">
 	                <div class="video"  id="boardViewArea" style="cursor:pointer;height:323px;"><img id="boardViewMainThumb" src="${pageContext.request.contextPath}/img/img_video.png" alt="샘플" /></div>
@@ -101,7 +101,7 @@
 			<!-- 플레이어 히든  -->
 				<input type="hidden" class="form-control" id="boardPlay_url"/>
 				<input type="hidden" class="form-control" id="boardPlay_thum"/>
-				<input type="text" class="form-control" id="categoryIdx" value="1"/>
+				<input type="hidden" class="form-control" id="categoryIdx" value="1"/>
 		</div><!-- //팝업창 -->
 		<!-- -#############영상보기 모달창   -->
 </body>
@@ -201,6 +201,7 @@ var common={
 				var data=JSON.parse(responseData);
 				$('.main_container').empty();
 				$('.thumnail_container').empty();
+				
 				if(data.layout.length!=0){
 					for(var i=0;i<data.layout.length;i++){
 						var layoutType=data.layout[i].wl_type
@@ -208,7 +209,7 @@ var common={
 							url : "${pageContext.request.contextPath}/user/style",
 							cache : false,
 							type : 'post',
-							data : {"idx": data.layout[i].idx,"wl_title": data.layout[i].wl_title,"wl_link_type": data.layout[i].wl_link_type,"wl_link_idx": data.layout[i].wl_link_idx,"wl_type": data.layout[i].wl_type,"wl_height": data.layout[i].wl_height,"wl_unit": data.layout[i].wl_unit, "wl_categorys": data.layout[i].wl_categorys,"wl_attribute": data.layout[i].wl_attribute,"wl_sort": data.layout[i].wl_sort,"reg_dt": data.layout[i].reg_dt,"edit_dt": data.layout[i].edit_dt,"reg_ip": data.layout[i].reg_ip,"del_flag": data.layout[i].del_flag,"wl_category": data.layout[i].wl_category},
+							data : {"idx": data.layout[i].idx,"wl_title": data.layout[i].wl_title,"wl_link_type": data.layout[i].wl_link_type,"wl_link_idx": data.layout[i].wl_link_idx,"wl_type": data.layout[i].wl_type,"wl_height": data.layout[i].wl_height,"wl_unit": data.layout[i].wl_unit, "wl_categorys": data.layout[i].wl_categorys,"wl_attribute": data.layout[i].wl_attribute,"wl_sort": data.layout[i].wl_sort,"reg_dt": data.layout[i].reg_dt,"edit_dt": data.layout[i].edit_dt,"reg_ip": data.layout[i].reg_ip,"del_flag": data.layout[i].del_flag,"wl_category": $('#category').val()},
 							async : false,
 							success : function(data){
 								if(layoutType=="A"){
@@ -224,6 +225,48 @@ var common={
 					$('.main_container').append("<div style='color:#FFFFFF;padding-top:100px;text-align:center;'>데이터가 없습니다.</div>");
 				}
 				
+			},
+			error : common.ajaxException
+		});
+	},
+	vodViewModal : function(idx){
+		$.ajax({
+			url : "${pageContext.request.contextPath}/api/media/board/"+idx,
+			cache : false,
+			async : false,
+			success : function(responseData){
+				var data=JSON.parse(responseData);
+				$('#boardViewTitle').html(data.info.board_title);
+				$('#boardViewDate').html(data.info.reg_dt);
+				$('#boardViewCount').html(data.info.view_count);
+				$('#boardViewText').html(data.info.board_content);
+				$('#boardViewResolution').html(data.vodRelative.resolution);
+				$('#boardViewRuntime').html(data.vodRelative.vod_play_time);
+				$('#boardViewFilesize').html(common.number_to_human_size(data.vodRelative.file_size));
+				$('#boardViewMainThumb').attr('src','${pageContext.request.contextPath}'+data.vodRelative.board_thumnail_path);
+				$("#boardPlay_url").val(data.vodRelative.vod_path);
+				$("#boardPlay_thum").val('${pageContext.request.contextPath}'+data.vodRelative.board_thumnail_path);
+				$('#downloadUl').empty();
+				$('#photoList').empty();
+
+				
+				
+				if(data.info.photo_repo.length!=0){
+					var imgArr=data.info.photo_repo.split(',');
+					$.each(imgArr,function(index,value){
+	 					arange.photoFactory(value);
+	 				});
+				}
+				
+				if(data.info.file_repo.length!=0){
+					var fileArr=data.info.file_repo.split(',');
+					$.each(fileArr,function(index,value){
+	 					arange.fileFactory(value);
+	 				});
+				}
+				if(data.info.photo_repo.length==0&&data.info.file_repo.length==0){
+					$('#downloadUl').append('<li>파일 없음</li>');
+				}
 			},
 			error : common.ajaxException
 		});
@@ -279,46 +322,8 @@ $('.contents_form').click(function(){
 	$('#boardViewArea').empty();
 	$('#boardViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="boardViewMainThumb">');
 	$('#boardLetsPlay').css('display','block');
-		$.ajax({
-			url : "${pageContext.request.contextPath}/api/media/board/"+$(this).attr('id').split('_')[1],
-			cache : false,
-			async : false,
-			success : function(responseData){
-				var data=JSON.parse(responseData);
-				$('#boardViewTitle').html(data.info.board_title);
-				$('#boardViewDate').html(data.info.reg_dt);
-				$('#boardViewCount').html(data.info.view_count);
-				$('#boardViewText').html(data.info.board_content);
-				$('#boardViewResolution').html(data.vodRelative.resolution);
-				$('#boardViewRuntime').html(data.vodRelative.vod_play_time);
-				$('#boardViewFilesize').html(common.number_to_human_size(data.vodRelative.file_size));
-				$('#boardViewMainThumb').attr('src','${pageContext.request.contextPath}'+data.vodRelative.board_thumnail_path);
-				$("#boardPlay_url").val(data.vodRelative.vod_path);
-				$("#boardPlay_thum").val('${pageContext.request.contextPath}'+data.vodRelative.board_thumnail_path);
-				$('#downloadUl').empty();
-				$('#photoList').empty();
-
-				
-				
-				if(data.info.photo_repo.length!=0){
-					var imgArr=data.info.photo_repo.split(',');
-					$.each(imgArr,function(index,value){
-	 					arange.photoFactory(value);
-	 				});
-				}
-				
-				if(data.info.file_repo.length!=0){
-					var fileArr=data.info.file_repo.split(',');
-					$.each(fileArr,function(index,value){
-	 					arange.fileFactory(value);
-	 				});
-				}
-				if(data.info.photo_repo.length==0&&data.info.file_repo.length==0){
-					$('#downloadUl').append('<li>파일 없음</li>');
-				}
-			},
-			error : common.ajaxException
-		});
+	var idx=$(this).attr('id').split('_')[1];
+	common.vodViewModal(idx);
 });
 $('#boardLetsPlay').click(function(){
 	//common.boardDefault();
@@ -328,6 +333,8 @@ $('#boardLetsPlay').click(function(){
 });
 $('#modalClose').click(function(){
 	common.delCashPlayer('vodPlayer');
+	$('#boardViewArea').html('<img id="boardViewMainThumb" src="${pageContext.request.contextPath}/img/img_video.png" alt="샘플" />');
+	$('#boardLetsPlay').css('display','block');
 });
 $('.mainDepth').click(function(){
 	$('#categoryIdx').val($(this).attr('id').split('_')[1]);

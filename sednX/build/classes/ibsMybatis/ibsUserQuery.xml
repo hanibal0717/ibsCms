@@ -13,16 +13,16 @@
 			    (a.board_title) as board_title,
 			    (a.board_content) as board_content,
 			    (a.board_keyword) as board_keyword,
-			    (date_format(a.reg_dt,'%Y .%m. %d')) as reg_dt,
+			    date_format(a.reg_dt,'%Y.%m.%d') as reg_dt,
 			    (a.reg_id) as reg_id,
 			    (a.reg_ip) as reg_ip,
 			    (a.del_flag) as del_flag,
-			    date_format(a.edit_dt,'%Y년 %m월 %d일') as edit_dt,
+			    date_format(a.edit_dt,'%Y년%m월%d일') as edit_dt,
 			    (a.favorite_count) as favorite_count,
 			    (a.view_count) as view_count
 			from tb_board_repository a  where 1=1 
 			<if test='wl_attribute=="B"'>
-			and <![CDATA[LENGTH(concat(photo_repo,file_repo))>1]]>
+			and <![CDATA[LENGTH(concat(photo_repo,file_repo))>0]]>
 			</if>
 			<if test='searchWord!=""'>
 		  and (board_title like concat('%',#{searchWord},'%')
@@ -45,5 +45,14 @@
       		a.view_count desc limit #{start},#{end};
       		</if>
 	</select>
+	
+	<delete id="layoutDeleteAll" parameterType="int">
+		delete from tb_web_layout where wl_category=#{category};
+	</delete>
+	
+	<insert id="layoutInsert" parameterType="java.util.Map">
+		insert into tb_web_layout ( wl_title, wl_link_idx, wl_type, wl_categorys, wl_attribute, wl_sort, reg_ip,wl_category) 
+		values (#{wl_title},#{wl_link_idx},#{wl_type},#{wl_categorys},#{wl_attribute},#{wl_sort},#{reg_ip},#{wl_category});
+	</insert>
 </mapper> 
 

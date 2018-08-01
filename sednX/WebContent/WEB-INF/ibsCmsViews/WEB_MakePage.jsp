@@ -54,7 +54,9 @@ pageEncoding="UTF-8"%>
 	                   		<a id="preview" style="display:none;cursor:pointer;"><span class="icon m-r-10">&#61723;</span>미리보기</a>
 	                   </div>	
 	                 </div>
-	                 <div id="pageView"></div>
+	                 <div id="pageView">
+	                		 
+	                 </div>
 	                 
                  </div>
                  

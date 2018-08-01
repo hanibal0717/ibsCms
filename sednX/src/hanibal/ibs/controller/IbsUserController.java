@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import hanibal.ibs.dao.IbsUserDAO;
 import hanibal.ibs.library.HanibalWebDev;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -95,7 +97,22 @@ public class IbsUserController {
 			lists.get(i).setVod_repo("/REPOSITORY/THUMBNAIL"+HanibalWebDev.getDataPath(lists.get(i).getVod_repo())+lists.get(i).getVod_repo());
 		}
 		model.addAttribute("lists", lists);
-		model.addAttribute("mainTitle",String.valueOf(commandMap.get("wl_titl")));
+		model.addAttribute("mainTitle",String.valueOf(commandMap.get("wl_title")));
+		model.addAttribute("wl_link_idx",String.valueOf(commandMap.get("wl_link_idx")));
+		model.addAttribute("wl_attribute",String.valueOf(commandMap.get("wl_attribute")));
 		return "/layout/"+type+".inc";
+	}
+	@RequestMapping("/user/layoutUpdate/{option}")
+	@ResponseBody
+	public String layoutUdate(@PathVariable String option,@RequestParam Map<String, Object> commandMap,HttpServletRequest req) {
+		if(option.equals("del")) {
+			//모든 데이터지우기 집어 넣기 
+			ibsUserDAO.layoutDeleteAll(String.valueOf(commandMap.get("wl_category")));
+		}
+		String reg_ip = req.getHeader("X-FORWARDED-FOR");
+		if(reg_ip==null) reg_ip=req.getRemoteAddr();
+		commandMap.put("reg_ip", reg_ip);
+		ibsUserDAO.layoutInsert(commandMap);
+		return String.valueOf(commandMap.get("wl_category"));
 	}
 }

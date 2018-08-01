@@ -152,14 +152,19 @@
 			ifnull(a.caption_speed,1) as caption_speed, 
 			ifnull(a.caption_text_color,'#ffffff') as caption_text_color, 
 			ifnull(a.caption_bg_color,'') as caption_bg_color,
-			live_stream_url as live_stream_url 
+			live_stream_url as live_stream_url,
+			desc_text,
+			category_idx as channel_idx,
+			image_path,
+			forceLive,
+			color
 		from 
 			tb_stb_schedule a 
 		left join 
 			tb_live_channel_target b 
 		on 
 			a.category_idx = b.channel_idx
-        where end <![CDATA[>]]> now() and b.group_idx =#{group_id}  group by a.idx order by start;
+        where <![CDATA[!((date(start) < date(now()) and date(end) < date(now())) or (date(start) > date(now())+1 and date(end) > date(now())+1)) ]]> and b.group_idx =#{group_id}  group by a.idx order by start;
 	</select>
  	<select id="relativeVodList" resultType="hanibal.ibs.model.stb.VodSchduleDTO" parameterType="int">
  		select

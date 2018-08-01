@@ -15,10 +15,10 @@
 			<c:set var="oneImg" value="${list.vod_repo}" />
 		</c:if>
 		<c:if test="${status.index eq 0}">
-			<c:set var="onetitle" value="${list.vod_repo}" />
+			<c:set var="onetitle" value="${list.board_title}" />
 		</c:if>
 		<c:if test="${status.index eq 0}">
-			<c:set var="oneContent" value="${list.vod_repo}" />
+			<c:set var="oneContent" value="${list.board_content}" />
 		</c:if>
 		<c:if test="${status.index eq 1}">
 			<c:set var="twoImg" value="${list.vod_repo}" />
@@ -31,10 +31,10 @@
 <span class="line"></span>
 <div class="textForm">
 	<div class="inner">
-		<p class="title">${oneImg}</p>
-		<p class="f19">Marionette, 2017</p>
-		<p class="f20 mt-20">고등학교 여교사 ‘서린’은 책상에 놓인 커피를 마신 뒤<br/>취한 듯 잠든다.  다음날, ‘마스터’라는 정체불명의<br/>발신자가 보낸 한 통의 문자.</p>
-		<button class="white f13 mt-60">바로가기</button>
+		<p class="title">${mainTitle}</p>
+		<p class="f19">${oneContent }</p>
+		<p class="f20 mt-20">${onetitle}</p>
+		<a href="${pageContext.request.contextPath}/user/subList?searchWord=&idxArr=${wl_link_idx}"><button class="white f13 mt-60">바로가기</button></a>
 	</div>
 </div>
 <div class="bxslider">

@@ -102,8 +102,8 @@ pageEncoding="UTF-8"%>
 <input type="hidden" class="form-control" id="categoryName"/>
 <input type="hidden" class="form-control" id="treeIdx" >
 <input type="hidden" class="form-control" id="treeProperty" value="1">
-<input id="repoOrder" type="hidden" class="form-control"/>
-<input id="requestRepo" type="hidden" class="form-control" value="media">
+<input id="repoOrder" type="text" class="form-control"/>
+<input id="requestRepo" type="text" class="form-control" value="media">
 
 <script>
 $('#categoryIdx').val('${hn:getDefaultContentsIdx()}');
@@ -239,7 +239,7 @@ $('#media-add').click(function(){
 		$('#vodOrder').val('insert');
 		$('#vodSlideShow').empty();
 		$('#vodSlideShow').css('margin-left','');
-		$('#vodSlideShow').append('<li><a class="add" onclick="common.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+		$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="arange.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
 		slide.init();
 		$('#vodViewModal').modal();
 	}else if($('#sort').val()=='photo'&&$('#treeProperty').val()!=0){

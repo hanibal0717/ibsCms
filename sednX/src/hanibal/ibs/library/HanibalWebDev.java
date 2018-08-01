@@ -294,35 +294,34 @@ public class HanibalWebDev  extends MysqlConnect{
 		}
 		return name;
 	}
-	public static String getCategoryNames(String sort,String idx) throws IOException {
+	public static String getCategoryNames(String sort,String idx,String index) throws IOException {
 		String name="";
-	
-			URL url = new URL("http://localhost:8080/api/seqKeyList");
-			InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
-			JSONObject object = (JSONObject)JSONValue.parse(isr);
-			String dbProps=String.valueOf(object.get("dbProperties"));
-			dbConnect(dbProps);
-			String table=targetTable(sort);
-			String sql="select idx,category_name from "+table+" where idx in("+idx+")";
-			log.info(sql);
-			try {
-				con.setAutoCommit(false);
-				psmt=con.prepareStatement(sql);
-				rs = psmt.executeQuery();
-				while(rs.next()){
-				name+="<div class=\"m-b-15 m-l-10\" style=\"float:left\">"	;
-				name+="<button class=\"btn btn-sm\">";
-				name+=rs.getString(2);
-				name+="<span class=\"del\"> ×</span>";
-				name+="</button>";
-				name+="</div>";
-				}
-				con.commit();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}finally{
-				dbClose();
+		URL url = new URL("http://localhost:8080/api/seqKeyList");
+		InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+		JSONObject object = (JSONObject)JSONValue.parse(isr);
+		String dbProps=String.valueOf(object.get("dbProperties"));
+		dbConnect(dbProps);
+		String table=targetTable(sort);
+		String sql="select idx,category_name from "+table+" where idx in("+idx+")";
+		log.info(sql);
+		try {
+			con.setAutoCommit(false);
+			psmt=con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()){
+			name+="<div class=\"m-b-15 m-l-10 delCate_"+index+"\" id=\"del_"+rs.getString(1)+"\" style=\"float:left\">"	;
+			name+="<div class=\"btn btn-sm\">";
+			name+=rs.getString(2);
+			name+="<span class=\"del\" onClick=\"layout.delCategorys("+rs.getString(1)+","+index+")\"> ×</span>";
+			name+="</div>";
+			name+="</div>";
 			}
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbClose();
+		}
 
 		return name;
 	}

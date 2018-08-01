@@ -475,7 +475,7 @@
 	            </div>
 	            <div class="get" id="thumnailSource" style="position: absolute; top: 280px; right: 35px; display: none;">
                      <div class="btn btn-sm pull-left m-b-5 blackBtn" id="photoFromPc">PC에서 가져오기</div><br>
-                     <div class="btn btn-sm pull-left blackBtn" onclick="common.selectRepoSource('photo');">저장소에서 가져오기</div>
+                     <div class="btn btn-sm pull-left blackBtn" onclick="common.selectRepoSource('media');">저장소에서 가져오기</div>
                  </div>
 	            <input type="text" id="vod_title" class="form-control m-b-10 validate[required,maxSize[20]]" placeholder="제목">
 	            <textarea id="vod_content" class="form-control m-b-10 validate[required]" placeholder="내용"></textarea>
@@ -1947,7 +1947,7 @@ $(function(){
 						$('#addLi').remove();
 						setTimeout(function(){
 							$('#vodSlideShow').append(retHtml);
-							$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="common.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+							$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="arange.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
 						},10000);
 						$('#thumnailList').val(thumbnailArr);
 						$('#repositoryList').modal('hide');
@@ -1968,7 +1968,7 @@ $(function(){
 				$('#boardSlideShow').empty();
 				$('#photoList').empty();
 				$.each(totalPhotoArr,function(index,value){
- 					arange.photoFactory(value);
+					arange.photoFactory(value);
  					slide.init();
  				});
 				$('#boardSlideShow').append('<li ><a class="add" onclick="common.selectRepoSource(\'photo\');"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');

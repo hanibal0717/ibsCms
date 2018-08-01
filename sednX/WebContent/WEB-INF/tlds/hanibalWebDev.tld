@@ -23,7 +23,7 @@
 			<name>getCategoryNames</name> 
 			<function-class>hanibal.ibs.library.HanibalWebDev</function-class>
 			<function-signature>
-				java.lang.String getCategoryNames(java.lang.String,java.lang.String)				
+				java.lang.String getCategoryNames(java.lang.String,java.lang.String,java.lang.String)				
 			</function-signature>
 	  </function>
 	  

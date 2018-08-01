@@ -1,130 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="hn" uri="/WEB-INF/tlds/hanibalWebDev.tld"%>
 <script src="${pageContext.request.contextPath}/ibsUserJs/DevBoxSlide.js"></script>
 <!-- 이미지 가로 세로 리스트 -->
 				<div class="slider_form">
-					<h2>이미지 가로 세로 리스트<span><a href="#"><img src="img/img_add.png" alt="더보기"/></a></span></h2>
+					<h2>${mainTitle}<span><a href="${pageContext.request.contextPath}/user/subList?searchWord=&idxArr=${wl_link_idx}"><img src="img/img_add.png" alt="더보기"/></a></span></h2>
 					
 					<div class="list-xy">
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_07.png" alt="컨텐츠이미지" /></div>
+						<c:choose>
+						<c:when test="${empty lists }">
+						데이타가 없습니다.
+						</c:when>
+						<c:otherwise>
+						<c:forEach items="${lists}" var="list" varStatus="loop">
+						<div class="contents_form" id="form_${list.idx}">
+							<div class="img"><img src="${list.vod_repo}" alt="컨텐츠이미지" /></div>
 							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
+								<p class="f20 lh20 fw600">${fn:substring(list.board_title,0,14)}<span class="filePoint"></span></p>
 								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
+									${list.reg_dt}
+									<span class="down ml-10"><c:set var="tel" value="${fn:split(list.vod_repo,'/')}" />
+									<c:forEach var="file" items="${tel}" varStatus="g">
+     								<c:if test="${g.count == 6}"><a href="/sedn/download/vod/mp4/${fn:substring(file,0,14)}" /></c:if>
+								</c:forEach> 
+								<img src="img/btn_file.png" alt="다운로드" /></a></span>
+									<span class="hits ml-10">${list.view_count}</span>
 								</div>
 								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
+									<c:out value='${fn:substring(list.board_content.replaceAll("\\\<.*?\\\>",""),0,55)}' />
 								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
+								<button class="detail"><img src="img/btn_detail.png" alt="상세보기"/></button>
 							</div>
 							<div class="text-over none"></div>
 						</div>
+						</c:forEach>
+						</c:otherwise>
+						</c:choose>
+							<script>
+							$('.contents_form').click(function(){
+								var idx=$(this).attr('id').split('_')[1];
+								common.vodViewModal(idx);
+								$('#popup').css('display','block');
+							});
+							</script>
 
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_02.png" alt="컨텐츠이미지" /></div>
-							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
-								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
-								</div>
-								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
-								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
-							</div>
-							<div class="text-over none"></div>
-						</div>
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_03.png" alt="컨텐츠이미지" /></div>
-							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
-								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
-								</div>
-								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
-								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
-							</div>
-							<div class="text-over none"></div>
-						</div>
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_04.png" alt="컨텐츠이미지" /></div>
-							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
-								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
-								</div>
-								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
-								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
-							</div>
-							<div class="text-over none"></div>
-						</div>
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_05.png" alt="컨텐츠이미지" /></div>
-							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
-								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
-								</div>
-								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
-								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
-							</div>
-							<div class="text-over none"></div>
-						</div>
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_06.png" alt="컨텐츠이미지" /></div>
-							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
-								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
-								</div>
-								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
-								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
-							</div>
-							<div class="text-over none"></div>
-						</div>
-
-						<div class="contents_form">
-							<div class="img"><img src="img/img_contents_10.png" alt="컨텐츠이미지" /></div>
-							<div class="text-list h175">
-								<p class="f20 lh20 fw600">레디 플레이어 원<span class="filePoint"></span></p>
-								<div class="f13 fw500 mt-10">
-									2018.04.21
-									<span class="down ml-10"><img src="img/btn_file.png" alt="다운로드" /></span>
-									<span class="hits ml-10">50</span>
-								</div>
-								<p class="last">
-									거대 범죄 조직의 음모에 맞설 초특급 작전이 시작된다! 초대형 범죄 사건의 배후에 있던 
-								</p>
-								<button><img src="img/btn_detail.png" alt="상세보기"/></button>
-							</div>
-							<div class="text-over none"></div>
-						</div>
+						
 					</div>
 				</div><!-- //이미지 가로 세로 리스트 -->

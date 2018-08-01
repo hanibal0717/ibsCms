@@ -12,6 +12,13 @@ public class TotalScheduleDTO {
 	String caption_text_color;
 	String caption_bg_color;
 	String live_stream_url;
+	
+	String desc_text;
+	int channel_idx;
+	String image_path;
+	int forceLive;
+	String color;
+	
 	public int getId() {
 		return id;
 	}
@@ -77,6 +84,37 @@ public class TotalScheduleDTO {
 	}
 	public void setLive_stream_url(String live_stream_url) {
 		this.live_stream_url = live_stream_url;
+	}
+	
+	public String getDesc_text() {
+		return desc_text;
+	}
+	public void setDesc_text(String desc_text) {
+		this.desc_text = desc_text;
+	}
+	public int getChannel_idx() {
+		return channel_idx;
+	}
+	public void setChannel_idx(int channel_idx) {
+		this.channel_idx = channel_idx;
+	}
+	public String getImage_path() {
+		return image_path;
+	}
+	public void setImage_path(String image_path) {
+		this.image_path = image_path;
+	}
+	public int getForceLive() {
+		return forceLive;
+	}
+	public void setForceLive(int forceLive) {
+		this.forceLive = forceLive;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 }
