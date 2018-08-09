@@ -285,39 +285,39 @@
 			a.del_flag = "N"
 	</select>
 	
-	<select id="getLiveChannelTarget" resultType="String">
-		select
-			channel_idx
-		from
-			tb_live_channel_target
-		where
-			group_idx = "0";
-	</select>
+    <select id="getLiveChannelTarget" resultType="String">
+    	select
+        	channel_idx
+        from
+            tb_live_channel_target a
+        left join
+            tb_live_category b on a.channel_idx = b.idx
+        where
+             a.group_idx = 0 and b.category_name is not null;
+    </select>
 	
 	<resultMap id="channelListResult" type="java.util.HashMap">
 		 <result javaType="java.lang.String" column="ch_idx" property="ch_idx"/>
 		 <result javaType="java.lang.String" column="ch_name" property="ch_name"/>
 		 <result javaType="java.lang.String" column="ch_thumbnail" property="ch_thumbnail"/>
 	</resultMap>	
-	<select id="getChannelList" resultMap="channelListResult" parameterType="java.util.Map">
-		select
-			b.idx as ch_idx,
-			b.category_name as ch_name,
-			a.image_path as ch_thumbnail
-		from
-			tb_stb_schedule a
-		left join 
-			tb_live_category b on a.category_idx = b.idx
-		where
-			a. category_idx in
-			<foreach collection="category_idx" item="type" index="index"  open="(" close=")" separator=",">
-	       		#{type}
-	   		</foreach>
-	   	and 
-	   		date_format(a.start, '%Y-%m-%d') = #{date}
-	   	and 
-	   		a.del_flag = "N"
-	</select>
+    <select id="getChannelList" resultMap="channelListResult" parameterType="java.util.Map">
+    	select
+        	idx as ch_idx,
+            name as ch_name,
+            image_path as ch_thumbnail
+        from
+            tb_stb_schedule
+        where
+            category_idx in
+            <foreach collection="category_idx" item="type" index="index"  open="(" close=")" separator=",">
+            	#{type}
+            </foreach>
+        and
+            date_format(start, '%Y-%m-%d') = #{date}
+        and
+        	del_flag = "N"
+    </select>
 	
 	<resultMap id="schListResult" type="java.util.HashMap">
 		 <result javaType="java.lang.String" column="sch_idx" property="sch_idx"/>
@@ -330,31 +330,33 @@
 		 <result javaType="java.lang.String" column="sch_subtitle" property="sch_subtitle"/>
 		 <result javaType="java.lang.String" column="source_type" property="source_type"/>
 	</resultMap>		
-	<select id="getSchList" resultMap="schListResult" parameterType="java.util.Map">
-		select
-			a.idx as sch_idx,
-			a.name as sch_name,
-			a.desc_text as sch_desc,
-			date_format(a.start, '%Y-%m-%d %H:%i:%s') as sch_start,
-			date_format(a.end, '%Y-%m-%d %H:%i:%s') as sch_end,
-			a.live_stream_url as sch_stream_url,
-			a.image_path as sch_thumbnail,
-			a.caption as sch_subtitle,
-			a.source_type
+    <select id="getSchList" resultMap="schListResult" parameterType="java.util.Map">
+    	select
+        	a.idx as sch_idx,
+            a.name as sch_name,
+            a.desc_text as sch_desc,
+            date_format(a.start, '%Y-%m-%d %H:%i:%s') as sch_start,
+            date_format(a.end, '%Y-%m-%d %H:%i:%s') as sch_end,
+            a.live_stream_url as sch_stream_url,
+            a.image_path as sch_thumbnail,
+            a.caption as sch_subtitle,
+            a.source_type
 		from
-			tb_stb_schedule a
-		left join
-			tb_live_category b on a.category_idx = b.idx
-		where
-			a.category_idx in
-			<foreach collection="category_idx" item="type" index="index"  open="(" close=")" separator=",">
-	       		#{type}
-	   		</foreach>
-	   	and 
-	   		date_format(a.start, '%Y-%m-%d') = #{date}
-	   	and 
-	   		a.del_flag = "N"
-	</select>
+            tb_stb_schedule a
+        left join
+            tb_live_category b on a.category_idx = b.idx
+        where
+            a.category_idx in
+            <foreach collection="category_idx" item="type" index="index"  open="(" close=")" separator=",">
+            	#{type}
+            </foreach>
+        and
+            a.idx = #{ch_idx}
+        and
+            date_format(a.start, '%Y-%m-%d') = #{date}
+        and
+        	a.del_flag = "N"
+    </select>
 	
 	<resultMap id="vodListResult" type="java.util.HashMap">
 		 <result javaType="java.lang.String" column="vod_idx" property="vod_idx"/>

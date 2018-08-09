@@ -21,6 +21,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				||request.getRequestURI().indexOf("/error/")>-1
 				||request.getRequestURI().indexOf("/SEQ/")>-1
 				||request.getRequestURI().indexOf("/svc/")>-1
+				||request.getRequestURI().indexOf("/user/")>-1
 			){
 			if(member_authority !=null&&Integer.parseInt((String) member_authority)<0){
 				return true;
