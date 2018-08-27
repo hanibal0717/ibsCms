@@ -235,7 +235,7 @@ public class HanibalWebDev  extends MysqlConnect{
 		}else if(sort.equals("stb-controle")) {
 			tableName="tb_stb";
 		}else if(sort.equals("stb-schedule")) {
-			tableName="vw_stb_group_schedule";
+			tableName="tb_stb";
 		}else if(sort.equals("stb-log")) {
 			tableName="tb_stb_log";
 		}else if(sort.equals("stb-ui")) {

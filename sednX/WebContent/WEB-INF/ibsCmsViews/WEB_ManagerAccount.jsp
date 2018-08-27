@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
 		                            <input type="radio" name="options"/> <i class="icon">&#61887;</i> <span class="text">웹회원</span>
 		                        </label>
 		                        <label class="btn btn-gr-gray btn-sm" onClick="memberList.sortByAuthrity('5000');">
-		                            <input type="radio" name="options" /> <i class="icon">&#61822;</i> <span class="text">데모 관리자</span>
+		                            <input type="radio" name="options" /> <i class="icon">&#61822;</i> <span class="text">데모 회원</span>
 		                        </label>
 		                        <label class="btn btn-gr-gray btn-sm" onClick="memberList.sortByAuthrity('1000');" >
 		                            <input type="radio" name="options" /> <i class="icon">&#61696;</i> <span class="text">컨텐츠 관리자</span>
@@ -39,7 +39,7 @@ pageEncoding="UTF-8"%>
 		                            <input type="radio" name="options"/> <i class="icon">&#61931;</i> <span class="text">셋탑 관리자</span>
 		                        </label>
 		                        <label class="btn btn-gr-gray btn-sm"  onClick="memberList.sortByAuthrity('10000');">
-		                            <input type="radio" name="options"/> <i class="icon">&#61838;</i> <span class="text">최상 관리자</span>
+		                            <input type="radio" name="options"/> <i class="icon">&#61838;</i> <span class="text">최종 관리자</span>
 		                        </label>
                    			 </div>
 	                    </div>

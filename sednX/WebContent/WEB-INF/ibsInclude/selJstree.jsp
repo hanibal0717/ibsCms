@@ -19,6 +19,7 @@ $(function(){
 	});
 	$('#jstreeModal').on("select_node.jstree", function (e, data) {
 		$("#categoryIdx").val(data.node.id);
+		$("#changeCateIdx").val(data.node.id);
 	});
 });
 </script>

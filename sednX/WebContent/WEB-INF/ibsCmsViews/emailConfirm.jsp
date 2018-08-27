@@ -13,7 +13,7 @@ pageEncoding="UTF-8"%>
    		<link href="${pageContext.request.contextPath}/ibsCmsCss/style.css" rel="stylesheet">
     		<link href="${pageContext.request.contextPath}/ibsCmsCss/generics.css" rel="stylesheet"> 
     </head>
-    <body id="skin-blur-violate">
+    <body id="skin-blur-ocean">
         <section id="error-page" class="tile">
             <h1 class="m-b-10">인증이 완료 되었습니다.</h1>
             <p>가입하신 이메일과 비밀번호로 로그인 해 주세요.</p>

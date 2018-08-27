@@ -145,7 +145,7 @@ public class IbsStbApiController {
 			res.getWriter().print(mapper.writeValueAsString(mav));
 		//라이브 채널리스트
 		}else if(order.equals("get_channel_list")) {
-			List<HashMap<String, Object>> chList=stbApiDao.stbChannelList();
+			List<HashMap<String, Object>> chList=stbApiDao.stbChannelList(groupId);
 			res.getWriter().print(mapper.writeValueAsString(chList));
 		//스케줄리스트 
 		}else if(order.equals("get_today_schedule")) {

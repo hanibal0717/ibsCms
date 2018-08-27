@@ -24,6 +24,7 @@
         <link href="${pageContext.request.contextPath}/ibsCmsCss/style.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/ibsCmsCss/icons.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/ibsCmsCss/generics.css" rel="stylesheet"> 
+        
     </head>
     <body id="skin-blur-ocean">
 	<section id="login">
@@ -39,11 +40,11 @@
 	            <form class="form-validation-1" id="submitAccount"   method="post" action="${pageContext.request.contextPath }/cms/loginProcess">
 	                <h2 class="m-t-0 m-b-15">Login</h2>
 	                <input type="text" name="member_email" id="memberEmail" class="input-sm validate[required,custom[email],funcCall[loginCheck.checkMemberEmail]] form-control login-control m-b-10"  placeholder="관리자 계정(이메일)" >
-	                <input type="password" name="member_pass" id="memberPass" class="input-sm validate[required,funcCall[loginCheck.checkMemberPass] form-control login-control" placeholder="비밀번호">
+	                <input type="password" autocomplete="new-password" name="member_pass" id="memberPass" class="input-sm validate[required,funcCall[loginCheck.checkMemberPass] form-control login-control" placeholder="비밀번호">
 	                <input type="submit"  class="btn btn-sm m-r-5 m-t-10"  value="로그인">
 	                <small>
-	                    <a class="box-switcher" data-switch="member-register" href="">계정을 원하시나요?</a> |
-	                    <a class="box-switcher" data-switch="member-findpass" href="">비밀번호를 잊으셨나요??</a>
+	                    <a href="${pageContext.request.contextPath}/cms/join">계정을 원하시나요?</a> |
+	                    <a href="${pageContext.request.contextPath}/cms/forgetpass">비밀번호를 잊으셨나요??</a>
 	                </small>
 	            </form>
             </div>
@@ -55,52 +56,7 @@
                     <i class="icon">&#61730;</i>
                   </div>
                </div>
-              <!--######## defulet Modal ######-->
-            <!-- Register -->
-            <form class="box animated tile form-validation-2" id="member-register" method="post" action="${pageContext.request.contextPath}/cms/memberJoin">
-                <h2 class="m-t-0 m-b-15">Register</h2>
-               <div id="regster_elem">
-	               <div style="text-align: center;">
-	               	<label for="imageFile">
-	               		<img class="profile-pic animated" id="imageFile_view" src="" alt="${sessionScope.member_name }" onerror="this.src = '${pageContext.request.contextPath}/REPOSITORY/PROFILE/noimage.png';" style="margin:0 auto;cursor:pointer;">
-	               	</label>
-	               	<input type="file"  id="imageFile" style="width:0px;height:130px;float:left;" onchange="uploadFile.image(this,'imageFile')" class="validate[required,funcCall[loginCheck.checkImageExist]]">
-	               </div>
-                
-	                <input type="text" name="member_email" id="joinEmail" class="login-control m-b-10 validate[required,custom[email],funcCall[loginCheck.checkEmailExist]]" placeholder="이메일 주소">  
-	                <input type="text" name="member_name" id="joinName" class="login-control m-b-10 validate[required,maxSize[20],custom[onlyLetterSp]]" placeholder="이름(소속)">
-	                <input type="password" name="member_pass" id="joinPass" class="login-control m-b-10 validate[required,maxSize[15],minSize[8],custom[onlyLetterNumber]]" placeholder="비밀번호">
-	                <input type="password" id="joinPassConfirm" class="login-control m-b-20 validate[required,equals[joinPass]]" placeholder="비밀번호 확인">
-	                <input type="hidden" name="member_profile" id="joinProfile" style="width:0px;height:0px;">
-									<input type="submit" class="btn btn-sm m-r-5" value="계정신청">
-									<small><a class="box-switch5er" data-switch="submitAccount" href="">로그인 페이지 돌아가기 </a></small>
-									
-									<div id="loadingLayer" class="modal" style="position: absolute;z-index: 0;display:none;">
-										<div style="margin:0 auto;position:  relative;top: 50%;margin-top: -25px;text-align:  center;"><img src="${pageContext.request.contextPath}/ibsImg/loading.gif" /><br/>
-									로딩중입니다. </div>
-									</div>
-								</div>
-								<div id="register_result" class="tile p-10" style="display:none;">
-									<h4>성공적으로 가입신청 하였습니다.</h4><br/>
-									<span id="register_email"></span>로 인증키가 발급되었습니다.<br/> 이 메일 링크를 클릭하시면 가입 인증이 됩니다.<br/>
-									<div class="m-t-20"><small><a class="box-switch5er" data-switch="submitAccount" href="">로그인 페이지 돌아가기 </a></small></div>
-								</div>
-								
-            </form>
-            
-            <!-- Forgot Password -->
-            <form class="box animated tile form-validation-3" id="member-findpass" method="post" action="${pageContext.request.contextPath}/cms/lostpass">
-                <h2 class="m-t-0 m-b-15">Reset Password</h2>
-                <p>게정등록시 사용한 이메일을 입력하시면 해당 이메일로 임시 비밀번호를 받아 볼 수 있습니다.</p>
-                <input type="email" id="lostEmail" name="member_email" class="input-sm validate[required,custom[email],funcCall[loginCheck.checkLostEmail]] form-control login-control m-b-10"  placeholder="관리자 계정(이메일)" >    
-								<input type="submit" class="btn btn-sm m-r-5" value="임시 비밀번호 받기" />
-
-                <small><a class="box-switcher" data-switch="submitAccount" href="">로그인 페이지 돌아가기</a></small>
-                <div id="loadingLayerPass" class="modal" style="position: absolute;z-index: 0;display:none;">
-										<div style="margin:0 auto;position:  relative;top: 50%;margin-top: -25px;text-align:  center;"><img src="${pageContext.request.contextPath}/ibsImg/loading.gif" /><br/>
-									로딩중입니다. </div>
-									</div>
-            </form>
+              <!--######## defulet Modal ######-->     
         </section>                      
         <script src="${pageContext.request.contextPath}/ibsCmsJs/jquery.min.js"></script> <!-- jQuery Library -->
         <script src="${pageContext.request.contextPath}/ibsCmsJs/bootstrap.min.js"></script>
@@ -276,6 +232,11 @@
     				ev.preventDefault();
     			});
     		});
+    		$("#memberPass").keydown(function (key) {
+    			if(key.keyCode == 13){
+    	            $('#submitAccount').submit();
+    	        }
+    	 	});
     		</script>
 	</body>
 </html>

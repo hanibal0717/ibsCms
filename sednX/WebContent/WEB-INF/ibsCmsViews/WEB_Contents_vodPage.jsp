@@ -117,63 +117,7 @@ if($('#requestRepo').val()=='media'){
 		$('#vodViewMainThumb').attr('src',"${pageContext.request.contextPath}"+$('#play_thum').val());
 		modalLayer.vodPlayer($('#play_url').val(),$('#play_thum').val(),"vodPreview");
 	});
-	$("#vodSection").change(function(){
-		//용량
-		$('#thumnailSource').css('display','none')
-		var file=this.files;
-		if (file[0].size > 3000*1024 * 1024) {
-			jQuery('#vod_path').validationEngine('showPrompt', '3GB 이하 파일만 업로드 하세요.', 'pass')
-			return;
-		}
-		$("#file_size").val(file[0].size);
-		//확장자
-		var localPath = $(this).val();
-		var ext = localPath.split('.').pop().toLowerCase();
-		if ($.inArray(ext, [ 'wmv','avi','mov','flv','mp4','mpg','mpeg','mkv','3gp']) == -1) {
-			jQuery('#vod_path').validationEngine('showPrompt', 'wmv,avi,mov,flv,mp4,mpg,mpeg 파일만 업로드 가능합니다.', 'pass');
-			return;
-		}
-		var formData = new FormData();
-		formData.append("uploadFile", file[0]);
-		$.ajax({
-			xhr: function() {
-			    	var xhr = new window.XMLHttpRequest();
-					xhr.upload.addEventListener("progress", function(evt) {
-			      	if (evt.lengthComputable) {
-			        	var percentComplete = evt.loaded / evt.total;
-			        	percentComplete = parseInt(percentComplete * 100);
-			        	$("#progressBar").css("width",percentComplete+"%");
-			        	$("#barText").text(percentComplete+"% Complete");
-						if (percentComplete === 100) {
-							$("#progressBarLayout").css('display','none');
-			        	}
-					}
-			 }, false);
-				return xhr;
-			},
-			url : '${pageContext.request.contextPath}/SEQ/UPLOAD/'+$("#sort").val().toUpperCase(),
-			processData : false,
-			contentType : false,
-			data : formData,
-			type : 'POST',
-			beforeSend : function() {
-				$('#progressLayout').modal();
-				$("#progressBarLayout").css('display','block');
-			},
-			success : function(responseData) {
-				var data=JSON.parse(responseData);
-					$("#vod_path").val(data.fileName);
-					$("#encodingBarLayout").css('display','block');
-					uploadFile.mediaEncoding(data.fileName);
-			},
-			complete : function(responseData) {
-				console.log('complete');
-			},
-			error : function() {
-				//exception.fileUpdateException();
-			}
-		});
-	});
+	
 	var arr=[];
 	$(".vodCheck").click(function(){
 		if($(this).is(":checked")==true){

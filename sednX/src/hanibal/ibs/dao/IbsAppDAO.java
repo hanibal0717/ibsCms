@@ -306,39 +306,39 @@ public class IbsAppDAO {
 		return favoriteList;
 	}
 	
-    public List<HashMap<String, Object>> getLivePairing(Map<String, Object> commandMap) throws ParseException {
-        List<String> liveChannelTartgetListArray = sqlTemplate.selectList("getLiveChannelTarget");
-        String liveChannelTargetList = liveChannelTartgetListArray.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "");
-        
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("category_idx", HanibalWebDev.StringToIntArray(liveChannelTargetList));
-        map.put("date", (String)commandMap.get("date"));
-        List<HashMap<String, Object>> channelList = sqlTemplate.selectList("getChannelList", map);
-        
-        for(int i=0;i<channelList.size();i++) {
-               channelList.get(i).put("ch_thumbnail", "/REPOSITORY/THUMBNAIL/2018/01/31/20180131140939_4.jpg");
-               map.put("ch_idx", channelList.get(i).get("ch_idx"));
-               List<HashMap<String, Object>> schList = sqlTemplate.selectList("getSchList", map);
-               
-               for(int n=0;n<schList.size();n++) {
-                     schList.get(n).put("sch_thumbnail", "/REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath((String)schList.get(n).get("sch_thumbnail")) + (String)schList.get(n).get("sch_thumbnail"));
-                     map.put("vod_idx", schList.get(n).get("sch_idx"));
-                     List<HashMap<String, Object>> vodList = sqlTemplate.selectList("getVodList", map);
-                     schList.get(n).put("vodList", vodList);
-                     for(int j=0;j<vodList.size();j++) {
-                            String vodName = (String)vodList.get(j).get("vod_path");
-                            String vodPlayTime = (String)vodList.get(j).get("vod_play_time");
-                            SimpleDateFormat transFormat = new SimpleDateFormat("HH:mm:ss");
-                            Date transVodPlayTime = transFormat.parse(vodPlayTime);
-                            String transVodPlayTimeSet = String.valueOf((transVodPlayTime.getHours() * 3600 + transVodPlayTime.getMinutes() * 60 + transVodPlayTime.getSeconds()) * 1000);
-                            vodList.get(j).put("vod_path", "http://" + commandMap.get("mediaIp") + "/VOD" + HanibalWebDev.getDataPath((String)vodList.get(j).get("vod_path")) + vodName);     
-                            vodList.get(j).put("vod_play_time", transVodPlayTimeSet);
-                     }                          
-               }
-               channelList.get(i).put("schList", schList);
-        }
-        return channelList;
- }
+	public List<HashMap<String, Object>> getLivePairing(Map<String, Object> commandMap) throws ParseException {
+		List<String> liveChannelTartgetListArray = sqlTemplate.selectList("getLiveChannelTarget");
+		String liveChannelTargetList = liveChannelTartgetListArray.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category_idx", HanibalWebDev.StringToIntArray(liveChannelTargetList));
+		map.put("date", (String)commandMap.get("date"));
+		List<HashMap<String, Object>> channelList = sqlTemplate.selectList("getChannelList", map);
+		
+		for(int i=0;i<channelList.size();i++) {
+			map.put("ch_idx", channelList.get(i).get("ch_idx"));
+			List<HashMap<String, Object>> schList = sqlTemplate.selectList("getSchList", map);
+			
+			for(int n=0;n<schList.size();n++) {
+				schList.get(n).put("sch_thumbnail", "/REPOSITORY/THUMBNAIL" + HanibalWebDev.getDataPath((String)schList.get(n).get("sch_thumbnail")) + (String)schList.get(n).get("sch_thumbnail"));
+				map.put("vod_idx", schList.get(n).get("sch_idx"));
+				List<HashMap<String, Object>> vodList = sqlTemplate.selectList("getVodList", map);
+				schList.get(n).put("vodList", vodList);
+
+				for(int j=0;j<vodList.size();j++) {
+					String vodName = (String)vodList.get(j).get("vod_path");
+					String vodPlayTime = (String)vodList.get(j).get("vod_play_time");
+					SimpleDateFormat transFormat = new SimpleDateFormat("HH:mm:ss");
+					Date transVodPlayTime = transFormat.parse(vodPlayTime);
+					String transVodPlayTimeSet = String.valueOf((transVodPlayTime.getHours() * 3600 + transVodPlayTime.getMinutes() * 60 + transVodPlayTime.getSeconds()) * 1000);
+					vodList.get(j).put("vod_path", "http://" + commandMap.get("mediaIp") + "/VOD" + HanibalWebDev.getDataPath((String)vodList.get(j).get("vod_path")) + vodName);	
+					vodList.get(j).put("vod_play_time", transVodPlayTimeSet);
+				}				
+			}
+			channelList.get(i).put("schList", schList);
+		}
+		return channelList;
+	}
 	
 	public HashMap<String, Object> getUserinfo(Map<String, Object> commandMap) throws ParseException {
 		// token에 담긴 member_id를 풀어내여 해당 정보를 조회한다

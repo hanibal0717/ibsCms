@@ -110,8 +110,8 @@ public class IbsStbApiDAO {
 		}
 		return dto;
 	}
-	public List<HashMap<String, Object>> stbChannelList() {
-		List<HashMap<String, Object>> list=sqlTemplate.selectList("stbChannelList");
+	public List<HashMap<String, Object>> stbChannelList(String groupId) {
+		List<HashMap<String, Object>> list=sqlTemplate.selectList("stbChannelList",groupId);
 		return list;
 	}
 	public List<TodayScheduleDTO> todayScheduleInfo(String groupId, String repositoryPath) {

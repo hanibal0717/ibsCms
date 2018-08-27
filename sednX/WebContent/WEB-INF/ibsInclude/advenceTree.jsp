@@ -178,9 +178,15 @@ var menuTree=(function(){
 	var createGroup=function(attrebute){
 		var ref = $('#jstree').jstree(true);
 		sel = ref.get_selected('full');
-        if(sel[0].original.property=="1"){
+        if(sel[0]==undefined){
+        	exception.beforeSelectException();
+        	return false;
+        }else if(sel[0].original.property=="1"){
         	exception.menuMakeException();
         	return false;
+        }else if(sel[0].id=="1"&&attrebute=="1"){
+        	exception.subMainException();
+        	return false;	
         }else{
         	if(!sel.length) { return false; }
     		sel = sel[0].id;
@@ -189,7 +195,8 @@ var menuTree=(function(){
     		if(attrebute=="1"){
     			icon="list.png";
     		}
-    		var new_node = {"id":new_id, "text":"새 그룹 [0]", "num": 0,"property":attrebute,"icon":"${pageContext.request.contextPath}/ibsImg/"+icon};
+    		var new_node = {"id":new_id, "text":"새 그룹", "num": 0,"property":attrebute,"icon":"${pageContext.request.contextPath}/ibsImg/"+icon};
+    		console.log(sel[0]);
     		console.log("new id : " + new_id);
     		ref.create_node(sel, new_node);
     		ref.edit(new_id);	

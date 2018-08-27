@@ -32,6 +32,7 @@
     <script src="${pageContext.request.contextPath}/ibsCmsJs/video.js"></script>
 	<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-flash.js"></script>
 	<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-contrib-hls.js"></script>
+	<script src="${pageContext.request.contextPath}/ibsCmsJs/videojs-playlists.js"></script>
 	
 	<!-- Dev Sctipt -->
 </head>
@@ -72,7 +73,7 @@
 	                <a class="info" style="cursor:pointer;"><img src="${pageContext.request.contextPath}/img/img_info.png" alt="정보"/></a>
 	                <div class="infoForm">
 	                    <ul>
-	                        <li>해상도 : <span id="boardViewRuntime">1808 x 920</span></li>
+	                        <li>해상도 : <span id="boardViewResolution">1808 x 920</span></li>
 	                        <li>재생시간 :<span id="boardViewRuntime"></span></li>
 	                        <li>용량 : <span id="boardViewFilesize"></span></li>
 	                    </ul>
@@ -249,8 +250,8 @@ var common={
 				$('#downloadUl').empty();
 				$('#photoList').empty();
 
-				
-				
+				console.log(data.vodRelative.vodFile);
+				$('#downloadUl').append('<li>· <a href="${pageContext.request.contextPath}/sedn/download/vod/'+data.vodRelative.vodFile.split('.')[1]+'/'+data.vodRelative.vodFile.split('.')[0]+'">'+data.vodRelative.vodFile+'</a></li>');
 				if(data.info.photo_repo.length!=0){
 					var imgArr=data.info.photo_repo.split(',');
 					$.each(imgArr,function(index,value){
@@ -264,12 +265,16 @@ var common={
 	 					arange.fileFactory(value);
 	 				});
 				}
-				if(data.info.photo_repo.length==0&&data.info.file_repo.length==0){
+				if(data.info.photo_repo.length==0&&data.info.file_repo.length==0&&data.vodRelative.vodFile.length==0){
 					$('#downloadUl').append('<li>파일 없음</li>');
 				}
 			},
 			error : common.ajaxException
 		});
+	},
+	viewContents:function(idx){
+		common.vodViewModal(idx);
+		$('#popup').css('display','block');
 	}
 };
 $.ajax({
@@ -281,7 +286,7 @@ $.ajax({
 		var data=JSON.parse(responseData);
 		var innerHtml="";
 		for(var i=0;i<data.mainDepth.length;i++){
-			innerHtml+='<li class="mainDepth" id="mainDepth_'+data.mainDepth[i].menu_idx+'">';
+			innerHtml+='<li class="mainDepth" id="mainDepth_'+data.mainDepth[i].menu_idx+'" style="cursor:pointer;">';
 			innerHtml+='<a>'+data.mainDepth[i].menu_name+'</a>';
 			innerHtml+='<ul class="depth2">';
 			for(var j=0;j<data.mainDepth[i].subDepth.length;j++){
@@ -342,7 +347,7 @@ $('.mainDepth').click(function(){
 	$('#mainDepth_'+$(this).attr('id').split('_')[1]).addClass('liActive');
 	common.layoutView();
 });
-</script>
 
+</script>
 </html>
 

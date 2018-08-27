@@ -225,7 +225,15 @@ $('#backAddBtns').click(function(){
 	$('#editBtns').css('display','none');
 });
 $('#contents-search').keyup(function(key){
-	arange.contentsView($('#categoryIdx').val());
+	var regExp =/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+	var retString=$('#contents-search').val();
+	if(regExp.test(retString)){
+		$('#contents-search').val(retString.replace(regExp,""));	
+	}
+	if($('#contents-search').val().length!=0){
+		arange.contentsView($('#categoryIdx').val());
+	}
+	
 });
 $('#media-add').click(function(){
 	if($('#sort').val()=='vod'&&$('#treeProperty').val()!=0){

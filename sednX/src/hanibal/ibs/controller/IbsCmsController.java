@@ -89,6 +89,16 @@ public class IbsCmsController {
 		return "/ibsCmsViews/cmslogin.inc";
 	}
 	
+	@RequestMapping("/cms/join")
+	public String join() {
+		return "/ibsCmsViews/cmsjoin.inc";
+	}
+	
+	@RequestMapping("/cms/forgetpass")
+	public String lostpass() {
+		return "/ibsCmsViews/cmspass.inc";
+	}
+	
 	@RequestMapping(value="/cms/loginProcess",method=RequestMethod.POST)
 	public String loginProcess(@ModelAttribute MemberAccountDTO dto,HttpSession session,HttpServletRequest req) throws IOException, JSONException {
 		String returnPage="";
@@ -456,12 +466,18 @@ public class IbsCmsController {
 		}
 		return viewPage;
 	}
-	@RequestMapping("/cms/makepage/setting/{idx}")
-	public String makePageSetting(@PathVariable String idx,Model model) {
+	@RequestMapping("/cms/makepage/{order}/{idx}")
+	public String makePageSetting(@PathVariable String order,@PathVariable String idx,Model model) {
+		String viewPage="";
 		List<LayoutDTO> lists=ibsCmsDao.getLayoutList(Integer.parseInt(idx));
 		model.addAttribute("category",idx);
 		model.addAttribute("lists",lists);
-		return "/ibsCmsViews/WEB_MakePage_Setting.inc";
+		if(order.equals("setting")) {
+			viewPage="/ibsCmsViews/WEB_MakePage_Setting.inc";
+		}else {
+			viewPage="/ibsCmsViews/WEB_MakePage_Preview.inc";
+		}
+		return viewPage;
 	}
 	
 	@RequestMapping("/cms/makepage/editForm/{category}/{index}/{type}/{idx}")
@@ -527,6 +543,11 @@ public class IbsCmsController {
 		res.setCharacterEncoding("utf8");
 		if(order.equals("member")) {
 			affectcount=ibsCmsDao.deleteMemberAuthority(HanibalWebDev.StringToIntArray(checkValArr));
+			if(affectcount>0) {
+				map.put("result","success");
+			}else{
+				map.put("result", "fail");
+			}
 		}else if(order.equals("stb-schedule")) {
 			affectcount=ibsCmsDao.deleteSchedule(HanibalWebDev.StringToIntArray(checkValArr));
 			if(affectcount>0) {
@@ -752,17 +773,13 @@ public class IbsCmsController {
 	@ResponseBody
 	public String ScheduleDate(@RequestParam Map<String, Object> commandMap) throws ParseException {
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date beginDate=format.parse(String.valueOf(commandMap.get("start")));
-		Date endDate=format.parse(String.valueOf(commandMap.get("end")));
-		Date today=new Date();
-		int compareEnd=today.compareTo(endDate);
-		int compareStart=today.compareTo(beginDate);
+		//Date beginDate=format.parse(String.valueOf(commandMap.get("start")));
+		//Date endDate=format.parse(String.valueOf(commandMap.get("end")));
+		//Date today=new Date();
+		//int compareEnd=today.compareTo(endDate);
+		//int compareStart=today.compareTo(beginDate);
 		String msg="";
-		if(compareStart>0&&compareEnd<0) {
-			msg="fail";
-		}else {
-			msg=ibsCmsDao.updateScheduleDate(commandMap);
-		}
+		msg=ibsCmsDao.updateScheduleDate(commandMap);
 		return msg;
 	}
 	

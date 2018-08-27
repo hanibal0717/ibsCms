@@ -68,7 +68,7 @@
 </c:choose>
     </tbody>
   </table>
-
+ 
 <div class="media p-5 text-center l-100">
   ${pagingStr}
 </div>

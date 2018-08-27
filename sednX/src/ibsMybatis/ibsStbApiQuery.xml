@@ -85,7 +85,7 @@
 		select
 			(a.idx) as id,
 			(a.board_title) as title,
-			(a.category_idx) as menu,
+			concat((a.category_idx), ',', (select pid from tb_board_category where idx=a.category_idx)) as menu,
 			(select main_thumbnail from tb_vod_repository where idx=a.vod_repo) as thumbnail_path, 
 			(select vod_path from tb_vod_repository where idx=a.vod_repo) as video_path,
 			(a.reg_dt) as register_dt,
@@ -100,8 +100,8 @@
 		order by a.idx desc;
 	</select>
 	
-	<select id="stbChannelList" resultType="java.util.HashMap">
-		select distinct(a.channel_idx)  as ch_idx,(select category_name from tb_live_category where idx=a.channel_idx) as ch_nm from tb_live_channel_target a where group_idx !=0 group by channel_idx;
+	<select id="stbChannelList" resultType="java.util.HashMap" parameterType="String">
+		select distinct(a.channel_idx)  as ch_idx,(select category_name from tb_live_category where idx=a.channel_idx) as ch_nm from tb_live_channel_target a where group_idx=#{group_id} group by channel_idx;
 	</select>
 	<select id="todayScheduleInfo" resultType="hanibal.ibs.model.stb.TodayScheduleDTO" parameterType="java.util.Map">
 		select 
@@ -142,7 +142,7 @@
 	</select>
 	<select id="totalScheduleInfo" resultType="hanibal.ibs.model.stb.TotalScheduleDTO" parameterType="int">
         select 
-			(a.idx) as id, 
+			a.idx as id, 
 			name, 
 			start, 
 			end, 
@@ -164,7 +164,7 @@
 			tb_live_channel_target b 
 		on 
 			a.category_idx = b.channel_idx
-        where <![CDATA[!((date(start) < date(now()) and date(end) < date(now())) or (date(start) > date(now())+1 and date(end) > date(now())+1)) ]]> and b.group_idx =#{group_id}  group by a.idx order by start;
+        where <![CDATA[!((date(start) < date(now()) and date(end) < date(now())) or (date(start) > date(now()) and date(end) > date(now()))) ]]> and b.group_idx =#{group_id} and a.del_flag='N' group by a.idx order by start;
 	</select>
  	<select id="relativeVodList" resultType="hanibal.ibs.model.stb.VodSchduleDTO" parameterType="int">
  		select

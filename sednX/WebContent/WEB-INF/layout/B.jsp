@@ -16,7 +16,7 @@
 	</c:when>
 	<c:otherwise>
 	<c:forEach items="${lists}" var="list" varStatus="loop">
-		<div class="contents_form" id="form_${list.idx}">
+		<div class="contents_form" id="form_${list.idx}" onClick="common.viewContents('${list.idx}')">
 			<div class="text">${fn:substring(list.board_title,0,14)}</div>
 			<div class="text-over">
 				<div class="header">
@@ -43,12 +43,5 @@
 	</c:forEach>
 	</c:otherwise>
 	</c:choose>
-		<script>
-		$('.contents_form').click(function(){
-			var idx=$(this).attr('id').split('_')[1];
-			common.vodViewModal(idx);
-			$('#popup').css('display','block');
-		});
-		</script>
 	</div>
 </div><!-- //기본 세로형 썸네일 -->

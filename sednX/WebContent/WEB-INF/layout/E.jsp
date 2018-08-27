@@ -16,7 +16,7 @@
 					</c:when>
 					<c:otherwise>
 					<c:forEach items="${lists}" var="list" varStatus="loop">
-						<div class="contents_form" id="form_${list.idx}">
+						<div class="contents_form" id="form_${list.idx}" onClick="common.viewContents('${list.idx}')">
 							<div class="wp50 h340 float-left">
 								<div class="img"><img src="${list.vod_repo}" alt="컨텐츠이미지" /></div>
 							</div>
@@ -43,14 +43,6 @@
 						</c:forEach>
 						</c:otherwise>
 						</c:choose>
-							<script>
-							$('.contents_form').click(function(){
-								var idx=$(this).attr('id').split('_')[1];
-								common.vodViewModal(idx);
-								$('#popup').css('display','block');
-							});
-							</script>
-					
 
 					</div>
 				</div><!-- //세로형 리스트 -->

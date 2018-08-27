@@ -54,11 +54,12 @@ pageEncoding="UTF-8"%>
               </div>
           	</div>
             <!-- CONTENTS START -->
-			<div id="listView" class="tile">aaaaaa</div>
+			<div id="listView" class="tile"></div>
 			<!-- CONTENTS END -->	
 	    	</div>
 	    </div>
    	</div>
+   	 <input type="hidden" class="form-control" id="changeCateIdx" />
 </section>
 <script>
 	var menuJs = (function() {

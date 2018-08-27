@@ -55,7 +55,14 @@ pageEncoding="UTF-8"%>
 	                   </div>	
 	                 </div>
 	                 <div id="pageView">
-	                		 
+	                	<img src="${pageContext.request.contextPath}/img/A.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/B.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/C.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/D.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/E.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/F.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/G.jpg" style="margin-bottom:10px;"/>
+	                	<img src="${pageContext.request.contextPath}/img/H.jpg" style="margin-bottom:10px;"/>	 
 	                 </div>
 	                 
                  </div>
@@ -167,7 +174,13 @@ var arange=(function(){
 		$('#preview').css('display','none');
 		$('#setting').css('display','block');
 		$("#pageView").empty();
-		$("#pageView").html("<h1> 미리보기 :"+idx+"</h1>");
+		$.ajax({
+			url : "${pageContext.request.contextPath}/cms/makepage/preview/"+idx,
+			success : function(data){
+				$('#pageView').html(data);
+			},
+			error : exception.ajaxException
+		});
 	};
 	var changeMode=function(idx){
 		$('#selectedIdxs').val('');
@@ -278,7 +291,14 @@ var arange=(function(){
 		arange.movePreview($('#categoryIdx').val());
 	});
 	$('#contents-search').keyup(function(key){
-		arange.contentsView($('#categoryIdx').val());
+		var regExp =/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+		var retString=$('#contents-search').val();
+		if(regExp.test(retString)){
+			$('#contents-search').val(retString.replace(regExp,""));	
+		}
+		if($('#contents-search').val().length!=0){
+			arange.contentsView($('#categoryIdx').val());
+		}
 	});
 	
 </script>

@@ -18,7 +18,7 @@
 						<c:forEach items="${lists}" var="list" varStatus="status">
 						<c:set var="remainInt" value="${status.index mod 6}" />
 						<c:if test="${remainInt eq 0}">
-						<div class="contents_form widthx2" id="form_${list.idx}">
+						<div class="contents_form widthx2" id="form_${list.idx}" onClick="common.viewContents('${list.idx}')">
 							<div class="wp50 h340 float-left">
 								<div class="img"><img src="${list.vod_repo}" alt="컨텐츠이미지" /></div>
 							</div>
@@ -44,7 +44,7 @@
 						</div>
 						</c:if>
 						<c:if test="${remainInt ne 0}">
-						<div class="contents_form">
+						<div class="contents_form" onClick="common.viewContents('${list.idx}')">
 							<div class="img h165"><img src="${list.vod_repo}" alt="컨텐츠이미지" /></div>
 							<div class="text-list h175">
 								<p class="f20 lh20 fw600">${fn:substring(list.board_title,0,14)}<span class="filePoint"></span></p>
@@ -69,12 +69,6 @@
 						</c:forEach>
 						</c:otherwise>
 						</c:choose>
-							<script>
-							$('.contents_form').click(function(){
-								var idx=$(this).attr('id').split('_')[1];
-								common.vodViewModal(idx);
-								$('#popup').css('display','block');
-							});
-							</script>
+				
 					</div>
 				</div><!-- //리스트 혼합형 -->

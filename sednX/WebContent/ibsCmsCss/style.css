@@ -42,10 +42,10 @@
 }
 
 ::selection {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.5);
 }
 ::-moz-selection {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.5);
 }
 
 * {
@@ -2354,3 +2354,9 @@ a.list-group-item.active > .badge,
 
  .vjs-tech {z-index:1;}
  .vjs-control-bar{z-index:2;}
+ 
+ #jstree {max-height: 780px; overflow-y:auto;}
+ 
+.dropdown-menu.open {max-height: 654px; overflow: auto;}
+.img_box {position: relative}
+.img_box p.text-center {width:100%; top:65%; position: absolute; margin-top: 0 !important;}

@@ -54,5 +54,44 @@
 		insert into tb_web_layout ( wl_title, wl_link_idx, wl_type, wl_categorys, wl_attribute, wl_sort, reg_ip,wl_category) 
 		values (#{wl_title},#{wl_link_idx},#{wl_type},#{wl_categorys},#{wl_attribute},#{wl_sort},#{reg_ip},#{wl_category});
 	</insert>
+	
+	
+	<select id="getWebSchedule" resultType="java.util.Map">
+		select (a.idx) as id,(a.category_name) as name from tb_live_category a  join tb_live_channel_target b on a.idx=b.channel_idx where b.group_idx=0;
+	</select>
+	
+	<select id="getWebScheduleList" parameterType="String" resultType="java.util.Map">
+		  select (category_idx)as id,date_format(start,'%Y-%m-%d %H:%i') as start_date,date_format(end,'%Y-%m-%d %H:%i') as end_date FROM ibsdata.tb_stb_schedule where del_flag='N' and category_idx=#{idx};
+	</select>
+	
+	<select id="getTaskList" parameterType="java.util.Map" resultType="java.util.Map">
+		 select (category_idx)as id,concat(date_format(start,'%H:%i '),name) as name,(forceLive) as color,(forceLive) as tag,(forceLive) as tagcolor,idx from tb_stb_schedule where del_flag='N' and category_idx in 
+		 <foreach collection="categoryIdxs" item="type" index="index"  open="(" close=")" separator=",">
+        	 #{type}
+      	</foreach>
+	</select>
+	
+	<select id="getLiveView" parameterType="int"  resultType="java.util.Map">
+		select 
+			idx,
+			concat('false') as now,
+		    start,
+		    end,
+            source_type,
+            live_stream_url,
+            concat('') as vod_stream_url,
+		    (select category_name from tb_live_category where idx=category_idx) as channel,
+		    (name) as title,
+		    concat(date_format(start,'%Y년 %m월 %d일 %H시 %i분'),' ~',date_format(end,'%H시 %i분')) as time,
+		    (desc_text) as text,
+		    (image_path) as img 
+		from 
+			tb_stb_schedule 
+		where idx=#{schedule};
+	</select>
+	
+	<select id="scheduleVodList" parameterType="java.util.Map" resultType="String">
+		select vod_path from tb_stb_schedule_vod a left join tb_vod_repository b on b.idx=a.vod_id  where schedule_id=#{idx} order by play_order asc;
+	</select>
 </mapper> 
 

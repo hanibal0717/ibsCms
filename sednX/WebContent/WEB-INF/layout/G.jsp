@@ -18,7 +18,7 @@
 						<c:forEach items="${lists}" var="list" varStatus="loop">
 						<c:set var="remainInt" value="${status.index mod 11}" />
 						<c:if test="${remainInt eq 0 ||remainInt eq 1||remainInt eq 4 }">
-						<div class="contents_form mix-over h340 viewForm" id="form_${list.idx}">
+						<div class="contents_form mix-over h340 viewForm" id="form_${list.idx}" onClick="common.viewContents('${list.idx}')">
 							<div class="gra"></div>
 							<div class="text">${fn:substring(list.board_title,0,14)}</div>
 							<div class="img"><img src="${list.vod_repo}" alt="컨텐츠이미지" /></div>
@@ -44,7 +44,7 @@
 						
 				<c:if test="${remainInt ne 0 && remainInt ne 1 && remainInt ne 4 }">
 				<div class="sm">
-				<div class="contents_form">
+				<div class="contents_form" onClick="common.viewContents('${list.idx}')">
 				<div class="h50 viewform" id="form_${list.idx}">
 					<div class="gra"></div>
 					<div class="text">${fn:substring(list.board_title,0,14)}</div>
@@ -68,7 +68,7 @@
 					</div>							
 				</div>
 				</div>
-				<div class="contents_form">
+				<div class="contents_form" onClick="common.viewContents('${list.idx}')">
 				<div class="h50 viewform" id="form_${list.idx}">
 					<div class="gra"></div>
 					<div class="text">${fn:substring(list.board_title,0,14)}</div>
@@ -100,12 +100,5 @@
 						</c:forEach>
 						</c:otherwise>
 						</c:choose>
-							<script>
-							$('.viewform').click(function(){
-								var idx=$(this).attr('id').split('_')[1];
-								common.vodViewModal(idx);
-								$('#popup').css('display','block');
-							});
-							</script>
 					</div>
 				</div><!-- //썸네일 혼합형 -->

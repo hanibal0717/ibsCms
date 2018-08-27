@@ -318,7 +318,7 @@
 						class="form-control m-b-10 validate[required,funcCall[loginCheck.checkMemberPass]]"
 						placeholder="기존비밀번호"> <input type="password"
 						name="member_pass" id="joinPass"
-						class="form-control m-b-10 validate[required,maxSize[15],minSize[8],custom[onlyLetterNumber]]"
+						class="form-control m-b-10 validate[required,maxSize[15],minSize[6],custom[onlyLetterNumber]]"
 						placeholder="새 비밀번호"> <input type="password"
 						class="form-control m-b-20 validate[required,equals[joinPass]]"
 						placeholder="새 비밀번호 확인"> <input type="hidden"
@@ -339,7 +339,7 @@
 <div class="modal fade in" id="liveTargetAdd" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-dialog" style="top: 30%;">
         <div class="modal-content">
-            <div class="modal-body" style="padding: 30px; overflow: hidden;">
+            <div class="modal-body" style="padding: 30px; overflow: -webkit-paged-x;">
                 <div class="col-md-12">
                     <div class="m-b-15 col-md-10" style="top: 5px;">
                         <label class="checkbox-inline">
@@ -372,8 +372,8 @@
                             <button type="button" class="btn btn-sm form-control dropdown-toggle">
                                 <span class="pull-left">타겟 선택</span>
                             </button>
-                            <div class="dropdown-menu open" style="max-height: 654px; overflow: hidden; min-height: 83px; padding: 0; background:rgb(25, 27, 31);">
-                                <div class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: 83px;" id="stbGroupCheck">
+                            <div class="dropdown-menu open" style="max-height: 654px; overflow: hidden; min-height: auto; padding: 0; background:rgb(25, 27, 31);">
+                                <div class="dropdown-menu inner" role="menu" style="max-height: 644px; overflow-y: auto; height: auto;" id="stbGroupCheck">
                                     
                                 </div>
                             </div>
@@ -473,7 +473,7 @@
                       </div>
                   </div>
 	            </div>
-	            <div class="get" id="thumnailSource" style="position: absolute; top: 280px; right: 35px; display: none;">
+	            <div class="get" id="thumnailSource" style="position: absolute;z-index:10000000; top: 280px; right: 35px; display: none;">
                      <div class="btn btn-sm pull-left m-b-5 blackBtn" id="photoFromPc">PC에서 가져오기</div><br>
                      <div class="btn btn-sm pull-left blackBtn" onclick="common.selectRepoSource('media');">저장소에서 가져오기</div>
                  </div>
@@ -939,7 +939,7 @@
 <div class="modal fade in" id="progressLayout" tabindex="-1" role="dialog" aria-hidden="false"> 
      <div class="modal-dialog" style="width:500px; margin-top: 10%;">
          <div class="modal-content">
-         	<div class="modal-header">동영상 업로드 </div> 
+         	<div class="modal-header">업로드 </div> 
              <div class="modal-body" style="text-align: center;">
              	
                  <p style="left: 50%;" id="encodginText" style="display:none;">파일 업로드 중 입니다.</p>
@@ -956,7 +956,7 @@
 			    </div>
              </div>
              <div class="modal-footer" style="text-align: center;">
-                 <button class="btn btn-sm cancel">취소</button>
+                 <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
              </div>
          </div>
      </div>
@@ -1167,13 +1167,21 @@ $(function(){
 			$("#msgModal").modal();
 		};
 		var menuMakeException = function() {
-			$("#warnText").text("게시판 메뉴에서는 하위메뉴를 만들 수 없습니다.");
+			$("#warnText").text("생성된 메뉴의 하위메뉴를 만들 수 없습니다.");
 			$("#msgModal").modal();
 		};
 		var contentsAddException = function() {
 			$("#warnText").text("하위 메뉴가 있는 메뉴에는 컨텐츠를 추가 할 수 없습니다.");
 			$("#msgModal").modal();
 		};
+		var beforeSelectException=function(){
+			$("#warnText").text("트리 메뉴를 하나 선택하세요.");
+			$("#msgModal").modal();
+		};
+		var subMainException=function(){
+			$("#warnText").text("서브 메인 메뉴를 먼저 만드세요.");
+			$("#msgModal").modal();
+		}
 		return {
 			ajaxException : ajaxException,
 			loginException : loginException,
@@ -1195,7 +1203,9 @@ $(function(){
 			fileUpdateException :fileUpdateException,
 			liveException : liveException,
 			menuMakeException :menuMakeException,
-			contentsAddException : contentsAddException
+			contentsAddException : contentsAddException,
+			beforeSelectException: beforeSelectException,
+			subMainException : subMainException
 		};
 	}());
 	/***file upload JS***/
@@ -1386,7 +1396,7 @@ $(function(){
 						setTimeout(function(){
 							$("#thumnailList").val(thumbnailArr);
 							$("#vodSlideShow").css("display","block");
-						},10000);
+						},5000);
 						$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="arange.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
 						slide.init();
 					}
@@ -1463,8 +1473,15 @@ $(function(){
 		
 		$("#cateChangeSubmit").click(function() {
 			if($('#changeCateProperty').val()!='0'){
-				var targetIdx=$("#changeCateIdx").val();
-				var selectIdx=$("#selectedIdxs").val();
+				var targetIdx="";
+				var selectIdx="";
+				if($("#sort").val()=="stb-controle"){
+					targetIdx=$("#changeCateIdx").val();
+					selectIdx=$("#selectedIdx").val();
+				}else{
+					targetIdx=$("#changeCateIdx").val();
+					selectIdx=$("#selectedIdxs").val();
+				}
 				$.ajax({
 					url : '/cms/update/elemCategory',
 					type : 'post',
@@ -1475,7 +1492,11 @@ $(function(){
 					},
 					async : false,
 					success : function(result) {
-						arange.contentsView(targetIdx);
+						if($("#sort").val()=="stb-controle"){
+							contents.list(targetIdx);
+						}else{
+							arange.contentsView(targetIdx);
+						}
 						menuJs.makeJsTree(targetIdx);
 						var data=JSON.parse(result);
 						$('#navibar').html(data.oneDepth+'<i class="fa fa-angle-right m-r-10 m-l-10"></i><i class="fa fa-list-alt m-r-10"></i>'+data.twoDepth);
@@ -1514,8 +1535,9 @@ $(function(){
 		var frm = $("#member-edit");
 		frm
 				.submit(function(ev) {
-					if ($("#joinName").val().length != 0
-							&& $("#joinPass").val().length != 0) {
+					 var eventForm =  $(this).closest('.modal').find('.form-validation-1');
+				      eventForm.validationEngine('validate');
+					     if (!(eventForm).find('.formErrorContent')[0]) {
 						$
 								.ajax({
 									type : frm.attr("method"),
@@ -1674,6 +1696,8 @@ $(function(){
 			common.delCashPlayer('vodPlayer');
 			$('#boardViewArea').empty();
 			$('#boardPreview').empty();
+			$('#photoRepo').val('');
+			$('#fileRepo').val('');
 			$('#boardViewArea').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="boardViewMainThumb">');
 			$('#boardPreview').html('<img src="${pageContext.request.contextPath}/img/live.jpg" alt="샘플" id="boardDefaultImg">');
 			$('#boardLetsPlay').css('display','block');
@@ -1728,8 +1752,13 @@ $(function(){
 			$('#requestRepo').val(sort);
 			var html="";
 			if($('#requestRepo').val()=="schedule"){
-		  		 html+='<option value="VOD">VOD</option>';
-	            html+='<option value="LIVE">LIVE</option>';
+		  		if($('#repoOrder').val()=='vod'){
+    	  			html+='<option value="VOD" selected>VOD</option>';
+                	html+='<option value="LIVE">LIVE</option>';
+    	  		}else{
+    	  			html+='<option value="VOD">VOD</option>';
+                    html+='<option value="LIVE" selected>LIVE</option>';
+    	  		}
 	            $('#repoType').empty();
 	            $('#repoType').html(html);
 		  	}else if($('#requestRepo').val()=="media"){
@@ -1849,8 +1878,13 @@ $(function(){
     	  	var html=""; 
     		//선택박스 셋팅 
     	  	if($('#requestRepo').val()=="schedule"){
-    	  		 html+='<option value="VOD">VOD</option>';
-                 html+='<option value="LIVE">LIVE</option>';
+    	  		 if($('#repoOrder').val()=='vod'){
+    	  			html+='<option value="VOD" selected>VOD</option>';
+                	html+='<option value="LIVE">LIVE</option>';
+    	  		}else{
+    	  			html+='<option value="VOD">VOD</option>';
+                    html+='<option value="LIVE" selected>LIVE</option>';
+    	  		}
                  $('#repoType').empty();
                  $('#repoType').html(html);
     	  	}else if($('#requestRepo').val()=="media"){
@@ -1948,7 +1982,7 @@ $(function(){
 						setTimeout(function(){
 							$('#vodSlideShow').append(retHtml);
 							$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="arange.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
-						},10000);
+						},3000);
 						$('#thumnailList').val(thumbnailArr);
 						$('#repositoryList').modal('hide');
 					},
@@ -2216,8 +2250,14 @@ $(function(){
 	  $("#downloadList").toggle();
   });
   $('#schedule-contents-search').keyup(function(key){
-		//alert($('#repoOrder').val()+"/"+$(this).val());
-		common.repolist($('#searchIdx').val());
+	  var regExp =/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+		var retString=$('#schedule-contents-search').val();
+		if(regExp.test(retString)){
+			$('#schedule-contents-search').val(retString.replace(regExp,""));	
+		}
+		if($('#schedule-contents-search').val().length!=0){
+			common.repolist($('#searchIdx').val());
+		}
 	});
   $('#boardViewEdit').click(function(){
 		$('#boardMediaView').css('display','none');
@@ -2300,8 +2340,8 @@ $(function(){
 								$('#addLi').remove();
 								setTimeout(function(){
 									$('#vodSlideShow').append(retHtml);
-									$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="common.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
-								},10000);
+									$('#vodSlideShow').append('<li id="addLi"><a class="add" onclick="arange.selectSource();"><img src="/ibsImg/img_add.png" alt="추가" style="cursor:pointer;"></a></li>');
+								},2000);
 								$('#thumnailList').val(thumbnailArr);
 							},
 							error : exception.ajaxException
@@ -2320,5 +2360,67 @@ $(function(){
 			}
 		});
   });
+  $("#vodSection").change(function(){
+		//용량
+		$('#thumnailSource').css('display','none')
+		var file=this.files;
+		if (file[0].size > 3000*1024 * 1024) {
+			jQuery('#vod_path').validationEngine('showPrompt', '3GB 이하 파일만 업로드 하세요.', 'pass')
+			return;
+		}
+		$("#file_size").val(file[0].size);
+		//확장자
+		var localPath = $(this).val();
+		var ext = localPath.split('.').pop().toLowerCase();
+		if ($.inArray(ext, [ 'wmv','avi','mov','flv','mp4','mpg','mpeg','mkv','3gp']) == -1) {
+			jQuery('#vod_path').validationEngine('showPrompt', 'wmv,avi,mov,flv,mp4,mpg,mpeg 파일만 업로드 가능합니다.', 'pass');
+			return;
+		}
+		var formData = new FormData();
+		formData.append("uploadFile", file[0]);
+		$.ajax({
+			xhr: function() {
+			    	var xhr = new window.XMLHttpRequest();
+			    	var barValue=0;
+					xhr.upload.addEventListener("progress", function(evt) {
+			      	if (evt.lengthComputable) {
+			      		var percentComplete = evt.loaded / evt.total;
+			        	percentComplete = parseInt(percentComplete * 100);
+			        	if(percentComplete>parseInt(barValue)){
+			        		$("#progressBar").css("width",percentComplete+"%");
+			        		barValue=percentComplete;
+			        		console.log(barValue);
+			        	}
+			        	$("#barText").text(percentComplete+"% Complete");
+						if (percentComplete === 100) {
+							$("#progressBarLayout").css('display','none');
+			        	}
+					}
+			 }, false);
+				return xhr;
+			},
+			url : '${pageContext.request.contextPath}/SEQ/UPLOAD/'+$("#sort").val().toUpperCase(),
+			processData : false,
+			contentType : false,
+			data : formData,
+			type : 'POST',
+			beforeSend : function() {
+				$('#progressLayout').modal();
+				$("#progressBarLayout").css('display','block');
+			},
+			success : function(responseData) {
+				var data=JSON.parse(responseData);
+					$("#vod_path").val(data.fileName);
+					$("#encodingBarLayout").css('display','block');
+					uploadFile.mediaEncoding(data.fileName);
+			},
+			complete : function(responseData) {
+				console.log('complete');
+			},
+			error : function() {
+				//exception.fileUpdateException();
+			}
+		});
+	});
 </script>
 

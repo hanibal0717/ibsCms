@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import hanibal.ibs.dao.IbsUserDAO;
 import hanibal.ibs.library.HanibalWebDev;
+import hanibal.ibs.model.app.VodListAppDTO;
 import hanibal.ibs.model.cms.BoardDTO;
 import hanibal.ibs.model.webapi.LayoutDTO;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +58,11 @@ public class IbsUserController {
 	//첫 화면 페이지 
 	@RequestMapping("/")
 	public String mainIndex() {
-		
 		return "/ibsUserViews/VOD_Layout.usr";
+	}
+	@RequestMapping("/user/live")
+	public String livePage() {
+		return "/ibsUserViews/Live_Layout.usr";
 	}
 	
 	@RequestMapping("/user/subList")
@@ -115,4 +121,17 @@ public class IbsUserController {
 		ibsUserDAO.layoutInsert(commandMap);
 		return String.valueOf(commandMap.get("wl_category"));
 	}
+	@RequestMapping("/user/channelTask")
+	public void channelWeb(HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException {
+		Map<String,Object> channelTasks=ibsUserDAO.getWebLiveSchedule();
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(channelTasks));
+	}
+	@RequestMapping("/user/liveView/{idx}")
+	public void liveView(@PathVariable String idx,HttpServletResponse res) throws JsonGenerationException, JsonMappingException, IOException, ParseException {
+		Map<String,Object> liveView=ibsUserDAO.getLiveView(idx,mediaIp);
+		res.setCharacterEncoding("utf8");
+		res.getWriter().print(mapper.writeValueAsString(liveView));
+	}
+	
 }
