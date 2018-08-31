@@ -61,11 +61,11 @@
 	</select>
 	
 	<select id="getWebScheduleList" parameterType="String" resultType="java.util.Map">
-		  select (category_idx)as id,date_format(start,'%Y-%m-%d %H:%i') as start_date,date_format(end,'%Y-%m-%d %H:%i') as end_date FROM ibsdata.tb_stb_schedule where del_flag='N' and category_idx=#{idx};
+		  select (idx)as id,date_format(start,'%Y-%m-%d %H:%i') as start_date,date_format(end,'%Y-%m-%d %H:%i') as end_date FROM ibsdata.tb_stb_schedule where del_flag='N' and category_idx=#{idx};
 	</select>
 	
 	<select id="getTaskList" parameterType="java.util.Map" resultType="java.util.Map">
-		 select (category_idx)as id,concat(date_format(start,'%H:%i '),name) as name,(forceLive) as color,(forceLive) as tag,(forceLive) as tagcolor,idx from tb_stb_schedule where del_flag='N' and category_idx in 
+		 select (idx)as id,concat(date_format(start,'%H:%i '),name) as name,(forceLive) as color,(forceLive) as tag,(forceLive) as tagcolor,(idx) as idx from tb_stb_schedule where del_flag='N' and category_idx in 
 		 <foreach collection="categoryIdxs" item="type" index="index"  open="(" close=")" separator=",">
         	 #{type}
       	</foreach>

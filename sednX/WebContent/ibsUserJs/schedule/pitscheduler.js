@@ -633,8 +633,9 @@ var i18n = {
                 case 'task':
                 	var task = getTaskById(taskId);
                 	$('#liveView').css('display','none');
+                	console.log(taskId);
     				$.ajax({
-    					url : "/user/liveView/"+task.idx,
+    					url : "/user/liveView/"+taskId,
     					cache : false,
     					type : 'post',
     					async : false,

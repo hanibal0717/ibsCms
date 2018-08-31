@@ -34,10 +34,12 @@
 			<ul class="dropdown-menu profile-menu">
 				<li><div class="fileupload fileupload-new"
 						data-provides="fileupload">
-						<span class="btn btn-file btn-sm btn-alt"> <span
-							class="fileupload-new">이미지 변경</span> <input type="file"
+						<span class="btn btn-file btn-sm btn-alt"> 
+							<span class="fileupload-new">이미지 변경</span> <input type="file"
 							id="imageFile" onchange="uploadFile.image(this,'imageFile');" />
+							<span class="fileupload-exists">이미지 변경</span>
 						</span>
+						
 					</div></li>
 				<li><a data-toggle="modal" href="#memberEdit">비밀번호 변경</a> <i
 					class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
@@ -314,7 +316,7 @@
 					<input type="text" name="member_name" id="joinName"
 						class="form-control m-b-10 validate[required,maxSize[20],custom[onlyLetterSp]]"
 						value="${sessionScope.member_name }" placeholder="이름(소속)">
-					<input type="text" id="memberPass"
+					<input type="password" id="memberPass"
 						class="form-control m-b-10 validate[required,funcCall[loginCheck.checkMemberPass]]"
 						placeholder="기존비밀번호"> <input type="password"
 						name="member_pass" id="joinPass"
@@ -474,8 +476,8 @@
                   </div>
 	            </div>
 	            <div class="get" id="thumnailSource" style="position: absolute;z-index:10000000; top: 280px; right: 35px; display: none;">
-                     <div class="btn btn-sm pull-left m-b-5 blackBtn" id="photoFromPc">PC에서 가져오기</div><br>
-                     <div class="btn btn-sm pull-left blackBtn" onclick="common.selectRepoSource('media');">저장소에서 가져오기</div>
+                     <div class="btn btn-sm pull-left m-b-5 blackBtn" id="photoFromPc">PC에서 썸네일 가져오기</div><br>
+                     <div class="btn btn-sm pull-left blackBtn" onclick="common.selectRepoSource('media');">저장소에서 썸네일 가져오기</div>
                  </div>
 	            <input type="text" id="vod_title" class="form-control m-b-10 validate[required,maxSize[20]]" placeholder="제목">
 	            <textarea id="vod_content" class="form-control m-b-10 validate[required]" placeholder="내용"></textarea>
@@ -490,7 +492,7 @@
 	        </div>
         <div class="modal-footer">
             <button class="btn btn-sm cancel" data-dismiss="modal">취소</button>
-            <button class="btn btn-sm" id="mediaConfirm">확인</button>
+            <button class="btn btn-sm" id="mediaConfirm">확인</button>9-	
             <div class="pull-right">
             	<button class="btn btn-sm" id="mediaDel">삭제</button>
             </div>
@@ -861,7 +863,7 @@
 	             	<div class="icheckbox_minimal">
 	             		<div aria-checked="false" aria-disabled="false" style="position: relative;">
                        		<input type="checkbox" id="forceLive"/>
-                         		방송 시작 알림
+                         		강제 방송 설정
                      	</div>
                  	</div>
                  </div>
@@ -1029,6 +1031,7 @@ $(function(){
 			}
 		};
 		var checkMemberPass = function(field, rules, i, options) {
+		
 			$
 					.ajax({
 						url : "${pageContext.request.contextPath}/api/web/checkMemberPass?member_email="

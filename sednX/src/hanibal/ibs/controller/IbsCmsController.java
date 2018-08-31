@@ -102,10 +102,10 @@ public class IbsCmsController {
 	@RequestMapping(value="/cms/loginProcess",method=RequestMethod.POST)
 	public String loginProcess(@ModelAttribute MemberAccountDTO dto,HttpSession session,HttpServletRequest req) throws IOException, JSONException {
 		String returnPage="";
-		JSONObject json =ibsCmsDao.readJsonFromUrl("http://"+sednIp+":8080/api/web/checkMemberPass?member_email="+dto.getMember_email()+"&member_pass="+dto.getMember_pass());
-		if(json.getString("msg").equals("EXIST")) {
-			
-			MemberAccountDTO accountDto=ibsCmsDao.memberInfo(dto.getMember_email(),dto.getMember_pass());
+		//JSONObject json =ibsCmsDao.readJsonFromUrl("http://"+sednIp+":8080/api/web/checkMemberPass?member_email="+dto.getMember_email()+"&member_pass="+dto.getMember_pass());
+		//log.info("##############"+json.getString("msg")+"############"+dto.getMember_pass());
+		MemberAccountDTO accountDto=ibsCmsDao.memberInfo(dto.getMember_email(),dto.getMember_pass());
+		if(accountDto.getMember_id().length()>0) {
 			session.setAttribute("member_idx", accountDto.getIdx());
 			session.setAttribute("member_id", accountDto.getMember_id());
 			session.setAttribute("member_name", accountDto.getMember_name());

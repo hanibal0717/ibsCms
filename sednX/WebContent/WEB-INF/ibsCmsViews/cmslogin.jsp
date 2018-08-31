@@ -97,7 +97,11 @@
         		}
     			};
 				var checkMemberPass=function(field, rules, i, options){
-					$.ajax({url:"${pageContext.request.contextPath}/api/web/checkMemberPass?member_email="+$("#memberEmail").val()+"&member_pass="+$("#memberPass").val(),
+					$.ajax({url:"${pageContext.request.contextPath}/api/web/checkMemberPass",
+						cache : false,
+						type : 'post',
+						data : {"member_email":$("#memberEmail").val(),"member_pass":$("#memberPass").val()},
+						async : false,
     					success:function(responseData){
     						var data = JSON.parse(responseData);
     						catPass=data.msg;

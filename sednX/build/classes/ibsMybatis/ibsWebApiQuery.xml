@@ -875,7 +875,8 @@
 				source_type=#{source_type},
 				image_path=#{image_path},
 				color=#{color},
-				desc_text=#{desc_text}
+				desc_text=#{desc_text},
+				forceLive=#{forceLive}
 			where idx=#{idx}
 		</update>
 		
